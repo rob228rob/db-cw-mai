@@ -1,0 +1,33 @@
+services:
+  k_plus_app:
+    build: .
+    ports:
+      - "8084:8084"
+    depends_on:
+      - main_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main_db:5432/main_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - my_network
+
+  main_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=main_db
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+#    volumes:
+#      - pg_data:/var/lib/postgresql/data
+
+networks:
+  my_network:
+    driver: bridge
+
+#volumes:
+#  pg_data:
