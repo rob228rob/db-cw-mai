@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/settings">Settings</a></li>
+            <li><a href="/about">About Me</a></li> <!-- Новая ссылка -->
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section class="welcome-section">
+        <h1>Welcome!</h1>
+        <p>You have successfully logged in.</p>
+        <p>Your session is active. Enjoy exploring the application!</p>
+    </section>
+
+    <div class="dashboard-container">
+        <h2>Dashboard</h2>
+        <section class="dashboard">
+            <div class="card">
+                <h3>Profile</h3>
+                <p>Update your personal information and settings.</p>
+                <a href="/profile" class="btn">Go to Profile</a>
+            </div>
+            <div class="card">
+                <h3>Settings</h3>
+                <p>Configure your preferences and account settings.</p>
+                <a href="/settings" class="btn">Go to Settings</a>
+            </div>
+            <div class="card"> <!-- Новая карточка -->
+                <h3>About Me</h3>
+                <p>Learn more about the developer of this project.</p>
+                <a href="/about" class="btn">Learn More</a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Teacher Assistant. All rights reserved.</p>
+</footer>
+<!-- Подключаем JavaScript файл -->
+<script src="/scripts/main.js"></script>
+</body>
+</html>
