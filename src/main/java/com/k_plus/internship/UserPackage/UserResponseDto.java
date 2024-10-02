@@ -1,7 +1,6 @@
 package com.k_plus.internship.UserPackage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 
 import java.util.UUID;
@@ -10,7 +9,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseUserDto {
+public class UserResponseDto {
 
     @JsonProperty("id")
     private UUID id;
