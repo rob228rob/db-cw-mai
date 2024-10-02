@@ -1,25 +1,19 @@
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
-FROM openjdk:17-jdk-slim as builder
+WORKDIR /opt/app
 
-WORKDIR /app
+COPY pom.xml ./
+RUN mvn dependency:go-offline -B
 
-COPY ./mvnw .
-COPY ./.mvn .mvn
-COPY ./pom.xml .
 COPY ./src ./src
+RUN mvn clean package -DskipTests
 
-RUN chmod +x ./mvnw
+FROM amazoncorretto:17-alpine
 
-RUN ./mvnw clean package -DskipTests=true
+WORKDIR /opt/app
 
-FROM openjdk:17-jdk-slim
-
-WORKDIR /app
-
-COPY --from=builder /app/target/*.jar app.jar
-
-ENV JAVA_OPTS=""
+COPY --from=builder /opt/app/target/*.jar /opt/app/app.jar
 
 EXPOSE 8084
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/app/app.jar"]

@@ -4,12 +4,11 @@ import com.k_plus.internship.CommonPackage.ErrorResponseDto;
 import com.k_plus.internship.CommonPackage.LoginUserDto;
 import com.k_plus.internship.SecurityPackage.UserDetails.CustomUserDetailsService;
 import com.k_plus.internship.UserPackage.RegisterUserRequest;
-import com.k_plus.internship.UserPackage.ResponseUserDto;
+import com.k_plus.internship.UserPackage.UserResponseDto;
 import com.k_plus.internship.UserPackage.UserService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +16,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -53,7 +51,7 @@ public class AuthController {
         }
 
         try {
-            ResponseUserDto newTeacher = userService.saveUser(registerTeacherDTO);
+            UserResponseDto newTeacher = userService.saveUser(registerTeacherDTO);
             return ResponseEntity.ok(newTeacher);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
