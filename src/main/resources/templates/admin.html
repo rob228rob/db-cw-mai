@@ -2,12 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    
 </head>
 <body>
-<div> Hello everyone! Admin Panel
-    </div>
+    <!-- Header Section -->
+     <container>
+        <header>
+            <nav>
 
-<a> </a>
+                <ul>
+                    <button><a href="/home">ПравоТворчества</a></button>
+                    <li><a href="#" data-target="#courses" class="active">Courses</a></li>
+                    <li><a href="#" data-target="#users">Users</a></li>
+                    <li><a href="#" data-target="#settings">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content Section -->
+        <main>
+            <section id="courses">
+                <h1>Courses</h1>
+                <p>This is the courses section.</p>
+                <div id="courses_list"></div>
+            </section>
+            
+            <section id="users" class="hidden">
+                <h1>Users</h1>
+                <p>This is the users section.</p>
+            </section>
+            
+            <section id="settings" class="hidden">
+                <h1>Settings</h1>
+                <p>This is the settings section.</p>
+            </section>
+
+
+        </main>
+
+        <!-- Footer Section -->
+        <footer>
+            <p>Admin Panel</p>
+        </footer>
+    </container>
+<script type="text/javascript" src="/js/admin.js"></script>
 </body>
 </html>
