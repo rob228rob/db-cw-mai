@@ -119,3 +119,12 @@ footer p {
   margin: 0;
 }
 
+/* Table Styles */
+
+table {
+  border-collapse: collapse; /* Объединяет границы ячеек в одну */
+}
+
+table td, table th {
+  border: 1px solid blue;
+}

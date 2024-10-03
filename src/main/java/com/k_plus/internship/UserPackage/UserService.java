@@ -4,16 +4,21 @@ import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.CommonPackage.CustomExceptions.InvalidUserInfoException;
 import com.k_plus.internship.CommonPackage.CustomExceptions.UserNotFoundException;
 import com.k_plus.internship.RolePackage.RoleRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+
+import org.aspectj.weaver.ast.Var;
 
 @Service
 @RequiredArgsConstructor
@@ -101,5 +106,17 @@ public class UserService {
         if (value != null) {
             setter.accept(value);
         }
+    }
+
+    public List<UserTableDto> getAllUsers() {
+        var allUsers = userRepository.findAllUsers();
+        if (allUsers.isEmpty()) {
+            throw new UserNotFoundException("There's no any users");
+        }
+
+        return allUsers
+                .stream()
+                .map(x -> modelMapper.map(x, UserTableDto.class))
+                .toList();
     }
 }
