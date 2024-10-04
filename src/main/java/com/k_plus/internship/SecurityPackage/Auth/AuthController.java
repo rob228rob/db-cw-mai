@@ -3,7 +3,7 @@ package com.k_plus.internship.SecurityPackage.Auth;
 import com.k_plus.internship.CommonPackage.ErrorResponseDto;
 import com.k_plus.internship.CommonPackage.LoginUserDto;
 import com.k_plus.internship.SecurityPackage.UserDetails.CustomUserDetailsService;
-import com.k_plus.internship.UserPackage.RegisterUserRequest;
+import com.k_plus.internship.UserPackage.UserRegisterDto;
 import com.k_plus.internship.UserPackage.UserResponseDto;
 import com.k_plus.internship.UserPackage.UserService;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class AuthController {
 //    })
     @PostMapping("/register")
     public ResponseEntity<?> registerTeacher(
-            @RequestBody @Valid RegisterUserRequest registerTeacherDTO) {
+            @RequestBody @Valid UserRegisterDto registerTeacherDTO) {
         if (userService.existsByEmail(registerTeacherDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this login already exists");
         }

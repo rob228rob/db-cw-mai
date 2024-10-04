@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterUserRequest {
+public class UserRegisterDto {
 
     @JsonProperty(value = "first_name", required = true)
     private String firstName;

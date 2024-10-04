@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ArticleRequestDto {
 
-    @JsonProperty(value = "title")
+    @JsonProperty(value = "title", required = true)
     private String title;
 
-    @JsonProperty(value = "author")
+    @JsonProperty(value = "author", required = true)
     private String author;
 
-    @JsonProperty(value = "content")
+    @JsonProperty(value = "content", required = true)
     private String content;
 }
