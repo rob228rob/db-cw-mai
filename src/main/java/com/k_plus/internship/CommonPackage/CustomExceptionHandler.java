@@ -6,6 +6,7 @@ import com.k_plus.internship.CommonPackage.CustomExceptions.TestingNotFoundExcep
 import com.k_plus.internship.CommonPackage.CustomExceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,10 +41,18 @@ public class CustomExceptionHandler {
                 .body(new ErrorResponseDto(exception.getMessage(), HttpStatus.BAD_REQUEST.value()));
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDto> badCredentialsException(BadCredentialsException exception) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponseDto(exception.getMessage(), HttpStatus.FORBIDDEN.value()));
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponseDto> runtimeException(RuntimeException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponseDto(exception.getMessage(), HttpStatus.BAD_REQUEST.value()));
     }
+
 }

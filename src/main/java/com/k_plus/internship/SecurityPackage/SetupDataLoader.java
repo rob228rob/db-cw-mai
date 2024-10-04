@@ -5,6 +5,7 @@ import com.k_plus.internship.PrivilegePackage.PrivilegeRepository;
 import com.k_plus.internship.RolePackage.Role;
 import com.k_plus.internship.RolePackage.RoleRepository;
 import com.k_plus.internship.UserPackage.User;
+import com.k_plus.internship.UserPackage.UserRepository;
 import com.k_plus.internship.UserPackage.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
 
+    private final UserRepository userRepository;
     boolean alreadySetup = false;
 
     private final UserService userService;

@@ -32,7 +32,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserResponseDto saveUser(RegisterUserRequest registerUserRequest) {
+    public UserResponseDto saveUser(UserRegisterDto registerUserRequest) {
         if (!registerUserRequest.getPassword().equals(registerUserRequest.getConfirmPassword())) {
             throw new InvalidUserInfoException("Password and confirm password does not equals");
         }
@@ -101,5 +101,17 @@ public class UserService {
         if (value != null) {
             setter.accept(value);
         }
+    }
+
+    public List<UserResponseDto> getAllUsers() {
+        List<User> allUsers = userRepository.findAllUsers();
+        if (allUsers.isEmpty()) {
+            throw new UserNotFoundException("There's no any users");
+        }
+
+        return allUsers
+                .stream()
+                .map(x -> modelMapper.map(x, UserResponseDto.class))
+                .toList();
     }
 }

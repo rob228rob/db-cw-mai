@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -78,5 +79,12 @@ public class UserController {
         String email = principal.getName();
         UserResponseDto userResponseDto = userService.updateUserPartly(userDto, email);
         return ResponseEntity.ok().body(userResponseDto);
+    }
+
+    //@PreAuthorize("hasAnyRole(\"ADMIN\")")
+    @GetMapping("/get-all")
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return ResponseEntity
+                .ok(userService.getAllUsers());
     }
 }

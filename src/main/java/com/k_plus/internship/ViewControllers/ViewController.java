@@ -18,7 +18,7 @@ public class ViewController {
     }
 
     //NEED A TESTING
-    @PreAuthorize("hasRole(\"ROLE_ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\", \"USER\")")
     @GetMapping("/admin")
     public String admin() {
         return "admin";
