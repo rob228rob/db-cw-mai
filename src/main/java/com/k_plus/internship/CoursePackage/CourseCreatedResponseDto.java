@@ -8,10 +8,13 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class CourseResponseDto {
+public class CourseCreatedResponseDto {
+
+    @JsonProperty(value = "id")
+    private UUID id;
 
     @JsonProperty(value = "name")
     private String name;

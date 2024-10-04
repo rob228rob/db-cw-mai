@@ -7,7 +7,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -24,6 +27,17 @@ public class Course {
     private String name;
 
     private String description;
+
+    /*
+    NEED TO CREATE NEW TABLE: course_price with price info about commercial courses
+     */
+    //private boolean free;
+
+    @CreationTimestamp
+    private LocalDateTime creationTime;
+
+    @UpdateTimestamp
+    private LocalDateTime modifiedTime;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

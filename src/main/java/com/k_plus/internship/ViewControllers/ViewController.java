@@ -27,4 +27,9 @@ public class ViewController {
     public String home() {
         return "home";
     }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
+    }
 }

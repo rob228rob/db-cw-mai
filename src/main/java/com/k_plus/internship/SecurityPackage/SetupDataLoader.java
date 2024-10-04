@@ -1,5 +1,8 @@
 package com.k_plus.internship.SecurityPackage;
 
+import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.CoursePackage.Course;
+import com.k_plus.internship.CoursePackage.CourseRepository;
 import com.k_plus.internship.PrivilegePackage.Privilege;
 import com.k_plus.internship.PrivilegePackage.PrivilegeRepository;
 import com.k_plus.internship.RolePackage.Role;
@@ -26,6 +29,8 @@ public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
 
     private final UserRepository userRepository;
+    private final CourseRepository courseRepository;
+
     boolean alreadySetup = false;
 
     private final UserService userService;
@@ -61,6 +66,7 @@ public class SetupDataLoader implements
         }
 
         User user = new User();
+        user.setId(Generators.timeBasedEpochGenerator().generate());
         user.setFirstName("Test");
         user.setLastName("Test");
         user.setPassword(passwordEncoder.encode("testtest"));
@@ -69,6 +75,15 @@ public class SetupDataLoader implements
         user.setEnabled(true);
         if (!userService.existsByEmail(user.getEmail())) {
             userService.saveUser(user);
+        }
+
+        Course course = new Course();
+        course.setId(Generators.timeBasedEpochGenerator().generate());
+        course.setName("Test Course");
+        course.setDescription("Test Course Description. :))");
+
+        if (courseRepository.existsByName(course.getName())) {
+            courseRepository.save(course);
         }
 
         alreadySetup = true;

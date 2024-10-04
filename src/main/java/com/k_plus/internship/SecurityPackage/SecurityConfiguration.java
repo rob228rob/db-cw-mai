@@ -40,7 +40,13 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/register",
-                                        "/auth/login", "css/**", "scripts/**", "/home", "/signup").permitAll()
+                                        "/auth/login",
+                                        "css/**",
+                                        "scripts/**",
+                                        "/home",
+                                        "/signup",
+                                        "/courses"
+                                ).permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form -> form

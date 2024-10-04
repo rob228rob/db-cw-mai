@@ -1,55 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-
-    <link rel="stylesheet" href="/css/home.css">
+    <title>правоТворчества</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #333;
+            width: 100%;
+            height: 40px; /* Фиксированная высота шапки */
+            padding: 30px;
+            font-size: 28px;
+            color: #4CAF50;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            box-sizing: border-box;
+        }
+        .header .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header .links a {
+            text-decoration: none;
+            font-size: 16px;
+            color: white;
+            padding: 8px 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+        }
+        .header .links a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .content {
+            flex: auto;
+            padding-top: 120px; /* Увеличенный отступ сверху */
+        }
+        .description {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .course-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 200px;
+        }
+        .course-card {
+            background-color: white;
+            border: 4px solid #4CAF50;
+            border-radius: 10px;
+            padding: 60px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+        .course-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .course-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .course-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .course-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -20px;
+            left: calc(50% - 20px);
+        }
+        .course-icon img {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        .footer {
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        .footer a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 16px;
+            padding: 8px 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .footer a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <nav>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/settings">Settings</a></li>
-            <li><a href="/about">About Project</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <section class="welcome-section">
-        <h1>Welcome!</h1>
-        <p>Your session is active. Enjoy exploring the application!</p>
-    </section>
-
-    <div class="dashboard-container">
-        <h2>Dashboard</h2>
-        <section class="dashboard">
-            <div class="card">
-                <h3>Profile</h3>
-                <p>Update your personal information and settings.</p>
-                <a href="/profile" class="btn">Go to Profile</a>
-            </div>
-            <div class="card">
-                <h3>Settings</h3>
-                <p>Configure your preferences and account settings.</p>
-                <a href="/settings" class="btn">Go to Settings</a>
-            </div>
-            <div class="card"> <!-- Новая карточка -->
-                <h3>About Me</h3>
-                <p>Learn more about the developer of this project.</p>
-                <a href="/about" class="btn">Learn More</a>
-            </div>
-        </section>
+<div class="header">
+    <div class="title">
+        ПравоТворчества
     </div>
-</main>
+    <div class="links">
+        <a href="/profile">Профиль</a>
+        <a href="/admin">Admin(TEST)</a>
+        <a href="/courses">Мои курсы</a>
+        <a href="/achievements">Мои достижения</a>
+    </div>
+</div>
 
-<footer>
-    <p>&copy; 2024 . All rights reserved.</p>
-</footer>
+<div class="content">
+    <div class="description">
+        Добро пожаловать на платформу "ПравоТворчества" — вашу онлайн-площадку для обучения и повышения квалификации в сфере права.
+    </div>
+    <div class="course-container" id="course-container">
 
+    </div>
+</div>
+
+<div class="footer">
+    <a href="/Feedback">Обратная связь</a>
+    <a href="/ReportIssue">Сообщить об ошибке</a>
+    <a href="/Suggestions">Вопросы и предложения</a>
+</div>
+
+<script>
+    async function loadCourses() {
+        try {
+            const response = await fetch('/api/v1/courses/get-all');
+            if (response.status === 404) {
+                createTestCourseCard();
+            } else if (response.ok) {
+                const courses = await response.json();
+                const courseContainer = document.getElementById('course-container');
+                if (courses.length > 0) {
+                    courses.forEach(course => {
+                        const courseCard = document.createElement('a');
+                        courseCard.className = 'course-card';
+                        courseCard.href = `/courses/${course.id}`;
+                        courseCard.innerHTML = `
+                            <div class="course-icon">
+                                <img src="https://via.placeholder.com/24" alt="Course Icon">
+                            </div>
+                            <h3>${course.name}</h3>
+                            <p>${course.description}</p>
+                        `;
+                        courseContainer.appendChild(courseCard);
+                    });
+                } else {
+                    createTestCourseCard();
+                }
+            } else {
+                console.error('Ошибка при загрузке курсов:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке курсов:', error);
+            createTestCourseCard();
+        }
+    }
+
+    function createTestCourseCard() {
+        const courseContainer = document.getElementById('course-container');
+        const testCard = document.createElement('a');
+        testCard.className = 'course-card';
+        testCard.href = '#';
+        testCard.innerHTML = `
+            <div class="course-icon">
+                <img src="https://via.placeholder.com/24" alt="Test Course Icon">
+            </div>
+            <h3>Тестовый курс</h3>
+            <p>Описание тестового курса. Здесь будет информация о курсе, когда она появится.</p>
+        `;
+        courseContainer.appendChild(testCard);
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCourses);
+</script>
 </body>
 </html>
