@@ -37,7 +37,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserResponseDto saveUser(RegisterUserRequest registerUserRequest) {
+    public UserResponseDto saveUser(UserRegisterDto registerUserRequest) {
         if (!registerUserRequest.getPassword().equals(registerUserRequest.getConfirmPassword())) {
             throw new InvalidUserInfoException("Password and confirm password does not equals");
         }
