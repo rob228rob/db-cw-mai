@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.naming.Name;
 import java.util.UUID;
 
 @Getter
@@ -16,11 +17,17 @@ public class Article {
     @Id
     private UUID id;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "author")
     private String author;
 
+    @Column(name = "content")
     private String content;
+
+    @Column(name = "display_order")
+    private int displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")

@@ -161,7 +161,7 @@
 <script>
     function show_hide_password(target){
         var input = document.getElementById('password-input');
-        if (input.getAttribute('type') == 'password') {
+        if (input.getAttribute('type') === 'password') {
             target.classList.add('view');
             input.setAttribute('type', 'text');
         } else {
@@ -171,22 +171,8 @@
         return false;
     }
 
-    document.getElementById('togglePassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('password');
-        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', type);
-        this.classList.toggle('visible');
-    });
-
-    document.getElementById('togglePassword2').addEventListener('click', function () {
-        const passwordField2 = document.getElementById('password2');
-        const type = passwordField2.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField2.setAttribute('type', type);
-        this.classList.toggle('visible');
-    });
-
     document.getElementById('submit-button').addEventListener('click', function(event) {
-        event.preventDefault(); // Предотвращаем стандартное действие формы
+        //event.preventDefault(); // Предотвращаем стандартное действие формы
 
         // Собираем данные из формы
         const formData = {
@@ -207,7 +193,7 @@
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/admin';
+                    window.location.href = '/profile';
                 } else {
                     return response.json().then(data => {
                         document.getElementById('error-message').style.display = 'block';
@@ -216,6 +202,7 @@
                 }
             })
             .catch(error => {
+                alert("Bad req")
                 document.getElementById('error-message').style.display = 'block';
                 document.getElementById('error-text').textContent = 'Произошла ошибка';
             });

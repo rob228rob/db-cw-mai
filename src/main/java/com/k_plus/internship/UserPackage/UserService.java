@@ -52,8 +52,15 @@ public class UserService {
         return modelMapper.map(savedUser, UserResponseDto.class);
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findUserToUserDetailsByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found: " + email));
+    }
+
+    public UserResponseDto findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email not found: " + email));
+
+        return modelMapper.map(user, UserResponseDto.class);
     }
 
     public boolean existsByEmail(String email) {

@@ -28,6 +28,9 @@ public class Testing {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "display_order")
+    private int displayOrder;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;

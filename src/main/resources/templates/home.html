@@ -103,6 +103,11 @@
             top: -20px;
             left: calc(50% - 20px);
         }
+        .header .links a.active {
+            border-color: white; /* Изменение обводки */
+            background-color: #4CAF50; /* Изменение фона */
+            color: white; /* Изменение цвета текста */
+        }
         .course-icon img {
             width: 24px;
             height: 24px;
@@ -141,8 +146,8 @@
         ПравоТворчества
     </div>
     <div class="links">
+        <a href="/home">Главная</a>
         <a href="/profile">Профиль</a>
-        <a href="/admin">Admin(TEST)</a>
         <a href="/courses">Мои курсы</a>
         <a href="/achievements">Мои достижения</a>
     </div>
@@ -213,7 +218,18 @@
         courseContainer.appendChild(testCard);
     }
 
-    document.addEventListener('DOMContentLoaded', loadCourses);
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentPath = window.location.pathname;
+        const links = document.querySelectorAll('.header .links a');
+
+        links.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+
+        loadCourses();
+    });
 </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.k_plus.internship.ArticlePackage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,13 +28,14 @@ public class ArticleController {
 /*
 /api/v1/articles/add
  */
-    @PostMapping("/add")
-    public ResponseEntity<ArticleResponseDto> addArticle(
+    @PostMapping("/create")
+    public ResponseEntity<ArticleResponseDto> createArticle(
             @RequestBody @Valid ArticleRequestDto articleRequestDto) {
         return ResponseEntity
                 .ok(articleService.saveArticle(articleRequestDto));
     }
 
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ArticleResponseDto> deleteArticle(@PathVariable UUID id) {
         articleService.deleteArticleById(id);

@@ -22,8 +22,6 @@ public class CourseService {
 
     private final ModelMapper modelMapper;
 
-    private final ArticleService articleService;
-
     private final TestingService testingService;
 
     private final CourseRepository courseRepository;
@@ -33,12 +31,12 @@ public class CourseService {
         Course course = modelMapper.map(courseDto, Course.class);
         course.setId(Generators.timeBasedEpochGenerator().generate());
 
-        course.setArticles(mapIdToArticles(courseDto.getArticleIds()));
-        course.setTestings(mapIdToTestings(courseDto.getTestIds()));
+//        course.setArticles(mapIdToArticles(courseDto.getArticleIds()));
+//        course.setTestings(mapIdToTestings(courseDto.getTestIds()));
 
         var dto = modelMapper.map(courseRepository.save(course), CourseCreatedResponseDto.class);
-        dto.setArticleIds(courseDto.getArticleIds());
-        dto.setTestingIds(courseDto.getTestIds());
+//        dto.setArticleIds(courseDto.getArticleIds());
+//        dto.setTestingIds(courseDto.getTestIds());
 
         return dto;
     }
@@ -53,16 +51,16 @@ public class CourseService {
                 .toList();
     }
 
-    private Collection<Article> mapIdToArticles(List<UUID> articleIds) {
-        if (articleIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        return articleIds
-                .stream()
-                .map(articleService::findArticleById)
-                .toList();
-    }
+//    private Collection<Article> mapIdToArticles(List<UUID> articleIds) {
+//        if (articleIds.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//
+//        return articleIds
+//                .stream()
+//                .map(articleService::findArticleById)
+//                .toList();
+//    }
 
     @Transactional
     public List<CourseResponseDto> findAllCourses() {
@@ -78,8 +76,14 @@ public class CourseService {
         return response;
     }
 
-    public CourseResponseDto findCourseById(UUID id) {
-        return mapCourseToDto(courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException("Course with id " + id + " not found")));
+    public Course findCourseById(UUID id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("There's no course with id " + id));
+    }
+
+    public CourseResponseDto findCourseByIdReturningDto(UUID id) {
+        return mapCourseToDto(courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course with id " + id + " not found")));
     }
 
     private CourseResponseDto mapCourseToDto(Course course) {
@@ -90,5 +94,15 @@ public class CourseService {
         responseDto.setArticleIds(articleIds);
         responseDto.setTestingIds(testIds);
         return responseDto;
+    }
+
+    @Transactional
+    public List<CourseResponseDto> findAllCoursesByStudentId(UUID studentId) {
+        List<Course> allCoursesByStudentId = courseRepository.findAllCoursesByUserId(studentId);
+
+        return allCoursesByStudentId
+                .stream()
+                .map(this::mapCourseToDto)
+                .toList();
     }
 }

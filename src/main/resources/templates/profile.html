@@ -107,6 +107,11 @@
             font-size: 16px;
             color: #555;
         }
+        .header .links a.active {
+            border-color: white; /* Изменение обводки */
+            background-color: #4CAF50; /* Изменение фона */
+            color: white; /* Изменение цвета текста */
+        }
         .footer {
             width: 100%;
             background-color: #333;
@@ -138,8 +143,10 @@
 <div class="header">
     <div class="title">Профиль</div>
     <div class="links">
+        <a href="/home">Главная</a>
         <a href="/profile">Профиль</a>
         <a href="/courses">Мои курсы</a>
+        <a href="/achievements">Мои достижения</a>
     </div>
 </div>
 
@@ -160,11 +167,14 @@
 </div>
 
 <script>
+    let userId = null; // Глобальная переменная для хранения ID пользователя
+
     async function loadUserInfo() {
         try {
             const response = await fetch('/api/v1/user/get/current');
             if (response.ok) {
                 const user = await response.json();
+                userId = user.id; // Сохраняем ID пользователя
                 const userInfo = document.getElementById('user-info');
                 userInfo.innerHTML = `
                     <h2>${user.first_name} ${user.last_name}</h2>
@@ -180,7 +190,7 @@
 
     async function loadCourses() {
         try {
-            const response = await fetch('/api/v1/courses/get-all');
+            const response = await fetch('/api/v1/courses/get-all/by-stud-id/' + userId);
             if (response.ok) {
                 const courses = await response.json();
                 const courseContainer = document.getElementById('course-container');
@@ -207,9 +217,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        loadUserInfo();
-        loadCourses();
+        const currentPath = window.location.pathname;
+        const links = document.querySelectorAll('.header .links a');
+
+        links.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+
+        loadUserInfo().then(() => loadCourses());
     });
+
 </script>
 </body>
 </html>

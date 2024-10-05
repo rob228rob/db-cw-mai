@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,4 +20,10 @@ public class ArticleRequestDto {
 
     @JsonProperty(value = "content", required = true)
     private String content;
+
+    @JsonProperty(value = "display_order")
+    private int displayOrder;
+
+    @JsonProperty(value = "course_id", required = true)
+    private UUID courseId;
 }

@@ -60,7 +60,8 @@ public class SetupDataLoader implements
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
 
         var adminRole = roleRepository.findByName("ROLE_ADMIN");
-        if (adminRole.isEmpty()) {
+        var userRole = roleRepository.findByName("ROLE_USER");
+        if (adminRole.isEmpty() || userRole.isEmpty()) {
             //TODO: add logs!!
             return;
         }
@@ -69,10 +70,11 @@ public class SetupDataLoader implements
         user.setId(Generators.timeBasedEpochGenerator().generate());
         user.setFirstName("Test");
         user.setLastName("Test");
-        user.setPassword(passwordEncoder.encode("testtest"));
+        user.setPassword(passwordEncoder.encode("qweqwe"));
         user.setEmail("test@gmail.com");
-        user.setRoles(List.of(adminRole.get()));
+        user.setRoles(List.of(adminRole.get(), userRole.get()));
         user.setEnabled(true);
+        user.setEnabled(false);
         if (!userService.existsByEmail(user.getEmail())) {
             userService.saveUser(user);
         }

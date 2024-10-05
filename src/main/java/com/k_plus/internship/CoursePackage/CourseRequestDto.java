@@ -20,9 +20,9 @@ public class CourseRequestDto {
     @JsonProperty(value = "description", required = true)
     private String description;
 
-    @JsonProperty(value = "test_ids", required = false)
-    private List<UUID> testIds = new ArrayList<>();
-
-    @JsonProperty(value = "article_ids", required = false)
-    private List<UUID> articleIds = new ArrayList<>();
+//    @JsonProperty(value = "test_ids", required = false)
+//    private List<UUID> testIds = new ArrayList<>();
+//
+//    @JsonProperty(value = "article_ids", required = false)
+//    private List<UUID> articleIds = new ArrayList<>();
 }

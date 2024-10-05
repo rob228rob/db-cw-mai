@@ -19,4 +19,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     List<Course> findAllCourses();
 
     boolean existsByName(String name);
+
+    @Query("SELECT c FROM Course c JOIN c.users u WHERE u.id = :userId")
+    List<Course> findAllCoursesByUserId(UUID userId);
 }

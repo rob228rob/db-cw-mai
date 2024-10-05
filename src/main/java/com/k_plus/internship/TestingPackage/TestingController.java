@@ -23,7 +23,7 @@ public class TestingController {
                 .body(testingService.findTestingByIdReturningDto(id));
     }
 
-    @PreAuthorize("hasAnyRole(\"ROLE_STAFF\", \"ROLE_ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\")")
     @PostMapping("/add")
     public ResponseEntity<TestingResponseDto> addTesting(
             @RequestBody @Valid TestingRequestDto testingRequestDto
@@ -34,7 +34,7 @@ public class TestingController {
 
     }
 
-    @PreAuthorize("hasRole(\"ROLE_ADMIN\")")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<TestingResponseDto> deleteTesting(@PathVariable UUID id) {
         testingService.deleteTestingById(id);

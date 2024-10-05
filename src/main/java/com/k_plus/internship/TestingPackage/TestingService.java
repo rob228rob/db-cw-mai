@@ -3,9 +3,11 @@ package com.k_plus.internship.TestingPackage;
 import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.CommonPackage.CustomExceptions.TestingNotFoundException;
 import com.k_plus.internship.QuestionPackage.Question;
+import com.k_plus.internship.QuestionPackage.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,14 +22,13 @@ public class TestingService {
 
     private final ModelMapper modelMapper;
 
+    @Transactional
     public TestingResponseDto saveTesting(TestingRequestDto testingDto) {
         Testing testing = modelMapper.map(testingDto, Testing.class);
         testing.setId(Generators.timeBasedGenerator().generate());
-
         var responseDto = modelMapper.map(testingRepository.save(testing), TestingResponseDto.class);
 
-        responseDto.setQuestionIds(mapQuestionsToListIds(testing.getQuestions())
-                );
+        responseDto.setQuestionIds(mapQuestionsToListIds(testing.getQuestions()));
 
         return responseDto;
     }

@@ -12,12 +12,16 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class TestingRequestDto {
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
 
-    @JsonProperty(value = "question_ids")
-    private List<UUID> questionIds;
+    @JsonProperty(value = "display_order", required = true)
+    private int displayOrder;
+
+    @JsonProperty(value = "course_id", required = true)
+    private UUID courseId;
 }
+

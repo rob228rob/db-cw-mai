@@ -46,15 +46,11 @@ public class UserController {
     @GetMapping("/get/current")
     public ResponseEntity<?> getCurrentUser(Principal principal) {
         String email = principal.getName();
-        var userByEmail = userService.findUserByEmail(email);
-        if (userByEmail.isEmpty()) {
-            return new ResponseEntity<>(new ErrorResponseDto("User request with email: " + email + " not found", 404), HttpStatus.NOT_FOUND);
-        }
 
-        return new ResponseEntity<>(userByEmail, HttpStatus.OK);
+        return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
-    @PreAuthorize("hasRole(\"ROLE_ADMIN\")")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID id) {
         userService.deleteUserByUserId(id);

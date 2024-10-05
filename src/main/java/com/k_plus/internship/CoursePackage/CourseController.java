@@ -22,11 +22,21 @@ public class CourseController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable UUID id) {
-        return ResponseEntity.ok(courseService.findCourseById(id));
+        return ResponseEntity.ok(courseService.findCourseByIdReturningDto(id));
     }
 
     @PostMapping("/create")
     public ResponseEntity<CourseCreatedResponseDto> createCourse(@RequestBody CourseRequestDto courseRequestDto) {
         return ResponseEntity.ok(courseService.createCourse(courseRequestDto));
     }
+
+    @GetMapping("/get-all/by-stud-id/{id}")
+    public ResponseEntity<List<CourseResponseDto>> getAllCoursesByStudentId(@PathVariable UUID id) {
+        return ResponseEntity.ok(courseService.findAllCoursesByStudentId(id));
+    }
+
+//    @PostMapping("/subscribe/{courseId}")
+//    public ResponseEntity<SubscribeResponseDto> subscribeOnCourse(@RequestBody , @PathVariable UUID courseId) {
+//
+//    }
 }

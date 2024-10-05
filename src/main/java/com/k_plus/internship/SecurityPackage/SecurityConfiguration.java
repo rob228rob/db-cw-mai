@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                                 .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/admin", true))
+                        .defaultSuccessUrl("/profile", true))
                 .logout(LogoutConfigurer::permitAll)
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));

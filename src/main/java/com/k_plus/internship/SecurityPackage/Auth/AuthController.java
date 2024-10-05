@@ -43,16 +43,17 @@ public class AuthController {
 //            @ApiResponse(responseCode = "401", description = "Неверные данные пользователя",
 //                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 //    })
+
     @PostMapping("/register")
-    public ResponseEntity<?> registerTeacher(
-            @RequestBody @Valid UserRegisterDto registerTeacherDTO) {
-        if (userService.existsByEmail(registerTeacherDTO.getEmail())) {
+    public ResponseEntity<?> registerUser(
+            @RequestBody UserRegisterDto userRegisterDto) {
+        if (userService.existsByEmail(userRegisterDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this login already exists");
         }
 
         try {
-            UserResponseDto newTeacher = userService.saveUser(registerTeacherDTO);
-            return ResponseEntity.ok(newTeacher);
+            UserResponseDto userResponseDto = userService.saveUser(userRegisterDto);
+            return ResponseEntity.ok(userResponseDto);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
         }
@@ -78,10 +79,6 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             var user = userService.findUserByEmail(loginRequest.getEmail());
-
-            if (user.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this email does not exist: " + loginRequest.getEmail());
-            }
 
             return ResponseEntity.ok().build();
         } catch (BadCredentialsException e) {
