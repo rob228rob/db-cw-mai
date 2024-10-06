@@ -105,6 +105,58 @@ main section {
   display: none;
 }
 
+main div button {
+  font-size: large;
+  color: mediumspringgreen;
+  background-color: #414141;
+  padding: 8px;
+  margin-top: 0.5em;
+  cursor: pointer;
+}
+
+main div button:hover {
+  color: #00a761;
+  background-color: #333;
+}
+ 
+/* Course-adding form */
+
+.course-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.course-form input, .course-form textarea {
+  width: 300px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.course-form textarea {
+  height: 100px;
+}
+
+.course-form button[type="submit"] {
+  width: 300px;
+  height: 40px;
+  margin-top: 20px;
+  padding: 10px;
+  border: none;
+  background-color: #414141;
+  color: mediumspringgreen;
+  cursor: pointer;
+}
+
+.course-form button[type="submit"]:hover {
+  background-color: #333;
+  color: #00a761;
+}
+
 /* Footer Styles */
 
 footer {
@@ -126,5 +178,18 @@ table {
 }
 
 table td, table th {
-  border: 1px solid blue;
+  border: 1px solid mediumspringgreen;
+  color: white;
+  background: #414141;
+}
+
+table td a {
+  color: mediumspringgreen;
+  padding: 8px;
+  margin-top: 0.5em;
+  cursor: pointer;
+}
+
+table td a:hover {
+  color: #00a761;
 }

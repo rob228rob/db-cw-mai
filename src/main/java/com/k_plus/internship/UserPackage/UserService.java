@@ -116,14 +116,18 @@ public class UserService {
     }
 
     public List<UserTableDto> getAllUsers() {
-        var allUsers = userRepository.findAllUsers();
+        var allUsers = userRepository.findAllUsersWithRoles();
         if (allUsers.isEmpty()) {
             throw new UserNotFoundException("There's no any users");
         }
 
         return allUsers
                 .stream()
-                .map(x -> modelMapper.map(x, UserTableDto.class))
+                .map(x -> {
+                    var dto = modelMapper.map(x, UserTableDto.class);
+                    dto.setRoleName(x.getRoles().stream().toList().get(0).getName());
+                    return dto;
+                    })
                 .toList();
     }
 }

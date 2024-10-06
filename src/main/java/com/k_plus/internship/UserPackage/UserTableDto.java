@@ -28,16 +28,19 @@ public class UserTableDto {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("enabled")
-    private boolean enabled;
+    @JsonProperty("roleName")
+    private String roleName;
 
-    @JsonProperty("tokenExpired")
-    private boolean tokenExpired;
+    // @JsonProperty("enabled")
+    // private boolean enabled;
 
-    @JsonProperty("creationTime")
-    private LocalDateTime creationTime;
+    // @JsonProperty("tokenExpired")
+    // private boolean tokenExpired;
 
-    @JsonProperty("modifiedTime")
-    private LocalDateTime modifiedTime;    
+    // @JsonProperty("creationTime")
+    // private LocalDateTime creationTime;
+
+    // @JsonProperty("modifiedTime")
+    // private LocalDateTime modifiedTime;    
 
 }

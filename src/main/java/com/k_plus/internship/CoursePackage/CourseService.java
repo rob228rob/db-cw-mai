@@ -1,20 +1,21 @@
 package com.k_plus.internship.CoursePackage;
 
-import com.fasterxml.uuid.Generators;
-import com.k_plus.internship.ArticlePackage.Article;
-import com.k_plus.internship.ArticlePackage.ArticleService;
-import com.k_plus.internship.CommonPackage.CustomExceptions.CourseNotFoundException;
-import com.k_plus.internship.TestingPackage.Testing;
-import com.k_plus.internship.TestingPackage.TestingService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.ArticlePackage.Article;
+import com.k_plus.internship.CommonPackage.CustomExceptions.CourseNotFoundException;
+import com.k_plus.internship.TestingPackage.Testing;
+import com.k_plus.internship.TestingPackage.TestingService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -104,5 +105,39 @@ public class CourseService {
                 .stream()
                 .map(this::mapCourseToDto)
                 .toList();
+    }
+
+    public List<CourseResponseAdminDto> findAllCoursesWithId() {
+        var response = courseRepository.findAllCourses()
+                .stream()
+                .map(this::mapCourseToAdminDto)
+                .toList();
+
+        if (response.isEmpty()) {
+            throw new CourseNotFoundException("There's no any courses yet");
+        }
+
+     
+        return response;
+    }
+
+    private CourseResponseAdminDto mapCourseToAdminDto(Course course) {
+        CourseResponseAdminDto responseDto = modelMapper.map(course, CourseResponseAdminDto.class);
+
+        return responseDto;
+    }
+
+    public CourseResponseAdminDto updateCourse(CourseResponseAdminDto courseDto, UUID id) {
+        System.out.println(courseDto.getId());
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+    
+        course.setName(courseDto.getName());
+        course.setDescription(courseDto.getDescription());
+
+        var updatedCourse = courseRepository.save(course);
+        var dto = modelMapper.map(updatedCourse, CourseResponseAdminDto.class);
+    
+        return dto;
     }
 }

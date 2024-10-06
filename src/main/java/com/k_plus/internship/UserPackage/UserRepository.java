@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     void deleteByEmail(String email);
 
-    @Query("SELECT u FROM User u WHERE u.id IS NOT NULL")
-    List<User> findAllUsers();
+    @Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.id IS NOT NULL")
+    List<User> findAllUsersWithRoles();
 }
 
