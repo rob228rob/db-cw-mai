@@ -3,6 +3,7 @@ package com.k_plus.internship.UserPackage;
 import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.CommonPackage.CustomExceptions.InvalidUserInfoException;
 import com.k_plus.internship.CommonPackage.CustomExceptions.UserNotFoundException;
+import com.k_plus.internship.CommonPackage.CustomExceptions.UserRoleNotFoundException;
 import com.k_plus.internship.RolePackage.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.function.Consumer;
 
 import org.aspectj.weaver.ast.Var;
 
+import javax.management.relation.RoleNotFoundException;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,9 +34,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
+    @Transactional
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setId(Generators.timeBasedEpochGenerator().generate());;
         userRepository.save(user);
     }
 
@@ -54,6 +56,15 @@ public class UserService {
 
     public User findUserToUserDetailsByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found: " + email));
+    }
+
+    @Transactional
+    public void upgradeUserToAdmin(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId.toString()));
+        user.addRole(roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new UserRoleNotFoundException("Role not found")));
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 
     public UserResponseDto findUserByEmail(String email) {

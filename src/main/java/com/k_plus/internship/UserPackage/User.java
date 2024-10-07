@@ -1,8 +1,7 @@
 package com.k_plus.internship.UserPackage;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -63,8 +62,16 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    private List<Role> roles;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     private Collection<Course> courses;
+
+    public void addRole(Role role) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+
+        roles.add(role);
+    }
 }

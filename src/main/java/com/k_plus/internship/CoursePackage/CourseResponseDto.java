@@ -13,11 +13,17 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CourseResponseDto {
 
+    @JsonProperty("id")
+    private UUID id;
+
     @JsonProperty(value = "name")
     private String name;
 
     @JsonProperty(value = "description")
     private String description;
+
+    @JsonProperty("is_paid")
+    private boolean isPaid;
 
     @JsonProperty(value = "testing_ids")
     private List<UUID> testingIds;

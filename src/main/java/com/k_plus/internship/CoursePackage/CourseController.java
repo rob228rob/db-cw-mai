@@ -4,12 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,5 +52,10 @@ public class CourseController {
     @PostMapping("/update/{id}")
     public ResponseEntity<CourseResponseAdminDto> updateCourse(@RequestBody CourseResponseAdminDto courseRequestDto, @PathVariable UUID id) {
         return ResponseEntity.ok(courseService.updateCourse(courseRequestDto, id));
+    }
+
+    @GetMapping("/get-all-by-pattern")
+    public ResponseEntity<List<CourseResponseDto>> getAllCoursesByPattern(@RequestParam String pattern) {
+        return ResponseEntity.ok(courseService.findAllCoursesByPattern(pattern));
     }
 }

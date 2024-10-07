@@ -3,33 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Denied</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8d7da;
-            color: #721c24;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 50px;
-        }
-        p {
-            font-size: 20px;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/default.css">
+    <title>Forbidden</title>
 </head>
 <body>
-<h1>403 - Forbidden</h1>
-<p>You don't have permission to access this page.</p>
-<p><a href="/home">Go back to Home</a></p>
+<div class="header">
+    <div class="title">Курсы</div>
+    <div class="links">
+        <a href="/home">Главная</a>
+        <a href="/profile">Профиль</a>
+        <a href="/courses">Курсы</a>
+        <a href="/achievements">Мои достижения</a>
+    </div>
+</div>
+
+<div class="content error-content">
+    <h1>Доступ запрещен :(</h1>
+    <p>Кажется, у тебя недостаточно прав для данного контента</p>
+    <p><a href="/home" class="error-btn">На главную</a></p>
+</div>
+
+<div class="footer">
+    <a href="/ReportIssue">Сообщить об ошибке</a>
+    <a href="/Suggestions">Вопросы и предложения</a>
+</div>
 </body>
 </html>

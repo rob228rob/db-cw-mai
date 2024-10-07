@@ -68,10 +68,11 @@ public class CourseService {
         var response = courseRepository.findAllCourses()
                 .stream()
                 .map(this::mapCourseToDto)
+                .peek(x -> x.setPaid(false))
                 .toList();
 
         if (response.isEmpty()) {
-            throw new CourseNotFoundException("There's no any courses yet");
+            return new ArrayList<>();
         }
 
         return response;
@@ -114,10 +115,9 @@ public class CourseService {
                 .toList();
 
         if (response.isEmpty()) {
-            throw new CourseNotFoundException("There's no any courses yet");
+            return new ArrayList<>();
         }
 
-     
         return response;
     }
 
@@ -139,5 +139,16 @@ public class CourseService {
         var dto = modelMapper.map(updatedCourse, CourseResponseAdminDto.class);
     
         return dto;
+    }
+
+    public List<CourseResponseDto> findAllCoursesByPattern(String pattern) {
+        var courses = courseRepository.findAllCoursesByPattern(pattern);
+        if (courses.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return courses.stream()
+                .map(this::mapCourseToDto)
+                .toList();
     }
 }

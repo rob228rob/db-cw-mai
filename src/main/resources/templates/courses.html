@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/default.css">
+    <title>Курсы</title>
+</head>
+<body>
+<div class="header">
+    <div class="title">Курсы</div>
+    <div class="links">
+        <a href="/home">Главная</a>
+        <a href="/profile">Профиль</a>
+        <a href="/courses">Курсы</a>
+        <a href="/achievements">Мои достижения</a>
+    </div>
+</div>
+
+<div class="search-bar">
+    <input type="text" id="search-input" placeholder="Поиск курса по названию...">
+    <ul id="search-results" class="dropdown"></ul>
+</div>
+
+<div class="content">
+    <div class="course-container" id="course-container">
+        <!-- Карточки курсов будут загружены сюда -->
+    </div>
+</div>
+
+<div class="footer">
+    <a href="/ReportIssue">Сообщить об ошибке</a>
+    <a href="/Suggestions">Вопросы и предложения</a>
+</div>
+
+<script>
+
+    let userId = null;
+    let timeoutId = null; // Для таймера задержки
+
+    async function searchCourses(pattern) {
+        try {
+            const response = await fetch(`/api/v1/courses/get-all-by-pattern?pattern=${pattern}`);
+            if (response.ok) {
+                const filteredCourses = await response.json();
+                showDropdown(filteredCourses);
+            } else {
+                console.error('Ошибка при поиске, статус:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при поиске, ошибка:', error);
+        }
+    }
+
+    function showDropdown(courses) {
+        const dropdown = document.getElementById('search-results');
+        dropdown.innerHTML = '';  // Очищаем старые результаты
+
+        if (courses.length > 0) {
+            dropdown.classList.add('show');  // Показываем список
+            courses.forEach(course => {
+                const listItem = document.createElement('li');
+                listItem.textContent = course.name;
+                listItem.addEventListener('click', () => {
+                    window.location.href = `/courses/${course.id}`;
+                });
+                dropdown.appendChild(listItem);
+            });
+        } else {
+            dropdown.classList.remove('show');  // Скрываем список
+        }
+    }
+
+    function filterCourses(event) {
+        const searchTerm = event.target.value.trim();
+        clearTimeout(timeoutId);
+        if (searchTerm.length > 0) {
+            timeoutId = setTimeout(() => {
+                searchCourses(searchTerm);
+            }, 400);
+        } else {
+            document.getElementById('search-results').classList.remove('show');
+        }
+    }
+
+    async function loadCourses() {
+        try {
+            const response = await fetch('/api/v1/courses/get-all');
+            if (response.ok) {
+                const courses = await response.json();
+                renderCourses(courses);
+            } else {
+                console.error('Ошибка при загрузке курсов:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке курсов:', error);
+        }
+    }
+
+    function renderCourses(filteredCourses) {
+        const courseContainer = document.getElementById('course-container');
+        courseContainer.innerHTML = ''; // Очищаем контейнер перед рендерингом
+        if (filteredCourses.length > 0) {
+            filteredCourses.forEach(course => {
+                const courseCard = document.createElement('a');
+                courseCard.className = 'course-card';
+                courseCard.href = `/courses/${course.id}`;
+                courseCard.innerHTML = `
+                    <h3>${course.name}</h3>
+                    <p>${course.description}</p>
+                `;
+                courseContainer.appendChild(courseCard);
+            });
+        } else {
+            courseContainer.innerHTML = '<p>Курсы не найдены.</p>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', filterCourses);
+
+        loadCourses();
+    });
+</script>
+</body>
+</html>

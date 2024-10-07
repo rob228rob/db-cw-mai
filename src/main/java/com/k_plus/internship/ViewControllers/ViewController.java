@@ -3,6 +3,9 @@ package com.k_plus.internship.ViewControllers;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.UUID;
 
 @Controller
 public class ViewController {
@@ -17,7 +20,7 @@ public class ViewController {
         return "signup";
     }
 
-    //NEED A TESTING
+    //@PreAuthorize("hasRole(\"ADMIN\")")
     @PreAuthorize("hasRole(\"ADMIN\")")
     @GetMapping("/admin")
     public String admin() {
@@ -27,6 +30,16 @@ public class ViewController {
     @GetMapping("/home")
     public String home() {
         return "home";
+    }
+
+    @GetMapping("/courses")
+    public String courses() {
+        return "courses";
+    }
+
+    @GetMapping("/course/{id}")
+    public String courseDetails(@PathVariable UUID id) {
+        return "course-details";
     }
 
     @GetMapping("/profile")

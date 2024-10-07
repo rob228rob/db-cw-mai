@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -70,21 +71,22 @@ public class SetupDataLoader implements
         user.setId(Generators.timeBasedEpochGenerator().generate());
         user.setFirstName("Test");
         user.setLastName("Test");
-        user.setPassword(passwordEncoder.encode("qweqwe"));
+        user.setPassword(passwordEncoder.encode("qweqweqwe"));
         user.setEmail("test@gmail.com");
-        user.setRoles(List.of(adminRole.get(), userRole.get()));
+        user.setRoles(List.of(adminRole.get()));
         user.setEnabled(true);
-        user.setEnabled(false);
         if (!userService.existsByEmail(user.getEmail())) {
             userService.saveUser(user);
         }
-
+        String[] names = {"Test Course", "New Test",
+                "Law Course", "PRAvoTVORCH", "Hddcspmcsd", "фысзыщьсфылтсдыф ",
+                "Право", "Костюмы", "Общие положения"};
+        String[] descriptions = {"Test Course Description. :))", "Это курс про право, про творчество, ну еще и про правоТворчество, йоу"};
         Course course = new Course();
         course.setId(Generators.timeBasedEpochGenerator().generate());
-        course.setName("Test Course");
-        course.setDescription("Test Course Description. :))");
-
-        if (courseRepository.existsByName(course.getName())) {
+        course.setName(names[new Random().nextInt(names.length)]);
+        course.setDescription(descriptions[new Random().nextInt(descriptions.length)]);
+        if (!courseRepository.existsByName(course.getName())) {
             courseRepository.save(course);
         }
 
