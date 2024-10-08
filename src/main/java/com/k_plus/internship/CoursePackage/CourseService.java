@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import com.k_plus.internship.UserPackage.User;
+import com.k_plus.internship.UserPackage.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ public class CourseService {
     private final TestingService testingService;
 
     private final CourseRepository courseRepository;
+    private final UserService userService;
 
     @Transactional
     public CourseCreatedResponseDto createCourse(CourseRequestDto courseDto) {
@@ -150,5 +153,16 @@ public class CourseService {
         return courses.stream()
                 .map(this::mapCourseToDto)
                 .toList();
+    }
+
+    @Transactional
+    public void enrollUserInCourse(UUID courseId, UUID userId) {
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Курс с ID " + courseId + " не найден"));
+        User user = userService.findUserById(userId);
+        course.getUsers().add(user);
+
+        courseRepository.save(course);
     }
 }

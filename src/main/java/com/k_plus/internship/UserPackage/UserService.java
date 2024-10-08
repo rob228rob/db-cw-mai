@@ -78,9 +78,12 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public UserResponseDto findUserById(UUID userId) {
-        var user = userRepository.findById(userId).orElseThrow(
+    public User findUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("user with id: " + userId + " not found"));
+    }
+    public UserResponseDto findUserByIdReturningDto(UUID userId) {
+        var user = findUserById(userId);
 
         return modelMapper.map(user, UserResponseDto.class);
     }

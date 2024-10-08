@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -43,12 +44,16 @@ public class CourseController {
                 .ok(courseService.findAllCoursesWithId());
     }
 
-//    @PostMapping("/subscribe/{courseId}")
-//    public ResponseEntity<SubscribeResponseDto> subscribeOnCourse(@RequestBody , @PathVariable UUID courseId) {
-//
-//    }
+    @PostMapping("/subscribe")
+    public ResponseEntity<SubscribeResponseDto> enrollInCourse(
+            @RequestParam UUID courseId,
+            @RequestParam UUID userId) {
+        courseService.enrollUserInCourse(courseId, userId);
 
-    // @PreAuthorize("hasRole(\"ADMIN\")")
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @PostMapping("/update/{id}")
     public ResponseEntity<CourseResponseAdminDto> updateCourse(@RequestBody CourseResponseAdminDto courseRequestDto, @PathVariable UUID id) {
         return ResponseEntity.ok(courseService.updateCourse(courseRequestDto, id));
