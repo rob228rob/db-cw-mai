@@ -91,10 +91,9 @@ function fetchCourses() {
 
 function createForm(container, course = { name: '', description: '', id: undefined}) {
 
-    const existingForm = container.querySelector('.course-form');
-        if (existingForm) {
-            existingForm.remove();
-        }
+    container.querySelector('.course-form')?.remove();
+    container.querySelector('.center')?.remove();
+    container.querySelector('.article-container')?.remove();
 
     const form = document.createElement('form');
     form.className = 'course-form';
@@ -116,9 +115,20 @@ function createForm(container, course = { name: '', description: '', id: undefin
 
     form.appendChild(courseNameInput);
     form.appendChild(courseDescriptionInput);
-    form.appendChild(submitButton);
+    const articleContainer = document.createElement('div');
+    articleContainer.className = 'article-container'
+    container.appendChild(form);
+    container.appendChild(articleContainer);
+    
+    if (course.id) {
+        createArticlesTable(articleContainer, course.id);
+    }
+    const center = document.createElement('div');
+    center.className = 'center';
+    center.appendChild(submitButton);   
+    container.appendChild(center);
 
-    form.addEventListener('submit', (e) => {
+    submitButton.addEventListener('click', (e) => {
         e.preventDefault();
         const courseName = courseNameInput.value;
         const courseDescription = courseDescriptionInput.value;
@@ -149,6 +159,126 @@ function createForm(container, course = { name: '', description: '', id: undefin
         .catch(error => console.error('Error:', error));
 
     });
+}
 
-    container.appendChild(form);
+
+function createArticlesTable(container, courseId) {
+
+    container.querySelector('.article-form')?.remove();
+    container.innerHTML = "";
+    
+    fetch(`/api/v1/articles/get-all/${courseId}`)
+        .then(response => response.json())
+        .then(data => {
+            const articlesTable = document.createElement('table');
+            articlesTable.style = 'width: 100%';
+            articlesTable.cellPadding = articlesTable.cellSpacing = 0;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = '<th>Author</th><th>Title</th><th>Content</th><th>Delete</th>';
+            articlesTable.append(tr);
+
+            data.forEach(article => {
+                tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${article.author}</td>
+                    <td>${article.title}</td>
+                    <td>${article.content}</td>
+                    <td><button class="delete-article" data-id="${article.id}">Delete</button></td>
+                `;
+                articlesTable.append(tr);
+            });
+
+            const deleteButtons = articlesTable.querySelectorAll('.delete-article');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', e => {
+                    e.preventDefault();
+                    const articleId = button.getAttribute('data-id');
+                    fetch(`/api/v1/articles/delete/${articleId}`, { method: 'DELETE' })
+                        .then(() => {
+                            container.querySelector('.article-form')?.remove();
+                            createArticlesTable(container, courseId);
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            const addArticleButton = document.createElement('button');
+            addArticleButton.textContent = 'Add Article';
+            addArticleButton.className = 'button';
+
+            addArticleButton.addEventListener('click', () => {
+                const existingForm = container.querySelector('.article-form');
+                if (existingForm) {
+                    existingForm.remove();
+                }
+
+                const form = document.createElement('form');
+                form.className = 'article-form';
+
+                const authorInput = document.createElement('input');
+                authorInput.type = 'text';
+                authorInput.placeholder = 'Author';
+                authorInput.name = 'author';
+
+                const titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.placeholder = 'Title';
+                titleInput.name = 'title';
+
+                const contentInput = document.createElement('textarea');
+                contentInput.placeholder = 'Content';
+                contentInput.name = 'content';
+
+                const submitButton = document.createElement('button');
+                submitButton.type = 'submit';
+                submitButton.textContent = 'Submit';
+
+                form.appendChild(authorInput);
+                form.appendChild(titleInput);
+                form.appendChild(contentInput);
+                form.appendChild(submitButton);
+
+                form.addEventListener('submit', e => {
+                    e.preventDefault();
+                    const author = authorInput.value;
+                    const title = titleInput.value;
+                    const content = contentInput.value;
+                    const course_id = courseId;
+
+                    if (author === '' || title === '' || content === '') {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+
+                    const newArticle = {
+                        author,
+                        title,
+                        content,
+                        course_id
+                    };
+
+                    fetch('/api/v1/articles/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newArticle)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        form.remove();
+                        createArticlesTable(container, courseId);
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+
+                container.appendChild(form);
+            });
+
+            if (articlesTable) {container.appendChild(articlesTable);}
+            container.appendChild(addArticleButton);
+        })
+        .catch(error => console.error('Error:', error));
 }

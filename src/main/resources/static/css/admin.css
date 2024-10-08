@@ -118,16 +118,20 @@ main div button:hover {
   color: #00a761;
   background-color: #333;
 }
+
+.center {
+  text-align: center;
+}
  
 /* Course-adding form */
 
-.course-form {
+.course-form, .article-form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.course-form input, .course-form textarea {
+.course-form input, .article-form input, .course-form textarea, .article-form textarea {
   width: 300px;
   height: 40px;
   margin-bottom: 20px;
@@ -137,11 +141,11 @@ main div button:hover {
   font-size: 16px;
 }
 
-.course-form textarea {
+.course-form textarea, .article-form textarea {
   height: 100px;
 }
 
-.course-form button[type="submit"] {
+.course-form button[type="submit"], .article-form button[type="submit"] {
   width: 300px;
   height: 40px;
   margin-top: 20px;
@@ -152,7 +156,7 @@ main div button:hover {
   cursor: pointer;
 }
 
-.course-form button[type="submit"]:hover {
+.course-form button[type="submit"]:hover, .article-form button[type="submit"]:hover {
   background-color: #333;
   color: #00a761;
 }
