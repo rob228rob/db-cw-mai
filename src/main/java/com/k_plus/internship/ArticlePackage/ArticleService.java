@@ -1,17 +1,18 @@
 package com.k_plus.internship.ArticlePackage;
 
-import com.fasterxml.uuid.Generators;
-import com.k_plus.internship.CommonPackage.CustomExceptions.ArticleNotFoundException;
-import com.k_plus.internship.CoursePackage.Course;
-import com.k_plus.internship.CoursePackage.CourseResponseDto;
-import com.k_plus.internship.CoursePackage.CourseService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.CommonPackage.CustomExceptions.ArticleNotFoundException;
+import com.k_plus.internship.CoursePackage.CourseService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ArticleService {
     @Transactional
     public ArticleResponseDto saveArticle(@Valid ArticleRequestDto articleRequestDto) {
         var article = modelMapper.map(articleRequestDto, Article.class);
-        article.setId(Generators.timeBasedGenerator().generate());
+        article.setId(Generators.timeBasedEpochGenerator().generate());
         article.setCourse(courseService.findCourseById(articleRequestDto.getCourseId()));
         articleRepository.save(article);
 
@@ -45,5 +46,20 @@ public class ArticleService {
     @Transactional
     public void deleteArticleById(UUID id) {
         articleRepository.deleteById(id);
+    }
+
+    public List<ArticleResponseAdminDto> findAllByCourseId(UUID courseId) {
+        List<Article> allArticlesbyCourseId = articleRepository.findAllByCourseId(courseId);
+
+        return allArticlesbyCourseId
+                .stream()
+                .map(this::mapArticleToAdminDto)
+                .toList();
+    }
+
+    private ArticleResponseAdminDto mapArticleToAdminDto(Article article) {
+    ArticleResponseAdminDto responseDto = modelMapper.map(article, ArticleResponseAdminDto.class);
+
+    return responseDto;
     }
 }
