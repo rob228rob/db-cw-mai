@@ -16,6 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
     Optional<Article> findByTitleLike(String title);
 
-    @Query("SELECT a FROM Article a")
+    @Query("SELECT a FROM Article a WHERE a.course.id = :courseId ORDER BY a.displayOrder")
     List<Article> findAllByCourseId(@Param("courseId") UUID courseId);
 }

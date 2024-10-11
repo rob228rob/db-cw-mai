@@ -26,8 +26,8 @@ public class CourseResponseDto {
     private boolean isPaid;
 
     @JsonProperty(value = "testing_ids")
-    private List<UUID> testingIds;
+    private List<ResponseCourseHeaderDto> testingIds;
 
     @JsonProperty(value = "article_ids")
-    private List<UUID> articleIds;
+    private List<ResponseCourseHeaderDto> articleIds;
 }

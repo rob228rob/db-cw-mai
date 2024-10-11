@@ -16,7 +16,7 @@ public class TestingController {
 
     private final TestingService testingService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<TestingResponseDto> getTestingById(@PathVariable UUID id) {
         return ResponseEntity
                 .ok()

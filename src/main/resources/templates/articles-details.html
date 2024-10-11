@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/courses-details.css">
+  <title>Подробнее о статье</title>
+</head>
+<body>
+<div class="header">
+  <div class="title">Статья</div>
+  <div class="links">
+    <a href="/home">Главная</a>
+    <a href="/profile">Профиль</a>
+    <a href="/courses">Курсы</a>
+    <a href="/logout" class="logout">Выйти</a>
+  </div>
+</div>
+
+<div class="content">
+  <div class="article-container" id="article-container">
+    <div class="article-form-container"> <!-- Контейнер с ограниченной шириной -->
+      <!-- Сюда будет загружаться динамическая статья -->
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <a href="/report-issue"><b>Обратная связь</b></a>
+</div>
+
+<script>
+  function getCourseIdFromUrl() {
+    const urlPath = window.location.pathname;
+    const parts = urlPath.split('/');
+    return {
+      courseId: parts[2],  // Предполагается, что courseId в позиции 2
+      articleId: parts[4]  // Предполагается, что articleId в позиции 4
+    };
+  }
+
+  async function loadArticle() {
+    const { articleId } = getCourseIdFromUrl();
+    if (!articleId) {
+      console.error('Не удалось извлечь идентификатор статьи из URL');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/v1/articles/get/${articleId}`);
+      if (response.ok) {
+        const article = await response.json();
+        renderArticle(article);
+      } else {
+        console.error('Ошибка при загрузке статьи:', response.status);
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке статьи:', error);
+    }
+  }
+
+  function renderArticle(article) {
+    const articleContainer = document.getElementById('article-container');
+    articleContainer.innerHTML = ''; // Очищаем предыдущий контент
+
+    const articleForm = document.createElement('div');
+    articleForm.className = 'article-form-container'; // Класс для формы
+
+    articleForm.innerHTML = `
+    <div class="article-card">
+      <h3 class="article-title">${article.title}</h3>
+      <p class="article-author"><strong>Автор:</strong> ${article.author}</p>
+      <div class="article-content">${article.content}</div>
+    </div>
+  `;
+
+    articleContainer.appendChild(articleForm);
+  }
+
+
+
+  loadArticle();
+</script>
+</body>
+</html>

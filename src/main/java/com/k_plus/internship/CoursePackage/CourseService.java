@@ -93,8 +93,23 @@ public class CourseService {
 
     private CourseResponseDto mapCourseToDto(Course course) {
         CourseResponseDto responseDto = modelMapper.map(course, CourseResponseDto.class);
-        List<UUID> articleIds = course.getArticles().stream().map(Article::getId).toList();
-        List<UUID> testIds = course.getTestings().stream().map(Testing::getId).toList();
+        var articleIds = course.getArticles()
+                .stream()
+                .map(x -> ResponseCourseHeaderDto.builder()
+                        .id(x.getId())
+                        .header(x.getTitle())
+                        .displayOrder(x.getDisplayOrder())
+                        .build())
+                .toList();
+
+        var testIds = course.getTestings()
+                .stream()
+                .map(x -> ResponseCourseHeaderDto.builder()
+                        .id(x.getId())
+                        .header(x.getName())
+                        .displayOrder(x.getDisplayOrder())
+                        .build())
+                .toList();
 
         responseDto.setArticleIds(articleIds);
         responseDto.setTestingIds(testIds);

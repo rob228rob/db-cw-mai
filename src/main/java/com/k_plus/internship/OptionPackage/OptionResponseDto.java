@@ -16,12 +16,9 @@ public class OptionResponseDto {
     @JsonProperty(value = "id")
     private UUID id;
 
-    @JsonProperty(value = "correct")
-    private boolean correct;
-
     @JsonProperty(value = "option_text")
     private String optionText;
 
     @JsonProperty(value = "question_id")
-    UUID questionId;
+    private UUID questionId;
 }

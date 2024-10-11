@@ -40,9 +40,9 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/register",
-                                        "/auth/login",
                                         "css/**",
                                         "scripts/**",
+                                        "js/**",
                                         "/home",
                                         "/signup"
                                 ).permitAll()
@@ -51,7 +51,9 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/profile", true))
-                .logout(LogoutConfigurer::permitAll)
+                .logout(x -> x.logoutUrl("/logout")
+                        .logoutSuccessUrl("/home")
+                        .permitAll())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 

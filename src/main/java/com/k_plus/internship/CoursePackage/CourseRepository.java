@@ -24,13 +24,16 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Query("SELECT c FROM Course c JOIN c.users u WHERE u.id = :userId ORDER BY c.id")
     List<Course> findAllCoursesByUserId(UUID userId);
 
+//    @Query("""
+//    SELECT c FROM Course c
+//    WHERE UPPER(c.name) LIKE CONCAT('%', UPPER(:pattern), '%')
+//    OR UPPER(c.description) LIKE CONCAT('%', UPPER(:pattern), '%')
+//    ORDER BY c.name DESC, c.id ASC """)
+//    List<Course> findAllCoursesByPattern(@Param("pattern") String pattern);
+
     @Query("""
     SELECT c FROM Course c 
     WHERE UPPER(c.name) LIKE CONCAT('%', UPPER(:pattern), '%') 
-    OR UPPER(c.description) LIKE CONCAT('%', UPPER(:pattern), '%')
     ORDER BY c.name DESC, c.id ASC """)
     List<Course> findAllCoursesByPattern(@Param("pattern") String pattern);
-
-
-    List<Course> findAllByNameLikeIgnoreCase(String name);
 }

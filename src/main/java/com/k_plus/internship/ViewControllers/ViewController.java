@@ -2,6 +2,7 @@ package com.k_plus.internship.ViewControllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -37,13 +38,28 @@ public class ViewController {
         return "courses";
     }
 
-    @GetMapping("/course/{id}")
-    public String courseDetails(@PathVariable UUID id) {
-        return "course-details";
+    @GetMapping("/courses/{id}")
+    public String courseDetails(@PathVariable UUID id, Model model) {
+        return "courses-details";
     }
 
     @GetMapping("/profile")
     public String profile() {
         return "profile";
+    }
+
+    @GetMapping("/report-issue")
+    public String reportIssue() {
+        return "report-form";
+    }
+
+    @GetMapping("/courses/{courseId}/articles/{articleId}")
+    public String articleDetails(@PathVariable UUID courseId, @PathVariable UUID articleId, Model model) {
+        return "articles-details";
+    }
+
+    @GetMapping("/courses/{courseId}/testings/{testId}")
+    public String testingDetails(@PathVariable UUID courseId, @PathVariable UUID testId, Model model) {
+        return "testing-details";
     }
 }

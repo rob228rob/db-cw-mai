@@ -18,8 +18,8 @@
         .header {
             background-color: #333;
             width: 100%;
-            height: 40px; /* Фиксированная высота шапки */
-            padding: 30px;
+            height: auto; /* Фиксированная высота шапки */
+            padding: 20px;
             font-size: 28px;
             color: #4CAF50;
             font-family: 'Montserrat Alternates', sans-serif;
@@ -36,7 +36,21 @@
         .header .links {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Кнопки будут оборачиваться, если не поместятся в одну строку */
+            justify-content: center; /* Центрируем ссылки */
+            margin-top: 10px;
+        }
+        .header .links a.login:hover {
+            background-color: darkgreen;
+            color: white;
+        }
+        .header .links a.logout:hover {
+            background-color: darkgreen;
+            color: white;
+        }
+        .header .links a.logout:hover {
+            background-color: forestgreen; /* Более темный цвет при наведении */
+            transform: translateY(-2px); /* Эффект поднятия кнопки */
         }
         .header .links a {
             text-decoration: none;
@@ -54,7 +68,7 @@
         }
         .content {
             flex: auto;
-            padding-top: 120px; /* Увеличенный отступ сверху */
+            padding-top: 140px; /* Увеличенный отступ сверху */
         }
         .description {
             text-align: center;
@@ -71,7 +85,7 @@
             background-color: white;
             border: 4px solid #4CAF50;
             border-radius: 10px;
-            padding: 60px;
+            padding: 90px;
             width: 200px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
@@ -79,6 +93,41 @@
             text-decoration: none;
             color: inherit;
         }
+        .header .links a.logout {
+            background-color: darkgreen; /* Красный цвет для кнопки выхода */
+            color: white; /* Цвет текста */
+        }
+
+        .header .links a.logout:hover {
+            background-color: #007BFF; /* Темно-красный при наведении */
+            color: white; /* Цвет текста при наведении */
+        }
+        .content {
+            flex: auto;
+            padding-top: 80px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .course-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .course-card {
+            background-color: white;
+            border: 4px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
         .course-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
@@ -91,28 +140,22 @@
             font-size: 16px;
             color: #555;
         }
-        .course-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .course-card .price-label {
+            font-size: 14px;
+            font-weight: bold;
             position: absolute;
-            top: -20px;
-            left: calc(50% - 20px);
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
         }
-        .header .links a.active {
-            border-color: white; /* Изменение обводки */
-            background-color: #4CAF50; /* Изменение фона */
-            color: white; /* Изменение цвета текста */
+        .course-card .price-label.free {
+            background-color: #4CAF50;
         }
-        .course-icon img {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
+        .course-card .price-label.paid {
+            background-color: #FF5722;
         .footer {
             width: 100%;
             background-color: #333;
@@ -143,19 +186,19 @@
 <body>
 <div class="header">
     <div class="title">
-        ПравоТворчества
+        правоТворчества
     </div>
     <div class="links">
         <a href="/home">Главная</a>
         <a href="/profile">Профиль</a>
         <a href="/courses">Курсы</a>
-        <a href="/achievements">Мои достижения</a>
+        <a href="/login" class="login">Войти</a>
     </div>
 </div>
 
 <div class="content">
     <div class="description">
-        Добро пожаловать на платформу "ПравоТворчества" — вашу онлайн-площадку для обучения и повышения квалификации в сфере права.
+        Добро пожаловать на платформу "правоТворчества" — вашу онлайн-площадку для обучения и повышения квалификации в сфере права.
     </div>
     <div class="course-container" id="course-container">
 
@@ -163,8 +206,7 @@
 </div>
 
 <div class="footer">
-    <a href="/ReportIssue">Сообщить об ошибке</a>
-    <a href="/Suggestions">Вопросы и предложения</a>
+    <a href="/report-issue"><b>Обратная связь</b></a>
 </div>
 
 <script>
@@ -182,9 +224,6 @@
                         courseCard.className = 'course-card';
                         courseCard.href = `/courses/${course.id}`;
                         courseCard.innerHTML = `
-                            <div class="course-icon">
-                                <img src="https://via.placeholder.com/24" alt="Course Icon">
-                            </div>
                             <h3>${course.name}</h3>
                             <p>${course.description}</p>
                         `;
@@ -217,18 +256,35 @@
         courseContainer.appendChild(testCard);
     }
 
+    async function checkLoginStatus() {
+        try {
+            const response = await fetch('/api/v1/user/get/current');
+            if (response.ok) {
+                // Пользователь авторизован, изменяем кнопку на "Выйти"
+                const user = await response.json();
+                document.querySelector('.login').remove(); // Удаляем кнопку "Войти"
+                const linksContainer = document.querySelector('.links');
+
+                // Добавляем кнопку "Выйти"
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '/logout';
+                logoutLink.className = 'logout';
+                logoutLink.textContent = 'Выйти';
+                linksContainer.appendChild(logoutLink);
+            }
+        } catch (error) {
+            console.error('Ошибка проверки авторизации:', error);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const currentPath = window.location.pathname;
         const links = document.querySelectorAll('.header .links a');
-
-        links.forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
-            }
-        });
-
+        checkLoginStatus(); // Проверяем статус авторизации
         loadCourses();
     });
+
+
 </script>
 </body>
 </html>

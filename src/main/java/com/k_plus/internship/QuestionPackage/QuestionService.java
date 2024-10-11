@@ -64,13 +64,13 @@ public class QuestionService {
         return responseDto;
     }
 
-    public Question getQuestionById(UUID uuid) {
+    public Question findQuestionById(UUID uuid) {
         return questionRepository.findById(uuid).orElseThrow(
                 () -> new QuestionNotFoundException("Question with uuid: " + uuid + " not found"));
     }
 
-    public QuestionResponseDto getQuestionByIdReturningDto(UUID uuid) {
-        var question = getQuestionById(uuid);
+    public QuestionResponseDto findQuestionByIdReturningDto(UUID uuid) {
+        var question = findQuestionById(uuid);
         QuestionResponseDto questionDto = modelMapper.map(question, QuestionResponseDto.class);
         questionDto.setTestId(question.getTesting().getId());
         questionDto.setOptions(
@@ -81,5 +81,9 @@ public class QuestionService {
         );
 
         return questionDto;
+    }
+
+    public void saveQuestion(Question question) {
+        questionRepository.save(question);
     }
 }

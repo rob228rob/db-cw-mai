@@ -60,4 +60,8 @@ public class TestingService {
     public void deleteTestingById(UUID id) {
         testingRepository.deleteById(id);
     }
+
+    public void saveTesting(Testing testing) {
+        testingRepository.save(testing);
+    }
 }

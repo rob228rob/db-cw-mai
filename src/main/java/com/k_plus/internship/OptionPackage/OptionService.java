@@ -1,6 +1,7 @@
 package com.k_plus.internship.OptionPackage;
 
 import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.CommonPackage.CustomExceptions.OptionNotFoundException;
 import com.k_plus.internship.QuestionPackage.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -41,5 +43,18 @@ public class OptionService {
     @Transactional
     public void saveAllOptions(List<Option> options) {
         optionRepository.saveAll(options);
+    }
+
+    public void saveOption(Option option) {
+        optionRepository.save(option);
+    }
+
+    public Option findOptionById(UUID id) {
+        return optionRepository.findById(id)
+                .orElseThrow(() -> new OptionNotFoundException("option with id not found: " + id));
+    }
+
+    public boolean optionIsCorrect(UUID optionId) {
+        return optionRepository.optionIsCorrect(optionId);
     }
 }

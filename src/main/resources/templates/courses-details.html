@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/courses-details.css">
+    <title>Подробнее</title>
+</head>
+<body>
+<div class="header">
+    <div class="title">Информация о курсе</div>
+    <div class="links">
+        <a href="/home">Главная</a>
+        <a href="/profile">Профиль</a>
+        <a href="/courses">Курсы</a>
+        <a href="/logout" class="logout">Выйти</a>
+    </div>
+</div>
+
+<div class="content">
+    <div class="course-container" id="course-container">
+        <!-- Информация о курсе будет загружена сюда -->
+    </div>
+</div>
+
+<div class="footer">
+    <a href="/report-issue"><b>Обратная связь</b></a>
+</div>
+
+<script>
+    function getCourseIdFromUrl() {
+        const urlPath = window.location.pathname;
+        const courseId = urlPath.split('/').pop();
+        return courseId;
+    }
+
+    async function loadCourse() {
+        const courseId = getCourseIdFromUrl();
+        if (!courseId) {
+            console.error('Не удалось извлечь идентификатор курса из URL');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/v1/courses/get/${courseId}`);
+            if (response.ok) {
+                const course = await response.json();
+                renderCourse(course);
+            } else {
+                console.error('Ошибка при загрузке курса:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке курса:', error);
+        }
+    }
+
+    function renderCourse(course) {
+        const courseContainer = document.getElementById('course-container');
+        courseContainer.innerHTML = '';
+
+        const courseDetails = document.createElement('div');
+        courseDetails.className = 'course-details';
+        courseDetails.innerHTML = `
+            <h3>${course.name}</h3>
+            <p>${course.description}</p>
+            <button id="enroll-btn">Записаться на курс</button>
+        `;
+        courseContainer.appendChild(courseDetails);
+
+        // Объединение тестов и статей в один массив
+        const combinedItems = [
+            ...course.testing_ids.map(testing => ({
+                type: 'test',
+                id: testing.id,
+                header: testing.header,
+                display_order: testing.display_order
+            })),
+            ...course.article_ids.map(article => ({
+                type: 'article',
+                id: article.id,
+                header: article.header || 'Без заголовка',
+                display_order: article.display_order
+            }))
+        ];
+
+        // Сортировка по display_order
+        combinedItems.sort((a, b) => a.display_order - b.display_order);
+
+        // Создание списка внутри courseDetails
+        const itemList = document.createElement('ul');
+        itemList.className = 'item-list';
+
+        combinedItems.forEach((item, index) => {
+            const listItem = document.createElement('li');
+
+            const itemIndex = document.createElement('span');
+            itemIndex.className = 'item-index';
+            itemIndex.textContent = `${index + 1}.`;
+
+            const itemLink = document.createElement('a');
+            if (item.type === 'test') {
+                itemLink.href = `/courses/${course.id}/testings/${item.id}`;
+                itemLink.textContent = item.header;
+            } else if (item.type === 'article') {
+                itemLink.href = `/courses/${course.id}/articles/${item.id}`;
+                itemLink.textContent = item.header;
+            }
+
+            const itemType = document.createElement('span');
+            itemType.className = 'item-type';
+            itemType.textContent = item.type === 'test' ? ' (Тест)' : ' (Статья)';
+
+            listItem.appendChild(itemIndex);
+            listItem.appendChild(itemLink);
+            listItem.appendChild(itemType);
+            itemList.appendChild(listItem);
+        });
+
+        courseDetails.appendChild(itemList);
+
+        document.getElementById('enroll-btn').addEventListener('click', async () => {
+            await enrollInCourse(course.id);
+        });
+    }
+
+    async function enrollInCourse(courseId) {
+        try {
+            const response = await fetch(`/api/v1/courses/enroll/${courseId}`, { method: 'POST' });
+            if (response.ok) {
+                alert('Вы успешно записались на курс!');
+            } else {
+                alert('Ошибка при записи на курс');
+            }
+        } catch (error) {
+            alert('Произошла ошибка при записи на курс');
+        }
+    }
+
+    loadCourse();
+</script>
+</body>
+</html>

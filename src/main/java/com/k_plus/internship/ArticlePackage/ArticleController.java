@@ -52,9 +52,9 @@ public class ArticleController {
                 .noContent().build();
     }
 
-    @GetMapping("/get-all/{cid}")
-    public ResponseEntity<List<ArticleResponseAdminDto>> findAllByCourseID(UUID cid) {
+    @GetMapping("/get-all/{uuid}")
+    public ResponseEntity<List<ArticleResponseAdminDto>> findAllByCourseID(@PathVariable UUID uuid) {
         return ResponseEntity
-                .ok(articleService.findAllByCourseId(cid));
+                .ok(articleService.findAllByCourseId(uuid));
     }
 }

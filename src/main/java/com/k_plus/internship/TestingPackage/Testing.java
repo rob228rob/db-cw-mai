@@ -17,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "tests")
 public class Testing {
 
     @Id

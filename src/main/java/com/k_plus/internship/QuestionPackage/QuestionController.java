@@ -2,9 +2,9 @@ package com.k_plus.internship.QuestionPackage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,7 +17,7 @@ public class QuestionController {
     @GetMapping("/get/{id}")
     public ResponseEntity<QuestionResponseDto> getQuestionById(@PathVariable UUID id) {
         return ResponseEntity
-                .ok(questionService.getQuestionByIdReturningDto(id));
+                .ok(questionService.findQuestionByIdReturningDto(id));
     }
 
     @PostMapping("/add")

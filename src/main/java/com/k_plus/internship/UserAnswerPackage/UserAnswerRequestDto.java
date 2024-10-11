@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,18 +13,15 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserAnswerRequestDto {
 
-    @JsonProperty(value = "correct", required = true)
-    private boolean correct;
-
     @JsonProperty(value = "user_id", required = true)
     private UUID userId;
 
-    @JsonProperty(value = "question_id", required = true)
-    private UUID questionId;
-
-    @JsonProperty(value = "option_id", required = true)
-    private UUID optionId;
-
     @JsonProperty(value = "test_id", required = true)
     private UUID testId;
+
+    @JsonProperty(value = "course_id", required = true)
+    private UUID courseId;
+
+    @JsonProperty(value = "user_answers", required = true)
+    private List<OptionAnswerRequestDto> userAnswers;
 }

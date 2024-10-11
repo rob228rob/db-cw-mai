@@ -23,7 +23,7 @@ public class Article {
     @Column(name = "author")
     private String author;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "display_order")

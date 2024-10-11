@@ -49,9 +49,9 @@ public class ArticleService {
     }
 
     public List<ArticleResponseAdminDto> findAllByCourseId(UUID courseId) {
-        List<Article> allArticlesbyCourseId = articleRepository.findAllByCourseId(courseId);
+        List<Article> articleList = articleRepository.findAllByCourseId(courseId);
 
-        return allArticlesbyCourseId
+        return articleList
                 .stream()
                 .map(this::mapArticleToAdminDto)
                 .toList();
@@ -61,5 +61,9 @@ public class ArticleService {
     ArticleResponseAdminDto responseDto = modelMapper.map(article, ArticleResponseAdminDto.class);
 
     return responseDto;
+    }
+
+    public void saveArticle(Article article) {
+        articleRepository.save(article);
     }
 }
