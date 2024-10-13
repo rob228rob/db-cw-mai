@@ -46,6 +46,7 @@ function createUserTable(container, data) {
 
     container.append(table);
 }
+
 function createCoursesTable(container, data) {
     container.innerHTML = '';
     const table = document.createElement('table');
@@ -84,7 +85,6 @@ function createCoursesTable(container, data) {
     container.appendChild(button);
 }
 
-
 function fetchCourses() {
     fetch('/api/v1/courses/get-all-id').then(Response => Response.json()).then(data => createCoursesTable(document.querySelector('.courses_list'), data));
 }
@@ -94,6 +94,7 @@ function createForm(container, course = { name: '', description: '', id: undefin
     container.querySelector('.course-form')?.remove();
     container.querySelector('.center')?.remove();
     container.querySelector('.article-container')?.remove();
+    container.querySelector('.tests-container')?.remove();
 
     const form = document.createElement('form');
     form.className = 'course-form';
@@ -117,11 +118,15 @@ function createForm(container, course = { name: '', description: '', id: undefin
     form.appendChild(courseDescriptionInput);
     const articleContainer = document.createElement('div');
     articleContainer.className = 'article-container'
+    const testsContainer = document.createElement('div');
+    testsContainer.className = 'tests-container'
     container.appendChild(form);
     container.appendChild(articleContainer);
+    container.appendChild(testsContainer);
     
     if (course.id) {
         createArticlesTable(articleContainer, course.id);
+        createTestsTable(testsContainer, course.id);
     }
     const center = document.createElement('div');
     center.className = 'center';
@@ -277,8 +282,242 @@ function createArticlesTable(container, courseId) {
                 container.appendChild(form);
             });
 
+            container.innerHTML += `<p style="display: flex; justify-content: center; font-size: larger;">Articles table</p>`;
             if (articlesTable) {container.appendChild(articlesTable);}
             container.appendChild(addArticleButton);
         })
         .catch(error => console.error('Error:', error));
 }
+
+function createTestsTable(container, courseId) {
+    container.querySelector('.test-form')?.remove();
+    container.querySelector('.questions-container')?.remove();
+    container.innerHTML = "";
+
+    fetch(`/api/v1/test/get-all/${courseId}`)
+        .then(response => response.json())
+        .then(data => {
+            const testsTable = document.createElement('table');
+            testsTable.style = 'width: 100%';
+            testsTable.cellPadding = testsTable.cellSpacing = 0;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = '<th>Name</th><th>Description</th><th>Questions</th><th>Delete</th>';
+            testsTable.append(tr);
+
+            data.forEach(test => {
+                tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${test.name}</td>
+                    <td>${test.description}</td>
+                    <td><button class="show-questions" data-id="${test.id}">Show</button></td>
+                    <td><button class="delete-test" data-id="${test.id}">Delete</button></td>
+                `;
+                testsTable.append(tr);
+            });
+
+            const deleteButtons = testsTable.querySelectorAll('.delete-test');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', e => {
+                    e.preventDefault();
+                    const testId = button.getAttribute('data-id');
+                    fetch(`/api/v1/test/delete/${testId}`, { method: 'DELETE' })
+                        .then(() => {
+                            container.querySelector('.test-form')?.remove();
+                            createTestsTable(container, courseId);
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            const addTestButton = document.createElement('button');
+            addTestButton.textContent = 'Add Test';
+            addTestButton.className = 'button';
+
+            addTestButton.addEventListener('click', () => {
+                const existingForm = container.querySelector('.test-form');
+                if (existingForm) {
+                    existingForm.remove();
+                }
+
+                const form = document.createElement('form');
+                form.className = 'test-form';
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.placeholder = 'Name';
+                nameInput.name = 'name';
+
+                const descriptionInput = document.createElement('textarea');
+                descriptionInput.placeholder = 'Description';
+                descriptionInput.name = 'description';
+
+                const submitButton = document.createElement('button');
+                submitButton.type = 'submit';
+                submitButton.textContent = 'Submit';
+
+                form.appendChild(nameInput);
+                form.appendChild(descriptionInput);
+                form.appendChild(submitButton);
+
+                form.addEventListener('submit', e => {
+                    e.preventDefault();
+                    const name = nameInput.value;
+                    const description = descriptionInput.value;
+                    const course_id = courseId;
+
+                    const newTest = {
+                        name,
+                        description,
+                        course_id
+                    };
+
+                    fetch('/api/v1/test/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newTest)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        form.remove();
+                        createTestsTable(container, courseId);
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+
+                container.insertBefore(form, document.querySelector('.questions-container'));
+            });
+
+            const questionsLinks = testsTable.querySelectorAll('.show-questions');
+            questionsLinks.forEach((link) => {  
+                link.addEventListener('click', (e) => {
+                
+                    e.preventDefault();
+                    container.querySelector('.questions-container')?.remove();
+                    const questionsContainer = document.createElement('div');
+                    questionsContainer.className = 'questions-container'
+                    container.appendChild(questionsContainer);
+                    createQuestionsTable(questionsContainer, link.getAttribute('data-id'))
+                    
+                });
+            });
+
+            container.innerHTML += `<p style="display: flex; justify-content: center; font-size: larger;">Tests table</p>`;
+            if (testsTable) {container.appendChild(testsTable);}
+            container.appendChild(addTestButton);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function createQuestionsTable(container, testingId) {
+        container.querySelector('.questions-form')?.remove();
+        container.querySelector('.questions-container')?.remove();
+        container.innerHTML = '';
+    
+        fetch(`/api/v1/questions/get-all/${testingId}`)
+            .then(response => response.json())
+            .then(data => {
+                const questionsTable = document.createElement('table');
+                questionsTable.style = 'width: 100%';
+                questionsTable.cellPadding = questionsTable.cellSpacing = 0;
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = '<th>Id</th><th>Question</th><th>Delete</th>';
+                questionsTable.append(tr);
+    
+                data.forEach(question => {
+                    tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${question.id}</td>
+                        <td>${question.question_text}</td>
+                        <td><button class="delete-question" data-id="${question.id}">Delete</button></td>
+                    `;
+                    questionsTable.append(tr);
+                });
+
+                const deleteButtons = questionsTable.querySelectorAll('.delete-question');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', e => {
+                        e.preventDefault();
+                        const questionId = button.getAttribute('data-id');
+                        fetch(`/api/v1/questions/delete/${questionId}`, { method: 'DELETE' })
+                            .then(() => {
+                                container.querySelector('.questions-container')?.remove();
+                                createQuestionsTable(container, questionId);
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                });
+    
+                const addQuestionButton = document.createElement('button');
+                addQuestionButton.textContent = 'Add Question';
+                addQuestionButton.className = 'button';
+    
+                addQuestionButton.addEventListener('click', () => {
+                    const existingForm = container.querySelector('.questions-form');
+                    if (existingForm) {
+                        existingForm.remove();
+                    }
+    
+                    const form = document.createElement('form');
+                    form.className = 'questions-form';
+    
+                    const questionInput = document.createElement('input');
+                    questionInput.type = 'text';
+                    questionInput.placeholder = 'Question text';
+                    questionInput.name = 'question_text';
+
+                    const optionsInput = document.createElement('textarea');
+                    optionsInput.placeholder = 'Options input'; //+Да\n-Нет\n
+                    optionsInput.name = 'options_input';
+    
+                    const submitButton = document.createElement('button');
+                    submitButton.type = 'submit';
+                    submitButton.textContent = 'Submit';
+    
+                    form.appendChild(questionInput);
+                    form.appendChild(optionsInput);
+                    form.appendChild(submitButton);
+    
+                    form.addEventListener('submit', e => {
+                        e.preventDefault();
+                        const question_text = questionInput.value;
+                        const test_id = testingId;
+                        const options = optionsInput.value.split('\n').filter(Boolean).map(o => ({option_text: o.substring(1), correct: o.substring(0, 1)=='+'}));
+    
+                        const newQuestion = {
+                            question_text,
+                            test_id,
+                            options
+                        };
+    
+                        fetch('/api/v1/questions/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newQuestion)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            //console.log(data);
+                            form.remove();
+                            container.querySelector('.questions-container')?.remove();
+                            createQuestionsTable(container, testingId);
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+    
+                    container.appendChild(form);
+                    
+                });
+    
+                container.innerHTML += `<p style="display: flex; justify-content: center; font-size: larger;">Questions table</p>`;
+                if (questionsTable) {container.appendChild(questionsTable);}
+                container.appendChild(addQuestionButton);
+            })
+            .catch(error => console.error('Error:', error));
+        }

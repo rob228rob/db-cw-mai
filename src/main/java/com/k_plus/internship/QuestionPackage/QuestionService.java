@@ -1,18 +1,20 @@
 package com.k_plus.internship.QuestionPackage;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.CommonPackage.CustomExceptions.QuestionNotFoundException;
 import com.k_plus.internship.OptionPackage.Option;
 import com.k_plus.internship.OptionPackage.OptionResponseDto;
 import com.k_plus.internship.OptionPackage.OptionService;
 import com.k_plus.internship.TestingPackage.TestingService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class QuestionService {
 
         List<Option> options = questionDto.getOptions().stream().map(optionDto -> {
             Option option = new Option();
+            //option.setId(Generators.timeBasedEpochGenerator().generate());
             option.setOptionText(optionDto.getOptionText());
             option.setCorrect(optionDto.isCorrect());
             option.setQuestion(question);
@@ -86,4 +89,19 @@ public class QuestionService {
     public void saveQuestion(Question question) {
         questionRepository.save(question);
     }
+
+    public List<QuestionResponseDto> findAllQuestionsByTestingId(UUID testingId) {
+    List<Question> questionsList = questionRepository.findAllQuestionsByTestingId(testingId);
+
+    return questionsList
+            .stream()
+            .map(this::mapQuestionsToResponseDto)
+            .toList();
+    }
+    
+    private QuestionResponseDto mapQuestionsToResponseDto(Question question) {
+        QuestionResponseDto responseDto = modelMapper.map(question, QuestionResponseDto.class);
+    
+        return responseDto;
+        }
 }

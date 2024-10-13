@@ -1,18 +1,19 @@
 package com.k_plus.internship.TestingPackage;
 
-import com.fasterxml.uuid.Generators;
-import com.k_plus.internship.CommonPackage.CustomExceptions.TestingNotFoundException;
-import com.k_plus.internship.QuestionPackage.Question;
-import com.k_plus.internship.QuestionPackage.QuestionService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.CommonPackage.CustomExceptions.TestingNotFoundException;
+import com.k_plus.internship.QuestionPackage.Question;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class TestingService {
         testing.setId(Generators.timeBasedGenerator().generate());
         var responseDto = modelMapper.map(testingRepository.save(testing), TestingResponseDto.class);
 
-        responseDto.setQuestionIds(mapQuestionsToListIds(testing.getQuestions()));
+        //responseDto.setQuestionIds(mapQuestionsToListIds(testing.getQuestions()));
 
         return responseDto;
     }
@@ -64,4 +65,20 @@ public class TestingService {
     public void saveTesting(Testing testing) {
         testingRepository.save(testing);
     }
+
+    public List<TestingResponseAdminDto> findAllTestsByCourseId(UUID courseId) {
+    List<Testing> testsList = testingRepository.findAllTestsByCourseId(courseId);
+
+    return testsList
+            .stream()
+            .map(this::mapTestsToAdminDto)
+            .toList();
+    }
+
+    private TestingResponseAdminDto mapTestsToAdminDto(Testing test) {
+    TestingResponseAdminDto responseDto = modelMapper.map(test, TestingResponseAdminDto.class);
+
+    return responseDto;
+    }
+
 }
