@@ -66,7 +66,11 @@ public class TestingService {
         testingRepository.save(testing);
     }
 
-    public List<TestingResponseAdminDto> findAllTestsByCourseId(UUID courseId) {
+    public List<Testing> findAllTestsByCourseId(UUID courseId) {
+        return testingRepository.findAllTestsByCourseId(courseId);
+    }
+
+    public List<TestingResponseAdminDto> findAllTestsByCourseIdReturningAdminDto(UUID courseId) {
     List<Testing> testsList = testingRepository.findAllTestsByCourseId(courseId);
 
     return testsList

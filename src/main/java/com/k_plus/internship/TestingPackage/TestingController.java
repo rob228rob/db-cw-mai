@@ -52,6 +52,6 @@ public class TestingController {
     @GetMapping("/get-all/{uuid}")
     public ResponseEntity<List<TestingResponseAdminDto>> findAllTestsByCourseID(@PathVariable UUID uuid) {
         return ResponseEntity
-            .ok(testingService.findAllTestsByCourseId(uuid));
+            .ok(testingService.findAllTestsByCourseIdReturningAdminDto(uuid));
     }
 }
