@@ -145,7 +145,9 @@ public class SetupDataLoader implements
         testing.setName(names[new Random().nextInt(names.length)]);
         testing.setDescription(descriptions[new Random().nextInt(descriptions.length)]);
         testing.setCourse(course);
-        testing.setQuestions(createQuestions(testing, new Random().nextInt(names.length)));
+        var questionsCount = new Random().nextInt(names.length);
+        testing.setQuestions(createQuestions(testing, questionsCount));
+        testing.setQuestionCount(questionsCount);
         testing.setDisplayOrder(1);
         testingService.saveTesting(testing);
         return new ArrayList<>(List.of(testing));

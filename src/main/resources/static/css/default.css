@@ -41,14 +41,15 @@ body {
     display: flex; /* Для выравнивания иконки и текста */
     align-items: center; /* Центрирование по вертикали */
 }
-.header .links a.logout:hover {
-    background-color: darkgreen;
-    color: white;
-}
 .header .links a.login:hover {
     background-color: forestgreen; /* Более темный цвет при наведении */
     transform: translateY(-2px); /* Эффект поднятия кнопки */
 }
+.header .links a.logout:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
 
 .header .links a.logout {
     background-color: darkgreen; /* Красный цвет для кнопки выхода */

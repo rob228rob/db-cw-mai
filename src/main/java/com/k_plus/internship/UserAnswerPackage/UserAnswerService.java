@@ -3,10 +3,19 @@ package com.k_plus.internship.UserAnswerPackage;
 import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.OptionPackage.OptionService;
 import com.k_plus.internship.QuestionPackage.QuestionService;
+import com.k_plus.internship.RatingPackage.UserRatingRepository;
+import com.k_plus.internship.RatingPackage.UserRatingService;
+import com.k_plus.internship.StatisticsPackage.StatisticsService;
+import com.k_plus.internship.TestingPackage.Testing;
 import com.k_plus.internship.TestingPackage.TestingService;
+import com.k_plus.internship.UserPackage.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +30,12 @@ public class UserAnswerService {
     private final OptionService optionService;
 
     private final ModelMapper modelMapper;
+
+    private final UserRatingService userRatingService;
+
+    private final UserService userService;
+
+    private final UserRatingRepository userRatingRepository;
 
     public UserAnswerResponseDto saveUserAnswer(UserAnswerRequestDto answerDto) {
         var userAnswer = modelMapper.map(answerDto, UserAnswer.class);
@@ -37,31 +52,67 @@ public class UserAnswerService {
         userAnswerRepository.save(userAnswer);
     }
 
+    @Transactional
     public UserAnswerResponseDto submitTest(UserAnswerRequestDto userAnswerRequestDto) {
-        //Don't forget save to DB
-
-        var optionResponseDtoList = userAnswerRequestDto.getUserAnswers()
+        var userId = userAnswerRequestDto.getUserId();
+        var testId = userAnswerRequestDto.getTestId();
+        //User have only 1 attempt
+        var findCorrectCount = userAnswerRepository.findAllByUserIdAndByTestIdOrderById(userId, testId)
                 .stream()
-                .map(x -> QuestionAnsResponseDto.builder()
-                        .optionId(x.getOptionId())
-                        .questionId(x.getQuestionId())
-                        .correct(optionService.optionIsCorrect(x.getOptionId()))
-                        .build())
-                .peek(x -> {
-                    UserAnswer ua = new UserAnswer();
-                    ua.setId(Generators.timeBasedEpochGenerator().generate());
-                    ua.setCorrect(x.isCorrect());
-                    ua.setTesting(testingService.findTestingById(userAnswerRequestDto.getTestId()));
-                    ua.setQuestion(questionService.findQuestionById(x.getQuestionId()));
-                    ua.setOption(optionService.findOptionById(x.getOptionId()));
-                    userAnswerRepository.save(ua);
-                })
+                .filter(UserAnswer::isCorrect)
+                .count();
+        var testById = testingService.findTestingById(testId);
+        //TODO: implement logic to decrease count of correct answers partly!!
+        //deleteAllByUserIdAndTestingId(userId, testId, findCorrectCount);
+        userAnswerRepository.deleteAllByUserIdAndTestingId(userId, testId);//, testById.getCourse().getId());
+
+        var optionResponseDtoList = userAnswerRequestDto.getUserAnswers().stream()
+                .map(this::buildQuestionAnswerResponseDto)
+                .peek(questionAnswerResponseDto ->
+                        saveUserAnswer(userAnswerRequestDto, questionAnswerResponseDto))
                 .toList();
+
+        //TODO: rating service (already done)
+
+        userRatingService.updateUserRating(
+                userId,
+                testById.getCourse().getId(),
+                testId,
+                (int) optionResponseDtoList.stream()
+                        .filter(QuestionAnsResponseDto::isCorrect).count());
 
         return UserAnswerResponseDto.builder()
                 .testId(userAnswerRequestDto.getTestId())
                 .userId(userAnswerRequestDto.getUserId())
                 .options(optionResponseDtoList)
                 .build();
+    }
+
+    private void deleteAllByUserIdAndTestingId(UUID userId, UUID testId, long findCorrectCount) {
+
+    }
+
+    private QuestionAnsResponseDto buildQuestionAnswerResponseDto(OptionAnswerRequestDto x) {
+        return QuestionAnsResponseDto.builder()
+                .optionId(x.getOptionId())
+                .questionId(x.getQuestionId())
+                .correct(optionService.optionIsCorrect(x.getOptionId()))
+                .build();
+    }
+
+    private void saveUserAnswer(UserAnswerRequestDto requestDto, QuestionAnsResponseDto responseDto) {
+        UserAnswer ua = new UserAnswer();
+        ua.setId(Generators.timeBasedEpochGenerator().generate());
+        ua.setUser(userService.findUserById(requestDto.getUserId()));
+        ua.setCorrect(responseDto.isCorrect());
+        ua.setTesting(testingService.findTestingById(requestDto.getTestId()));
+        ua.setQuestion(questionService.findQuestionById(responseDto.getQuestionId()));
+        ua.setOption(optionService.findOptionById(responseDto.getOptionId()));
+        userAnswerRepository.save(ua);
+    }
+
+    public List<UserAnswer> findAllUserAnswersByTestId(UUID userId, UUID testId) {
+
+        return userAnswerRepository.findAllByUserIdAndByTestIdOrderById(userId, testId);
     }
 }

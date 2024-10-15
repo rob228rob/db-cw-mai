@@ -40,16 +40,27 @@
             justify-content: center; /* Центрируем ссылки */
             margin-top: 10px;
         }
+        .header .links a.login {
+            background-color: darkgreen; /* Цвет фона */
+            color: white; /* Цвет текста */
+            font-size: 18px; /* Размер шрифта */
+            padding: 12px 20px; /* Отступы */
+            border-radius: 30px; /* Округленные края */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Плавный переход */
+            display: flex; /* Для выравнивания иконки и текста */
+            align-items: center; /* Центрирование по вертикали */
+        }
         .header .links a.login:hover {
-            background-color: darkgreen;
-            color: white;
+            background-color: darkgreen; /* Более темный цвет при наведении */
+            transform: translateY(-2px); /* Эффект поднятия кнопки */
         }
         .header .links a.logout:hover {
             background-color: darkgreen;
             color: white;
         }
         .header .links a.logout:hover {
-            background-color: forestgreen; /* Более темный цвет при наведении */
+            background-color: darkgreen; /* Более темный цвет при наведении */
             transform: translateY(-2px); /* Эффект поднятия кнопки */
         }
         .header .links a {
@@ -68,7 +79,8 @@
         }
         .content {
             flex: auto;
-            padding-top: 140px; /* Увеличенный отступ сверху */
+            /* Увеличенный отступ сверху */
+            padding: 100px;
         }
         .description {
             text-align: center;
@@ -85,7 +97,7 @@
             background-color: white;
             border: 4px solid #4CAF50;
             border-radius: 10px;
-            padding: 90px;
+            padding: 140px;
             width: 200px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
@@ -104,7 +116,7 @@
         }
         .content {
             flex: auto;
-            padding-top: 80px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+            padding-top: 120px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -113,13 +125,13 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 40px;
         }
         .course-card {
             background-color: white;
             border: 4px solid #4CAF50;
             border-radius: 10px;
-            padding: 20px;
+            padding: 100px;
             width: 200px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
@@ -156,6 +168,7 @@
         }
         .course-card .price-label.paid {
             background-color: #FF5722;
+        }
         .footer {
             width: 100%;
             background-color: #333;

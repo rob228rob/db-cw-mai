@@ -64,4 +64,8 @@ public class TestingService {
     public void saveTesting(Testing testing) {
         testingRepository.save(testing);
     }
+
+    public List<Testing> findAllTestsByCourseId(UUID courseId) {
+        return testingRepository.findAllByCourseId(courseId);
+    }
 }

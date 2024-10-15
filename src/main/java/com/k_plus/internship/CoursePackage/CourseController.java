@@ -44,11 +44,16 @@ public class CourseController {
                 .ok(courseService.findAllCoursesWithId());
     }
 
+    @GetMapping("/is-user-enrolled")
+    public ResponseEntity<Boolean> isUserEnrolledOnCourse(@RequestParam UUID userId, @RequestParam UUID courseId) {
+        return ResponseEntity.ok(courseService.isUserEnrolledOnCourse(userId, courseId));
+    }
+
     @PostMapping("/subscribe")
     public ResponseEntity<SubscribeResponseDto> enrollInCourse(
-            @RequestParam UUID courseId,
-            @RequestParam UUID userId) {
-        courseService.enrollUserInCourse(courseId, userId);
+            @RequestBody SubscribeRequestDto requestDto) {
+        //TODO: additional logic
+        courseService.enrollUserInCourse(requestDto.getCourseId(), requestDto.getUserId());
 
         return ResponseEntity.noContent().build();
     }

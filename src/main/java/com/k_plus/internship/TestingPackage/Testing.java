@@ -30,7 +30,7 @@ public class Testing {
     private String description;
 
     @Column(name = "display_order")
-    private int displayOrder;
+    private Integer displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
@@ -38,6 +38,9 @@ public class Testing {
 
     @OneToMany(mappedBy = "testing")
     private List<Question> questions;
+
+    @Column(name = "question_count")
+    private Integer questionCount;
 
     @CreationTimestamp
     private LocalDateTime creationTime;

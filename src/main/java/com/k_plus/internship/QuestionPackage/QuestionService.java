@@ -7,6 +7,7 @@ import com.k_plus.internship.OptionPackage.OptionResponseDto;
 import com.k_plus.internship.OptionPackage.OptionService;
 import com.k_plus.internship.TestingPackage.TestingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -40,6 +42,7 @@ public class QuestionService {
             option.setOptionText(optionDto.getOptionText());
             option.setCorrect(optionDto.isCorrect());
             option.setQuestion(question);
+            log.info("SDFG");
             return option;
         }).toList();
 

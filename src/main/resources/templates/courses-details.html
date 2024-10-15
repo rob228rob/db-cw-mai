@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/courses-details.css">
-    <title>Подробнее</title>
+    <title>правоТворчества</title>
 </head>
 <body>
 <div class="header">
-    <div class="title">Информация о курсе</div>
+    <div class="title">
+        правоТворчества
+    </div>
     <div class="links">
         <a href="/home">Главная</a>
         <a href="/profile">Профиль</a>
@@ -29,10 +31,26 @@
 </div>
 
 <script>
+    let userId = null; // Глобальная переменная для хранения ID пользователя
+
     function getCourseIdFromUrl() {
         const urlPath = window.location.pathname;
         const courseId = urlPath.split('/').pop();
         return courseId;
+    }
+
+    async function loadUserId() {
+        try {
+            const response = await fetch('/api/v1/user/get/current');
+            if (response.ok) {
+                const user = await response.json();
+                userId = user.id; // Сохраняем ID пользователя
+            } else {
+                console.error('Ошибка при загрузке информации о пользователе:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке информации о пользователе:', error);
+        }
     }
 
     async function loadCourse() {
@@ -46,7 +64,7 @@
             const response = await fetch(`/api/v1/courses/get/${courseId}`);
             if (response.ok) {
                 const course = await response.json();
-                renderCourse(course);
+                await renderCourse(course);
             } else {
                 console.error('Ошибка при загрузке курса:', response.status);
             }
@@ -55,18 +73,43 @@
         }
     }
 
-    function renderCourse(course) {
+    async function checkEnrollment(courseId) {
+        try {
+            const response = await fetch(`/api/v1/courses/is-user-enrolled?userId=${userId}&courseId=${courseId}`);
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error('Ошибка при проверке записи на курс:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при проверке записи на курс:', error);
+        }
+        return false;
+    }
+
+    async function renderCourse(course) {
         const courseContainer = document.getElementById('course-container');
         courseContainer.innerHTML = '';
 
         const courseDetails = document.createElement('div');
         courseDetails.className = 'course-details';
         courseDetails.innerHTML = `
-            <h3>${course.name}</h3>
-            <p>${course.description}</p>
-            <button id="enroll-btn">Записаться на курс</button>
-        `;
+        <h3>${course.name}</h3>
+        <p>${course.description}</p>
+        <button id="enroll-btn">Записаться на курс</button>
+    `;
         courseContainer.appendChild(courseDetails);
+
+        // Проверка на наличие записи на курс
+        const isEnrolled = await checkEnrollment(course.id);
+        if (isEnrolled) {
+            document.getElementById('enroll-btn').innerText = 'Вы записаны на курс';
+            document.getElementById('enroll-btn').disabled = true; // Делаем кнопку недоступной
+        } else {
+            document.getElementById('enroll-btn').addEventListener('click', async () => {
+                await enrollInCourse(course.id);
+            });
+        }
 
         // Объединение тестов и статей в один массив
         const combinedItems = [
@@ -99,12 +142,20 @@
             itemIndex.textContent = `${index + 1}.`;
 
             const itemLink = document.createElement('a');
-            if (item.type === 'test') {
-                itemLink.href = `/courses/${course.id}/testings/${item.id}`;
-                itemLink.textContent = item.header;
-            } else if (item.type === 'article') {
-                itemLink.href = `/courses/${course.id}/articles/${item.id}`;
-                itemLink.textContent = item.header;
+            itemLink.textContent = item.header;
+
+            if (isEnrolled) {
+                // Если пользователь записан, создаем активные ссылки
+                if (item.type === 'test') {
+                    itemLink.href = `/courses/${course.id}/testings/${item.id}`;
+                } else if (item.type === 'article') {
+                    itemLink.href = `/courses/${course.id}/articles/${item.id}`;
+                }
+            } else {
+                // Если не записан, ссылки неактивны
+                itemLink.className = 'disabled-link';
+                itemLink.style.pointerEvents = 'none'; // Блокируем возможность клика
+                itemLink.style.color = 'gray'; // Делаем ссылки визуально серыми
             }
 
             const itemType = document.createElement('span');
@@ -118,17 +169,34 @@
         });
 
         courseDetails.appendChild(itemList);
+    }
 
-        document.getElementById('enroll-btn').addEventListener('click', async () => {
-            await enrollInCourse(course.id);
+    function enableCourseItems() {
+        const itemLinks = document.querySelectorAll('.item-list a');
+        itemLinks.forEach(link => {
+            link.style.pointerEvents = 'auto'; // Разблокируем ссылки
+            link.style.color = ''; // Убираем серый цвет (возвращаем дефолтный)
         });
     }
 
     async function enrollInCourse(courseId) {
         try {
-            const response = await fetch(`/api/v1/courses/enroll/${courseId}`, { method: 'POST' });
+            const response = await fetch(`/api/v1/courses/subscribe`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    course_id: courseId,
+                }),
+            });
+
             if (response.ok) {
-                alert('Вы успешно записались на курс!');
+                document.getElementById('enroll-btn').innerText = 'Вы записаны на курс';
+                document.getElementById('enroll-btn').disabled = true; // Делаем кнопку недоступной
+                await loadCourse();
+                //enableCourseItems();
             } else {
                 alert('Ошибка при записи на курс');
             }
@@ -137,7 +205,10 @@
         }
     }
 
-    loadCourse();
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadUserId();
+        await loadCourse();
+    });
 </script>
 </body>
 </html>

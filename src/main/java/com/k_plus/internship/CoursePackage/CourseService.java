@@ -180,4 +180,12 @@ public class CourseService {
 
         courseRepository.save(course);
     }
+
+    public Boolean isUserEnrolledOnCourse(UUID userId, UUID courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Курс с ID " + courseId + " не найден"));
+        User user = userService.findUserById(userId);
+
+        return course.getUsers().contains(user);
+    }
 }
