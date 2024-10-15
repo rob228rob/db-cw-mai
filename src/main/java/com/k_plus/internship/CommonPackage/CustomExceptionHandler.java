@@ -1,11 +1,16 @@
 package com.k_plus.internship.CommonPackage;
 
-import com.k_plus.internship.CommonPackage.CustomExceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.k_plus.internship.CommonPackage.CustomExceptions.ArticleNotFoundException;
+import com.k_plus.internship.CommonPackage.CustomExceptions.CourseNotFoundException;
+import com.k_plus.internship.CommonPackage.CustomExceptions.InvalidUserInfoException;
+import com.k_plus.internship.CommonPackage.CustomExceptions.TestingNotFoundException;
+import com.k_plus.internship.CommonPackage.CustomExceptions.UserNotFoundException;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -49,7 +54,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<ErrorResponseDto> runtimeException(RuntimeException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDto(exception.getMessage(), HttpStatus.BAD_REQUEST.value()));
+                .body(new ErrorResponseDto(exception.getMessage() + "\n" + exception.getStackTrace(), HttpStatus.BAD_REQUEST.value()));
     }
 
     @ExceptionHandler(CourseNotFoundException.class)

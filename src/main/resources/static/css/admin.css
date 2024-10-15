@@ -87,7 +87,7 @@ main {
   flex-wrap: wrap;
   justify-content: space-between;
   /* padding: 1em; */
-  height: 100%;
+  /* height: 100%; */
   flex: 1;
 }
 
@@ -111,6 +111,7 @@ main div button {
   background-color: #414141;
   padding: 8px;
   margin-top: 0.5em;
+  margin-bottom: 0.5em;
   cursor: pointer;
 }
 
@@ -125,13 +126,13 @@ main div button:hover {
  
 /* Course-adding form */
 
-.course-form, .article-form {
+.course-form, .article-form, .test-form, .questions-form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.course-form input, .article-form input, .course-form textarea, .article-form textarea {
+.course-form input, .article-form input, .test-form input, .questions-form input, .course-form textarea, .article-form textarea, .test-form textarea, .questions-form textarea {
   width: 300px;
   height: 40px;
   margin-bottom: 20px;
@@ -141,11 +142,12 @@ main div button:hover {
   font-size: 16px;
 }
 
-.course-form textarea, .article-form textarea {
+.course-form textarea, .article-form textarea, .test-form textarea, .questions-form textarea {
   height: 100px;
+  font-size: large;
 }
 
-.course-form button[type="submit"], .article-form button[type="submit"] {
+.course-form button[type="submit"], .article-form button[type="submit"], .test-form button[type="submit"], .questions-form button[type="submit"] {
   width: 300px;
   height: 40px;
   margin-top: 20px;
@@ -156,7 +158,7 @@ main div button:hover {
   cursor: pointer;
 }
 
-.course-form button[type="submit"]:hover, .article-form button[type="submit"]:hover {
+.course-form button[type="submit"]:hover, .article-form button[type="submit"]:hover, .test-form button[type="submit"]:hover, .questions-form button[type="submit"]:hover {
   background-color: #333;
   color: #00a761;
 }
@@ -179,12 +181,16 @@ footer p {
 
 table {
   border-collapse: collapse; /* Объединяет границы ячеек в одну */
+  padding: 0.5em;
 }
 
 table td, table th {
   border: 1px solid mediumspringgreen;
   color: white;
   background: #414141;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 table td a {

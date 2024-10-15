@@ -1,15 +1,16 @@
 package com.k_plus.internship.OptionPackage;
 
-import com.fasterxml.uuid.Generators;
-import com.k_plus.internship.CommonPackage.CustomExceptions.OptionNotFoundException;
-import com.k_plus.internship.QuestionPackage.QuestionService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.CommonPackage.CustomExceptions.OptionNotFoundException;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +29,7 @@ public class OptionService {
         optionRepository.save(option);
 
         var responseDto = modelMapper.map(option, OptionResponseDto.class);
-        responseDto.setQuestionId(optionDto.getQuestionId());
+        //responseDto.setQuestionId(optionDto.getQuestionId());
 
         return responseDto;
     }

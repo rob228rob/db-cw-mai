@@ -1,19 +1,22 @@
 package com.k_plus.internship.QuestionPackage;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.uuid.Generators;
 import com.k_plus.internship.CommonPackage.CustomExceptions.QuestionNotFoundException;
 import com.k_plus.internship.OptionPackage.Option;
 import com.k_plus.internship.OptionPackage.OptionResponseDto;
 import com.k_plus.internship.OptionPackage.OptionService;
 import com.k_plus.internship.TestingPackage.TestingService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,26 +34,35 @@ public class QuestionService {
     //TODO: Refactor and simplify method!
     @Transactional
     public QuestionResponseDto addQuestion(QuestionRequestDto questionDto) {
-        var question = modelMapper.map(questionDto, Question.class);
-        question.setId(Generators.timeBasedEpochGenerator().generate());
-
+        //var question1 = modelMapper.map(questionDto, Question.class);
+        var question1 = new Question();
+        question1.setId(Generators.timeBasedEpochGenerator().generate());
+        questionRepository.save(question1);
+        var question = findQuestionById(question1.getId());
         var test = testingService.findTestingById(questionDto.getTestId());
         question.setTesting(test);
+        question.setQuestionText(questionDto.getQuestionText());
 
         List<Option> options = questionDto.getOptions().stream().map(optionDto -> {
-            Option option = new Option();
+            Option option1 = new Option();
+            option1.setId(Generators.timeBasedEpochGenerator().generate());
+            optionService.saveOption(option1);
+            var option = optionService.findOptionById(option1.getId());
             option.setOptionText(optionDto.getOptionText());
             option.setCorrect(optionDto.isCorrect());
             option.setQuestion(question);
-            log.info("SDFG");
+            log.info("\n Option: \n" + option.getId());
+            optionService.saveOption(option);
             return option;
-        }).toList();
+        }).collect(Collectors.toList());
 
+        log.debug("\n\n\nSET OPTIONS SAVED!!!\n\n\n" + question.getId());
         question.setOptions(options);
 
+        log.debug("\n\n\nNOTSAVED!!!\n\n\n" + question.getId());
         Question savedQuestion = questionRepository.save(question);
-
-        optionService.saveAllOptions(options);
+        log.debug("\n\n\nSAVED!!!\n\n\n" + savedQuestion.getId());
+        //optionService.saveAllOptions(options);
 
         var responseDto = modelMapper.map(savedQuestion, QuestionResponseDto.class);
         responseDto.setTestId(questionDto.getTestId());
@@ -88,5 +100,25 @@ public class QuestionService {
 
     public void saveQuestion(Question question) {
         questionRepository.save(question);
+    }
+
+    public List<QuestionResponseDto> findAllQuestionsByTestingId(UUID testingId) {
+    List<Question> questionsList = questionRepository.findAllQuestionsByTestingId(testingId);
+
+    return questionsList
+            .stream()
+            .map(this::mapQuestionsToResponseDto)
+            .toList();
+    }
+    
+    private QuestionResponseDto mapQuestionsToResponseDto(Question question) {
+        QuestionResponseDto responseDto = modelMapper.map(question, QuestionResponseDto.class);
+    
+        return responseDto;
+        }
+    
+    @Transactional
+    public void deleteQuestion(UUID uuid) {
+        questionRepository.deleteById(uuid);
     }
 }
