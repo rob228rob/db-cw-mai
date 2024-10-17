@@ -26,4 +26,8 @@ public class StatResponseDto {
 
     @JsonProperty("percentage_correct")
     private double percentageCorrect;
+
+    public boolean isCourseCompleted() {
+        return percentageCorrect - 80.0 > 0.0001;
+    }
 }

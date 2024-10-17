@@ -21,6 +21,6 @@ public class StatisticsController {
     @GetMapping("/get")
     public ResponseEntity<StatResponseDto> getUserRankByCourse(@RequestParam UUID courseId, @RequestParam UUID userId) {
         return ResponseEntity
-                .ok(statisticsService.findUserRankByCurse( courseId, userId));
+                .ok(statisticsService.findStatsRankByCourse( courseId, userId));
     }
 }

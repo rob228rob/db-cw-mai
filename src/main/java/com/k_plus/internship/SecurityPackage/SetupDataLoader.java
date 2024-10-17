@@ -80,19 +80,18 @@ public class SetupDataLoader implements
 
         User user = new User();
         user.setId(Generators.timeBasedEpochGenerator().generate());
-        user.setFirstName("Test");
-        user.setLastName("Test");
+        user.setFirstName("Admin");
+        user.setLastName("Account");
         user.setPassword(passwordEncoder.encode("qweqweqwe"));
-        user.setEmail("test@gmail.com");
+        user.setEmail("admin@gmail.com");
         user.setRoles(List.of(adminRole.get()));
         user.setEnabled(true);
         if (!userService.existsByEmail(user.getEmail())) {
             userService.saveUser(user);
         }
         String[] names = {
-                "Тест",
-                "Курс о том как <придумайте сами>",
-                "Как стать успешным", "Курс о том как делать курсы",
+                "Как стать успешным",
+                "Курс о том как делать курсы",
                 "Право", "Костюмы",
                 "Общие положения"};
         String[] descriptions = {
@@ -100,11 +99,11 @@ public class SetupDataLoader implements
                 "Это курс про право","про творчество",
                 "ну еще и про правоТворчество",
             "Это как будто вообще тест"};
-        if (courseRepository.count() < 6) {
-            for (int i = 0; i < 5; ++i) {
-                createNewTestCourse(names, descriptions);
-            }
-        }
+//        if (courseRepository.count() < 3) {
+//            for (int i = 0; i < 3; ++i) {
+//                createNewTestCourse(names, descriptions);
+//            }
+//        }
 
         alreadySetup = true;
     }

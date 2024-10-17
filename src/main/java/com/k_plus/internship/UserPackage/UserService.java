@@ -13,10 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.aspectj.weaver.ast.Var;
@@ -143,5 +140,9 @@ public class UserService {
                     return dto;
                     })
                 .toList();
+    }
+
+    public Collection<User> findAll() {
+        return userRepository.findAll();
     }
 }

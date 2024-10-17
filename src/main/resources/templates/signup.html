@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .container {
             background-color: #fff;
             padding: 40px;
@@ -25,6 +26,7 @@
             width: 100%;
             text-align: center;
         }
+
         h2 {
             font-family: 'Montserrat Alternates', sans-serif;
             color: #333;
@@ -32,20 +34,23 @@
             font-size: 24px;
             font-weight: 700;
         }
+
         .form-group {
             margin-bottom: 15px;
-            text-align: left;
+            text-align: left; /* Оставлено как есть, чтобы метки были слева */
         }
+
         label {
             font-size: 16px;
             color: #333;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            width: 100%;
+            width: 100%; /* Установлено на 100% */
             padding: 12px 15px;
             margin-top: 8px;
             border: 2px solid #4CAF50;
@@ -54,30 +59,24 @@
             font-family: 'Roboto', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
+            position: relative;
+            display: flex; /* Оставлено для выравнивания кнопки */
+            box-sizing: border-box;
         }
+
         input:focus {
             border-color: #333;
         }
+
         .password-container,
         .confirm-password-container {
             position: relative;
-            display: flex; /* Добавлено для выравнивания кнопки */
-            align-items: center; /* Выравнивание по центру по вертикали */
+            display: flex; /* Оставлено для выравнивания кнопки */
+            align-items: center; /* Центровка по вертикали */
         }
-        .toggle-password {
-            position: absolute;
-            right: 10px; /* Отступ от правого края */
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0; /* Убираем отступы */
-            margin-left: 10px; /* Отступ от поля ввода */
-        }
-        .toggle-password.visible {
-            color: #4CAF50;
-        }
+
         button[type="button"] {
-            width: 100%;
+            width: 100%; /* Установлено на 100% */
             padding: 12px 0;
             margin-top: 20px;
             background-color: #4CAF50;
@@ -90,28 +89,34 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button[type="button"]:hover {
             background-color: #333;
         }
+
         p {
             margin-top: 15px;
             font-size: 14px;
             color: #333;
             font-family: 'Roboto', sans-serif;
         }
+
         a {
             color: #4CAF50;
             text-decoration: none;
             font-weight: 500;
         }
+
         a:hover {
             text-decoration: underline;
         }
+
         .error-message {
             color: red;
             font-size: 14px;
             margin-bottom: 15px;
         }
+
     </style>
 </head>
 <body>
@@ -127,29 +132,29 @@
     <form id="signup-form">
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" placeholder="Введите имя" required>
         </div>
         <div class="form-group">
             <label for="surname">Фамилия</label>
-            <input type="text" id="surname" name="surname" required>
+            <input type="text" id="surname" name="surname" placeholder="Введите фамилию"required>
         </div>
         <div class="form-group">
-            <label for="email">Электронная почта</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Введите email" required>
         </div>
         <div class="form-group">
             <label for="password">Пароль</label>
             <div class="password-container">
-                <input type="password" id="password" minlength="8" name="password" required>
+                <input type="password" id="password" minlength="8" name="password" placeholder="Введите пароль" required>
                 <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
 <!--                <button type="button" id="togglePassword" class="toggle-password">👁</button>-->
 
             </div>
         </div>
         <div class="form-group">
-            <label for="password2">Подтвердите пароль</label>
+            <label for="password2">Подтвержденный пароль</label>
             <div class="confirm-password-container">
-                <input type="password" id="password2" minlength="8" name="password2" required>
+                <input type="password" id="password2" minlength="8" name="password2" placeholder="Подтвердите пароль" required>
                 <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
 <!--                <button type="button" id="togglePassword2" class="toggle-password">👁</button>-->
             </div>

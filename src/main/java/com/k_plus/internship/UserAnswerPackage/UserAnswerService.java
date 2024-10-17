@@ -1,6 +1,7 @@
 package com.k_plus.internship.UserAnswerPackage;
 
 import com.fasterxml.uuid.Generators;
+import com.k_plus.internship.EmailSender.EmailSenderService;
 import com.k_plus.internship.OptionPackage.OptionService;
 import com.k_plus.internship.QuestionPackage.QuestionService;
 import com.k_plus.internship.RatingPackage.UserRatingRepository;
@@ -36,6 +37,7 @@ public class UserAnswerService {
     private final UserService userService;
 
     private final UserRatingRepository userRatingRepository;
+    private final EmailSenderService emailSenderService;
 
     public UserAnswerResponseDto saveUserAnswer(UserAnswerRequestDto answerDto) {
         var userAnswer = modelMapper.map(answerDto, UserAnswer.class);
@@ -62,9 +64,8 @@ public class UserAnswerService {
                 .filter(UserAnswer::isCorrect)
                 .count();
         var testById = testingService.findTestingById(testId);
-        //TODO: implement logic to decrease count of correct answers partly!!
-        //deleteAllByUserIdAndTestingId(userId, testId, findCorrectCount);
-        userAnswerRepository.deleteAllByUserIdAndTestingId(userId, testId);//, testById.getCourse().getId());
+
+        userAnswerRepository.deleteAllByUserIdAndTestingId(userId, testId);
 
         var optionResponseDtoList = userAnswerRequestDto.getUserAnswers().stream()
                 .map(this::buildQuestionAnswerResponseDto)
@@ -72,7 +73,7 @@ public class UserAnswerService {
                         saveUserAnswer(userAnswerRequestDto, questionAnswerResponseDto))
                 .toList();
 
-        //TODO: rating service (already done)
+        // rating service (already done)
 
         userRatingService.updateUserRating(
                 userId,

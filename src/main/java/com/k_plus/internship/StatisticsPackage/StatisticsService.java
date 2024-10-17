@@ -24,10 +24,10 @@ public class StatisticsService {
 
     private final UserRatingService userRatingService;
 
-    public StatResponseDto findUserRankByCurse(UUID courseId, UUID userId) {
-        log.info("\n\n\n\n---------------------------------");
+    public StatResponseDto findStatsRankByCourse(UUID courseId, UUID userId) {
         List<Testing> testingList = testingService.findAllTestsByCourseId(courseId);
         log.info("testingList size: {}", testingList.size());
+
         if (testingList.isEmpty()) {
             throw new TestingNotFoundException("tests by course id not found: " + courseId);
         }
@@ -39,7 +39,6 @@ public class StatisticsService {
                     long correctAnswersCount = userAnswers.stream()
                             .filter(UserAnswer::isCorrect)
                             .count();
-                    log.info("\ntotal ans count: {}\n", totalAnswersCount);
                     return List.of(correctAnswersCount, totalAnswersCount);
                 })
                 .reduce(List.of(0L, 0L),
@@ -48,16 +47,38 @@ public class StatisticsService {
                                 list1.get(1) + list2.get(1)));
 
         var userRank = userRatingService.calcUserRatingByCourse(userId, courseId);
-        log.info("Total answers COUNT: {}", ansList.get(1));
-        log.info("Total correct answers COUNT: {}", ansList.get(0));
-        log.info("Rank user: {}", userRank);
-        log.info("----------------------------------\n\n\n\n");
+        var percentageCorrect = ((double) ansList.get(0) / ansList.get(1)) * 100;
+
+//        if (percentageCorrect >= 80) {
+//            try {
+//                generateAndSendPDFCertificate(userId, courseId);
+//            } catch (DocumentException | MessagingException | IOException e) {
+//                log.error("Creating pdf error: {}; Certificate did not send; {}", e.getMessage(), e.getStackTrace());
+//            }
+//        }
+
         return StatResponseDto.builder()
                 .rank(userRank)
-                .percentageCorrect(((double) ansList.get(0) /ansList.get(1)) * 100)
+                .percentageCorrect(percentageCorrect)
                 .userId(userId)
                 .courseId(courseId)
                 .build();
     }
+
+    //TODO: CHANGE LOGIC!!!!!!!!!!!   CERTIFICATE MUST BE SEND ONLY ONCE!!
+//    private void generateAndSendPDFCertificate(UUID userId, UUID courseId) throws DocumentException, MessagingException, IOException {
+//        var user = userService.findUserById(userId);
+//        var course = courseService.findCourseById(courseId);
+//        var userFullName = user.getFirstName() + " " + user.getLastName();
+//        var subject = "Поздравляем с успешным прохождением курса!";
+//        var pdfCertificate = certificateSenderService.generateCertificate(userFullName, course.getName());
+//
+//        emailSenderService.sendCertificate(
+//                user.getEmail(),
+//                subject,
+//                userFullName,
+//                course.getName(),
+//                pdfCertificate);
+//    }
 
 }

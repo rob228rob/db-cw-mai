@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.k_plus.internship.UserPackage.User;
 import com.k_plus.internship.UserPackage.UserService;
@@ -188,4 +190,17 @@ public class CourseService {
 
         return course.getUsers().contains(user);
     }
+
+    public Stream<Course> findAll() {
+        return courseRepository.findAll().stream();
+    }
+
+    @Transactional
+    public List<User> getUsersByCourseId(UUID courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found"));
+        course.getUsers().size(); // Принудительно загружаем пользователей
+        return new ArrayList<>(course.getUsers());
+    }
+
 }

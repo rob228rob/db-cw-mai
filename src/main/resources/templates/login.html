@@ -17,6 +17,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .container {
             background-color: #fff;
             padding: 40px;
@@ -26,6 +27,7 @@
             width: 100%;
             text-align: center;
         }
+
         h2 {
             font-family: 'Montserrat Alternates', sans-serif;
             color: #333;
@@ -33,19 +35,23 @@
             font-size: 24px;
             font-weight: 700;
         }
+
         .form-group {
             margin-bottom: 15px;
-            text-align: left;
+            text-align: center; /* Изменено с left на center */
         }
+
         label {
             font-size: 16px;
             color: #333;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
+            display: block; /* Добавлено для переноса меток на новую строку */
         }
+
         input[type="email"],
         input[type="password"] {
-            width: 100%;
+            width: 100%; /* Уменьшен размер поля для создания центровки */
             padding: 12px 15px;
             margin-top: 8px;
             border: 2px solid #4CAF50;
@@ -54,25 +60,34 @@
             font-family: 'Roboto', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
+            box-sizing: border-box; /* Добавлено для учёта padding в ширину */
         }
+
         input[type="email"]:focus,
         input[type="password"]:focus {
             border-color: #333;
         }
+
         .password-container {
             position: relative;
+            text-align: center; /* Центровка контейнера пароля */
         }
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: transparent;
+
+        button {
+            width: 100%; /* Центровка кнопки */
+            padding: 10px;
+            border-radius: 20px;
             border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
+            margin-top: 20px; /* Добавлено для отступа от остальных элементов */
+            transition: background-color 0.3s ease;
         }
-        .toggle-password.visible {
-            color: #4CAF50;
+
+        button:hover {
+            background-color: #45a049; /* Добавлено для эффекта при наведении */
         }
         button[type="submit"] {
             width: 100%;
@@ -112,11 +127,11 @@
     <h2>Вход</h2>
     <form id="login-form" action="/login" method="post">
         <div class="form-group">
-            <label for="email">Электронная почта:</label>
+<!--            <label for="email">Электронная почта:</label>-->
             <input type="email" id="email" name="username" placeholder="Введите свой email" required>
         </div>
         <div class="form-group">
-            <label for="password">Пароль:</label>
+<!--            <label for="password">Пароль:</label>-->
             <div class="password-container">
                 <input type="password" id="password" placeholder="Введите пароль" name="password" required>
                 <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>

@@ -38,18 +38,17 @@
             gap: 10px;
             flex-wrap: wrap; /* Кнопки будут оборачиваться, если не поместятся в одну строку */
             justify-content: center; /* Центрируем ссылки */
+            align-items: center;
             margin-top: 10px;
         }
         .header .links a.login {
             background-color: darkgreen; /* Цвет фона */
             color: white; /* Цвет текста */
-            font-size: 18px; /* Размер шрифта */
-            padding: 12px 20px; /* Отступы */
             border-radius: 30px; /* Округленные края */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Плавный переход */
             display: flex; /* Для выравнивания иконки и текста */
             align-items: center; /* Центрирование по вертикали */
+            justify-content: center;
         }
         .header .links a.login:hover {
             background-color: darkgreen; /* Более темный цвет при наведении */
@@ -69,106 +68,75 @@
             color: white;
             padding: 8px 15px;
             border: 2px solid #4CAF50;
-            border-radius: 20px;
+            border-radius: 30px;
             transition: background-color 0.3s ease, color 0.3s ease;
-            white-space: nowrap;
         }
         .header .links a:hover {
             background-color: #4CAF50;
             color: white;
         }
         .content {
-            flex: auto;
-            /* Увеличенный отступ сверху */
-            padding: 100px;
-        }
-        .description {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding: 2em;
-        }
-        .course-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 200px;
-        }
-        .course-card {
-            background-color: white;
-            border: 4px solid #4CAF50;
-            border-radius: 10px;
-            padding: 140px;
-            width: 200px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-            position: relative;
-            text-decoration: none;
-            color: inherit;
-        }
-        .header .links a.logout {
-            background-color: darkgreen; /* Красный цвет для кнопки выхода */
-            color: white; /* Цвет текста */
-        }
-
-        .header .links a.logout:hover {
-            background-color: #007BFF; /* Темно-красный при наведении */
-            color: white; /* Цвет текста при наведении */
-        }
-        .content {
-            flex: auto;
-            padding-top: 120px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+            flex: auto; /* Занимает оставшееся пространство */
+            padding-top: 30px; /* Отступы вокруг контента */
+            margin-top: 30px; /* Отступ снизу для размещения выше футера */
+            margin-bottom: 30px; /* Отступ сверху для размещения ниже заголовка */
+            overflow: auto; /* Позволяет прокручивать контент, если он выходит за границы */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .course-container {
+        .content {
+            flex: auto;
+            padding-top: 70px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+            padding-bottom: 30px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
+            flex-direction: column;
+            align-items: center;
         }
-        .course-card {
-            background-color: white;
-            border: 4px solid #4CAF50;
+        .intro {
+            background-color: #fff;
+            padding: 40px;
             border-radius: 10px;
-            padding: 100px;
-            width: 200px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-            position: relative;
-            text-decoration: none;
-            color: inherit;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            max-width: 800px;
         }
 
-        .course-card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .course-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
+        .intro h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
             color: #333;
         }
-        .course-card p {
-            font-size: 16px;
-            color: #555;
+
+        .description {
+            margin-bottom: 40px;
         }
-        .course-card .price-label {
-            font-size: 14px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
+
+        .description h2 {
+            font-size: 28px;
+            color: #4CAF50;
+        }
+
+        .cta-section {
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-button {
             background-color: #4CAF50;
             color: white;
-            border-radius: 5px;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-decoration: none;
+            border-radius: 30px;
+            border: 3px solid darkslategrey;
+            transition: background-color 0.3s ease;
         }
-        .course-card .price-label.free {
-            background-color: #4CAF50;
-        }
-        .course-card .price-label.paid {
-            background-color: #FF5722;
+
+        .cta-button:hover {
+            background-color: #388E3C;
         }
         .footer {
             width: 100%;
@@ -211,16 +179,20 @@
 </div>
 
 <div class="content">
-    <div class="description">
-        Привет! Мы создали проект, который помогает творческим людям больше
-        узнать о своих правах как авторов.
-        На нашей обучающей платформе ты
-        сможешь найти курсы, которые помогут тебе в решении правовых
-        вопросов в твоей творческой деятельности.
-        При успешном прохождении курса тебе на почту будет выслан сертификат, подтверждающий факт прохождения!
-    </div>
-    <div class="course-container" id="course-container">
-
+    <div class="intro">
+        <h1>Добро пожаловать на платформу правоТворчества!</h1>
+        <p>Здесь вы узнаете о ваших правах как творческих авторов, научитесь защищать свои произведения и получите все необходимые знания для успешной работы в правовой среде.</p>
+        <h2>Что мы предлагаем?</h2>
+        <p>
+            Наш проект создан для того, чтобы помочь вам разобраться в юридических аспектах творческой деятельности. Мы предлагаем курсы, которые помогут вам защитить свои права и успешно развиваться в профессии.
+        </p>
+        <p>
+            При успешном завершении курса вы получите сертификат, который будет выслан вам на почту!
+        </p>
+        <div class="cta-section">
+            <h2>Присоединяйтесь к нам уже сегодня и получи доступ к бесплатным курсам!</h2>
+            <a href="/signup" class="cta-button">Зарегистрироваться</a>
+        </div>
     </div>
 </div>
 
@@ -229,52 +201,6 @@
 </div>
 
 <script>
-    async function loadCourses() {
-        try {
-            const response = await fetch('/api/v1/courses/get-all');
-            if (response.status === 404) {
-                createTestCourseCard();
-            } else if (response.ok) {
-                const courses = await response.json();
-                const courseContainer = document.getElementById('course-container');
-                if (courses.length > 0) {
-                    courses.forEach(course => {
-                        const courseCard = document.createElement('a');
-                        courseCard.className = 'course-card';
-                        courseCard.href = `/courses/${course.id}`;
-                        courseCard.innerHTML = `
-                            <h3>${course.name}</h3>
-                            <p>${course.description}</p>
-                        `;
-                        courseContainer.appendChild(courseCard);
-                    });
-                } else {
-                    createTestCourseCard();
-                }
-            } else {
-                console.error('Ошибка при загрузке курсов:', response.status);
-            }
-        } catch (error) {
-            console.error('Ошибка при загрузке курсов:', error);
-            createTestCourseCard();
-        }
-    }
-
-    function createTestCourseCard() {
-        const courseContainer = document.getElementById('course-container');
-        const testCard = document.createElement('a');
-        testCard.className = 'course-card';
-        testCard.href = '#';
-        testCard.innerHTML = `
-            <div class="course-icon">
-                <img src="https://via.placeholder.com/24" alt="Test Course Icon">
-            </div>
-            <h3>Тестовый курс</h3>
-            <p>Описание тестового курса. Здесь будет информация о курсе, когда она появится.</p>
-        `;
-        courseContainer.appendChild(testCard);
-    }
-
     async function checkLoginStatus() {
         try {
             const response = await fetch('/api/v1/user/get/current');
@@ -284,12 +210,9 @@
                 document.querySelector('.login').remove(); // Удаляем кнопку "Войти"
                 const linksContainer = document.querySelector('.links');
 
-                // Добавляем кнопку "Выйти"
-                const logoutLink = document.createElement('a');
-                logoutLink.href = '/logout';
-                logoutLink.className = 'logout';
-                logoutLink.textContent = 'Выйти';
-                linksContainer.appendChild(logoutLink);
+                const ctaButton = document.querySelector('.cta-button');
+                ctaButton.textContent = 'Курсы';
+                ctaButton.href = '/courses';
             }
         } catch (error) {
             console.error('Ошибка проверки авторизации:', error);
@@ -300,7 +223,7 @@
         const currentPath = window.location.pathname;
         const links = document.querySelectorAll('.header .links a');
         checkLoginStatus(); // Проверяем статус авторизации
-        loadCourses();
+        //loadCourses();
     });
 
 
