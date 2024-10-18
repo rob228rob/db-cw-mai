@@ -28,6 +28,14 @@ public class UserAnswer {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

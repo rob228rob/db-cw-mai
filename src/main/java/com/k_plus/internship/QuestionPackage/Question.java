@@ -29,7 +29,7 @@ public class Question {
     @Id
     private UUID id;
 
-    @Column(name = "question_text")
+    @Column(name = "question_text", length = 1023)
     private String questionText;
 
     @ManyToOne
