@@ -27,10 +27,10 @@ public class StatisticsService {
     public StatResponseDto findStatsRankByCourse(UUID courseId, UUID userId) {
         List<Testing> testingList = testingService.findAllTestsByCourseId(courseId);
         log.info("testingList size: {}", testingList.size());
-
         if (testingList.isEmpty()) {
-            throw new TestingNotFoundException("tests by course id not found: " + courseId);
+            throw new TestingNotFoundException("SERVICE STATISTICS: tests by course id not found: " + courseId);
         }
+        var questionsCount = testingList.stream().map(Testing::getQuestionCount).reduce(0, Integer::sum);
 
         var ansList = testingList.stream()
                 .map(x -> {
@@ -46,16 +46,9 @@ public class StatisticsService {
                                 list1.get(0) + list2.get(0),
                                 list1.get(1) + list2.get(1)));
 
+        var totalQuestionsCount = Math.max(questionsCount, ansList.get(1));
         var userRank = userRatingService.calcUserRatingByCourse(userId, courseId);
-        var percentageCorrect = ((double) ansList.get(0) / ansList.get(1)) * 100;
-
-//        if (percentageCorrect >= 80) {
-//            try {
-//                generateAndSendPDFCertificate(userId, courseId);
-//            } catch (DocumentException | MessagingException | IOException e) {
-//                log.error("Creating pdf error: {}; Certificate did not send; {}", e.getMessage(), e.getStackTrace());
-//            }
-//        }
+        var percentageCorrect = ((double) ansList.get(0) / totalQuestionsCount) * 100;
 
         return StatResponseDto.builder()
                 .rank(userRank)

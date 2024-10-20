@@ -32,7 +32,7 @@ public class QuestionService {
     private final OptionService optionService;
 
     //TODO: Refactor and simplify method!
-    @Transactional
+    @Transactional()
     public QuestionResponseDto addQuestion(QuestionRequestDto questionDto) {
         //var question1 = modelMapper.map(questionDto, Question.class);
         var question1 = new Question();
@@ -56,14 +56,11 @@ public class QuestionService {
             return option;
         }).collect(Collectors.toList());
 
-        log.debug("\n\n\nSET OPTIONS SAVED!!!\n\n\n" + question.getId());
         question.setOptions(options);
-
-        log.debug("\n\n\nNOTSAVED!!!\n\n\n" + question.getId());
         Question savedQuestion = questionRepository.save(question);
-        log.debug("\n\n\nSAVED!!!\n\n\n" + savedQuestion.getId());
-        //optionService.saveAllOptions(options);
-
+        log.debug("\n\n\nSAVED: {}!!!\n\n\n", savedQuestion.getId());
+        test.setQuestionCount(test.getQuestionCount().equals(0) ? 1 : test.getQuestionCount() + 1);
+        testingService.saveTesting(test);
         var responseDto = modelMapper.map(savedQuestion, QuestionResponseDto.class);
         responseDto.setTestId(questionDto.getTestId());
         responseDto.setOptions(questionDto.getOptions()

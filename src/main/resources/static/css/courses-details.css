@@ -2,8 +2,8 @@
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    height: 100vh;
+    padding:0;
+    height: 100%;
     background-color: #f9f9f9;
     display: flex;
     flex-direction: column;
@@ -38,7 +38,7 @@ body {
     font-size: 18px; /* Размер шрифта */
     padding: 12px 20px; /* Отступы */
     border-radius: 30px; /* Округленные края */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0); /* Тень */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Плавный переход */
     display: flex; /* Для выравнивания иконки и текста */
     align-items: center; /* Центрирование по вертикали */
@@ -73,25 +73,25 @@ body {
 }
 .content {
     flex: auto; /* Занимает оставшееся пространство */
-    padding-top: 40px; /* Отступы вокруг контента */
-    margin-top: 40px; /* Отступ снизу для размещения выше футера */
-    margin-bottom: 40px; /* Отступ сверху для размещения ниже заголовка */
+    padding-top: 20px; /* Отступы вокруг контента *!*/
+    margin-top: 20px; /* Отступ снизу для размещения выше футера */
+    margin-bottom: 20px; /* Отступ сверху для размещения ниже заголовка */
     overflow: auto; /* Позволяет прокручивать контент, если он выходит за границы */
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 .course-container {
+    padding: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
     overflow: auto;
+    height: 100%;
 }
 
-.course-card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
 .course-card h3 {
     font-size: 22px;
     margin-bottom: 10px;
@@ -102,7 +102,7 @@ body {
     color: #555;
 }
 .course-card .price-label {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     position: absolute;
     top: 10px;
@@ -155,19 +155,14 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
+    padding-bottom: 40px;
     background-color: #ffffff;
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     height: 90%; /* Занимает 90% высоты экрана */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.course-container:hover {
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
 }
 
 .course-details h3 {
@@ -201,41 +196,52 @@ body {
 }
 
 .item-list {
+    font-size: 18px;
     list-style: none;
     padding: 0;
     flex-grow: 0.85; /* Список занимает оставшееся место */
 }
 
 .item-list li {
-    background-color: #f9f9f9;
     margin: 10px 0;
-    padding: 15px;
+    padding: 0; /* Убираем внутренние отступы у li */
     border-radius: 10px;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    list-style: none;
 }
-
-.item-list li:hover {
-    background-color: #eeeeee;
-    transform: translateX(5px);
-}
-
 .item-list li a {
-    color: #007BFF;
-    text-decoration: none;
-    font-weight: 500;
+    display: flex; /* Активируем Flexbox */
+    justify-content: space-between; /* Выравниваем контент по ширине: начало и конец */
+    align-items: center; /* Вертикальное центрирование */
+    padding: 15px; /* Внутренние отступы для всего элемента */
+    background-color: #f9f9f9; /* Цвет фона */
+    border-radius: 10px; /* Закругленные углы */
+    text-decoration: none; /* Отменяем подчеркивание */
+    color: #333; /* Цвет текста */
+    transition: background-color 0.3s ease; /* Плавное изменение фона при наведении */
 }
 
-.item-list li a:hover {
-    text-decoration: underline;
+.item-header {
+    flex-grow: 1; /* Элемент заголовка занимает всё доступное пространство */
+    margin-right: 20px; /* Добавляем небольшой отступ справа */
 }
 
 .item-type {
-    font-size: 14px;
-    color: #999;
-    font-style: italic;
+    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+    font-size: 18px; /* Размер шрифта для типа элемента */
+    color: #999; /* Цвет текста */
+    font-style: italic; /* Курсивное начертание */
+}
+
+
+
+.item-list li a:hover {
+    background-color: #eeeeee; /* Фон при наведении */
+}
+
+.item-list li a.disabled-link {
+    color: gray;
+    pointer-events: none; /* Делаем ссылку некликабельной */
 }
 
 .item-index {

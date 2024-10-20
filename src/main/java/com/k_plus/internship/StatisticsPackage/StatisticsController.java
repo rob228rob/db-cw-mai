@@ -23,4 +23,10 @@ public class StatisticsController {
         return ResponseEntity
                 .ok(statisticsService.findStatsRankByCourse( courseId, userId));
     }
+
+    @GetMapping("/get-by-test")
+    public ResponseEntity<StatResponseDto> getUserRankByTest(@RequestParam UUID testId, @RequestParam UUID userId) {
+        return ResponseEntity
+                .ok(statisticsService.findStatsRankByCourse(testId, userId));
+    }
 }
