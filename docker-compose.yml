@@ -2,7 +2,7 @@ services:
   k_plus_app:
     build: .
     ports:
-      - "8080:8084"
+      - "8084:8084"
     depends_on:
       - main_db
     environment:

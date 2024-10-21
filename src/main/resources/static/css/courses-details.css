@@ -71,6 +71,10 @@ body {
     background-color: #4CAF50;
     color: white;
 }
+.return-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
 .content {
     flex: auto; /* Занимает оставшееся пространство */
     padding-top: 20px; /* Отступы вокруг контента *!*/
@@ -260,7 +264,48 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для создания глубины */
     margin: 20px 0; /* Отступы сверху и снизу */
 }
+/* Контейнер для статьи */
+.article-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
+/* Стили для содержимого статьи */
+.article-card {
+    margin-bottom: 20px;
+}
+
+.article-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.article-content {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Контейнер для кнопки */
+.return-button-container {
+    text-align: center;
+    margin: 60px;
+}
+
+/* Стили для кнопки */
+.return-button {
+    background-color: #28a745; /* Зеленый цвет */
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.return-button:hover {
+    background-color: #218838; /* Темно-зеленый при наведении */
+}
 /* Заголовки внутри контента статьи */
 .article-content h1,
 .article-content h2,
@@ -294,7 +339,7 @@ body {
 
 /* Стилизация ссылок */
 .article-content a {
-    color: #007BFF; /* Цвет ссылок */
+    color: green; /* Цвет ссылок */
     text-decoration: none; /* Убираем подчеркивание */
 }
 

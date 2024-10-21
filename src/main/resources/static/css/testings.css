@@ -59,6 +59,60 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+/* Затемнение фона */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Окно результата */
+.result-window {
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+}
+
+.result-window .result-message {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Контейнер для кнопок */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Чтобы кнопки переносились на новую строку при недостатке места */
+}
+
+.result-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    flex: 1 1 auto; /* Кнопки будут растягиваться равномерно */
+    max-width: 200px; /* Максимальная ширина кнопки */
+}
+
+.result-button:hover {
+    background-color: green;
+}
+
 .testing-container {
     background-color: white;
     padding: 20px;
