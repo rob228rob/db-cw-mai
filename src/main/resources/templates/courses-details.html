@@ -21,6 +21,12 @@
 </div>
 
 <div class="content">
+    <div id="certificateModal" class="modal">
+        <div class="modal-content">
+            <p>Сертификат будет выслан на вашу почту при прохождении всех тестов в рамках данного курса с правильностью от 80% и выше. Если не получилось пройти тест с первого раза, вы всегда можете попробовать снова!</p>
+            <button class="close-btn" id="closeModalBtn">Закрыть</button>
+        </div>
+    </div>
     <div class="course-container" id="course-container">
         <!-- Информация о курсе будет загружена сюда -->
     </div>
@@ -100,8 +106,17 @@
         <h3>${course.name}</h3>
         <p>${course.description}</p>
         <button id="enroll-btn">Записаться на курс</button>
+        <span class="certificate-link" id="certificateLink">Условия получения сертификата</span>
     `;
         courseContainer.appendChild(courseDetails);
+
+        document.getElementById('certificateLink').addEventListener('click', () => {
+            document.getElementById('certificateModal').style.display = 'block';
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('certificateModal').style.display = 'none';
+        });
 
         // Проверка на наличие записи на курс
         const isEnrolled = await checkEnrollment(course.id);
@@ -210,6 +225,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+        // Закрытие модального окна при клике вне его
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('certificateModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
         await loadUserId();
         await loadCourse();
     });

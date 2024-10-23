@@ -2,10 +2,10 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/courses-details.css">
   <title>правоТворчества</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+  <link rel="stylesheet" href="/css/courses-details.css">
 </head>
 <body>
 <div class="header">
@@ -16,23 +16,21 @@
     <a href="/home">Главная</a>
     <a href="/profile">Профиль</a>
     <a href="/courses">Курсы</a>
-<!--    <a href="/logout" class="logout">Выйти</a>-->
   </div>
 </div>
 
 <div class="content">
   <div class="article-container" id="article-container">
-    <div class="article-form-container"> <!-- Контейнер с ограниченной шириной -->
-      <!-- Сюда будет загружаться динамическая статья -->
-    </div>
+    <!-- Сюда будет загружаться динамическая статья -->
+  </div>
+
+  <!-- Добавляем кнопку вне article-container -->
+  <div class="return-button-container">
+    <button class="return-button" id="return-button">Вернуться к курсу</button>
   </div>
 </div>
 
-
 <div class="footer">
-  <footer>
-      <span style="color: #4CAF50;">©️ ПравоТворчества 2024</span>
-  </footer>
   <a href="/report-issue"><b>Обратная связь</b></a>
 </div>
 
@@ -41,8 +39,8 @@
     const urlPath = window.location.pathname;
     const parts = urlPath.split('/');
     return {
-      courseId: parts[2],  // Предполагается, что courseId в позиции 2
-      articleId: parts[4]  // Предполагается, что articleId в позиции 4
+      courseId: parts[2],
+      articleId: parts[4]
     };
   }
 
@@ -70,20 +68,24 @@
     const articleContainer = document.getElementById('article-container');
     articleContainer.innerHTML = ''; // Очищаем предыдущий контент
 
-    const articleForm = document.createElement('div');
-    articleForm.className = 'article-form-container'; // Класс для формы
+    // Создаем содержимое статьи
+    const articleContent = document.createElement('div');
+    articleContent.className = 'article-card';
 
-    articleForm.innerHTML = `
-    <div class="article-card">
-      <h3 class="article-title">${article.title}</h3>
-      <div class="article-content">${article.content}</div>
-    </div>
-  `;
+    articleContent.innerHTML = `
+            <h3 class="article-title">${article.title}</h3>
+            <div class="article-content">${article.content}</div>
+        `;
 
-    articleContainer.appendChild(articleForm);
+    // Добавляем содержимое статьи в articleContainer
+    articleContainer.appendChild(articleContent);
   }
 
-
+  // Добавляем обработчик события для кнопки
+  document.getElementById('return-button').addEventListener('click', () => {
+    const { courseId } = getCourseIdFromUrl();
+    window.location.href = `/courses/${courseId}`;
+  });
 
   loadArticle();
 </script>

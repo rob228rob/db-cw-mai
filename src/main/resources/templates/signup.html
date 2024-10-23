@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .container {
             background-color: #fff;
             padding: 40px;
@@ -25,14 +26,7 @@
             width: 100%;
             text-align: center;
         }
-        a {
-            color: #4CAF50; /* Устанавливаем цвет ссылки */
-            text-decoration: none;
-            font-weight: 500;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+
         h2 {
             font-family: 'Montserrat Alternates', sans-serif;
             color: #333;
@@ -40,20 +34,23 @@
             font-size: 24px;
             font-weight: 700;
         }
+
         .form-group {
             margin-bottom: 15px;
-            text-align: left;
+            text-align: left; /* Оставлено как есть, чтобы метки были слева */
         }
+
         label {
             font-size: 16px;
             color: #333;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            width: 100%;
+            width: 100%; /* Установлено на 100% */
             padding: 12px 15px;
             margin-top: 8px;
             border: 2px solid #4CAF50;
@@ -62,12 +59,24 @@
             font-family: 'Roboto', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
+            position: relative;
+            display: flex; /* Оставлено для выравнивания кнопки */
+            box-sizing: border-box;
         }
+
         input:focus {
             border-color: #333;
         }
+
+        .password-container,
+        .confirm-password-container {
+            position: relative;
+            display: flex; /* Оставлено для выравнивания кнопки */
+            align-items: center; /* Центровка по вертикали */
+        }
+
         button[type="button"] {
-            width: 100%;
+            width: 100%; /* Установлено на 100% */
             padding: 12px 0;
             margin-top: 20px;
             background-color: #4CAF50;
@@ -80,14 +89,35 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button[type="button"]:hover {
             background-color: #333;
         }
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
         .error-message {
-            color:red;
-            font-size :14px;
-            margin-bottom :15px;
-            display:none; /* Скрываем сообщение об ошибке по умолчанию */
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .error-message error-text {
+            color: red;
         }
     </style>
 </head>
@@ -169,13 +199,14 @@
                 } else {
                     return response.json().then(data => {
                         document.getElementById('error-message').style.display = 'block';
-                        document.getElementById('error-text').textContent = data.error || 'Неправильная почта или пароль';
+                        document.getElementById('error-text').textContent = data.error || 'Почта уже существует или слабый пароль';
                     });
                 }
             })
             .catch(error => {
                 document.getElementById('error-message').style.display = 'block';
-                document.getElementById('error-text').textContent = 'Неправильная почта и пароль';
+                document.getElementById('error-text').style.color = 'red';
+                document.getElementById('error-text').textContent = error.body || 'Почта уже существует или слабый пароль';
             });
     });
 </script>
