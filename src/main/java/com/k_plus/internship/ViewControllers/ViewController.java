@@ -62,4 +62,9 @@ public class ViewController {
     public String testingDetails(@PathVariable UUID courseId, @PathVariable UUID testId, Model model) {
         return "testing-details";
     }
+
+    @GetMapping("/agreement")
+    public String agreement() {
+        return "UserAgreement";
+    }
 }

@@ -16,7 +16,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .container {
             background-color: #fff;
             padding: 40px;
@@ -26,7 +25,14 @@
             width: 100%;
             text-align: center;
         }
-
+        a {
+            color: #4CAF50; /* Устанавливаем цвет ссылки */
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
         h2 {
             font-family: 'Montserrat Alternates', sans-serif;
             color: #333;
@@ -34,23 +40,20 @@
             font-size: 24px;
             font-weight: 700;
         }
-
         .form-group {
             margin-bottom: 15px;
-            text-align: left; /* Оставлено как есть, чтобы метки были слева */
+            text-align: left;
         }
-
         label {
             font-size: 16px;
             color: #333;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
         }
-
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            width: 100%; /* Установлено на 100% */
+            width: 100%;
             padding: 12px 15px;
             margin-top: 8px;
             border: 2px solid #4CAF50;
@@ -59,24 +62,12 @@
             font-family: 'Roboto', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
-            position: relative;
-            display: flex; /* Оставлено для выравнивания кнопки */
-            box-sizing: border-box;
         }
-
         input:focus {
             border-color: #333;
         }
-
-        .password-container,
-        .confirm-password-container {
-            position: relative;
-            display: flex; /* Оставлено для выравнивания кнопки */
-            align-items: center; /* Центровка по вертикали */
-        }
-
         button[type="button"] {
-            width: 100%; /* Установлено на 100% */
+            width: 100%;
             padding: 12px 0;
             margin-top: 20px;
             background-color: #4CAF50;
@@ -89,128 +80,102 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         button[type="button"]:hover {
             background-color: #333;
         }
-
-        p {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #333;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
         .error-message {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 15px;
+            color:red;
+            font-size :14px;
+            margin-bottom :15px;
+            display:none; /* Скрываем сообщение об ошибке по умолчанию */
         }
-
     </style>
 </head>
 <body>
 <div class="container">
-
     <h2>Регистрация</h2>
 
     <!-- Сообщение об ошибке -->
-    <div id="error-message" style="display: none;" class="error-message">
+    <div id="error-message" class="error-message">
         <p id="error-text"></p>
     </div>
 
     <form id="signup-form">
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" id="name" name="name" placeholder="Введите имя" required>
+            <input type="text" id="name" name="name" required>
         </div>
         <div class="form-group">
             <label for="surname">Фамилия</label>
-            <input type="text" id="surname" name="surname" placeholder="Введите фамилию"required>
+            <input type="text" id="surname" name="surname" required>
         </div>
         <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Введите email" required>
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" name="email" required>
         </div>
         <div class="form-group">
             <label for="password">Пароль</label>
-            <div class="password-container">
-                <input type="password" id="password" minlength="8" name="password" placeholder="Введите пароль" required>
-                <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
-<!--                <button type="button" id="togglePassword" class="toggle-password">👁</button>-->
-
-            </div>
+            <input type="password" id="password" minlength="8" name="password" required>
         </div>
         <div class="form-group">
-            <label for="password2">Подтвержденный пароль</label>
-            <div class="confirm-password-container">
-                <input type="password" id="password2" minlength="8" name="password2" placeholder="Подтвердите пароль" required>
-                <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
-<!--                <button type="button" id="togglePassword2" class="toggle-password">👁</button>-->
-            </div>
+            <label for="password2">Подтвердите пароль</label>
+            <input type="password" id="password2" minlength="8" name="password2" required>
         </div>
+
+        <!-- Чекбокс для подтверждения соглашения -->
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="agreement" required>
+                Нажимая «Зарегистрироваться» вы подтверждаете согласие с <a href="/agreement">пользовательским соглашением</a>.
+            </label>
+        </div>
+
         <button type="button" id="submit-button">Зарегистрироваться</button>
         <p>Уже есть аккаунт? <a href="/login">Войти</a></p>
     </form>
 </div>
 
 <script>
-    function show_hide_password(target){
-        var input = document.getElementById('password-input');
-        if (input.getAttribute('type') === 'password') {
-            target.classList.add('view');
-            input.setAttribute('type', 'text');
-        } else {
-            target.classList.remove('view');
-            input.setAttribute('type', 'password');
-        }
-        return false;
-    }
-
     document.getElementById('submit-button').addEventListener('click', function(event) {
-        //event.preventDefault(); // Предотвращаем стандартное действие формы
+        const agreementCheckbox = document.getElementById('agreement');
+
+        // Проверка наличия галочки соглашения
+        if (!agreementCheckbox.checked) {
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-text').textContent = 'Чтобы зарегистрироваться, вам нужно согласиться с пользовательским соглашением';
+            return; // Прекращаем выполнение функции
+        }
 
         // Собираем данные из формы
         const formData = {
-            first_name: document.getElementById('name').value,
-            last_name: document.getElementById('surname').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            confirm_password: document.getElementById('password2').value
+            first_name : document.getElementById('name').value,
+            last_name : document.getElementById('surname').value,
+            email : document.getElementById('email').value,
+            password : document.getElementById('password').value,
+            confirm_password : document.getElementById('password2').value
         };
 
         // Отправляем данные на сервер
         fetch('/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
             },
-            body: JSON.stringify(formData)
+            body : JSON.stringify(formData)
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/profile';
+                    window.location.href = '/profile'; // Перенаправление на профиль
                 } else {
                     return response.json().then(data => {
                         document.getElementById('error-message').style.display = 'block';
-                        document.getElementById('error-text').textContent = data.error || 'Произошла ошибка';
+                        document.getElementById('error-text').textContent = data.error || 'Неправильная почта или пароль';
                     });
                 }
             })
             .catch(error => {
-                alert("Bad req")
                 document.getElementById('error-message').style.display = 'block';
-                document.getElementById('error-text').textContent = 'Произошла ошибка';
+                document.getElementById('error-text').textContent = 'Неправильная почта и пароль';
             });
     });
 </script>

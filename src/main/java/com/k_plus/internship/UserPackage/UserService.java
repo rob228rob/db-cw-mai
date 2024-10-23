@@ -40,6 +40,9 @@ public class UserService {
         if (!registerUserRequest.getPassword().equals(registerUserRequest.getConfirmPassword())) {
             throw new InvalidUserInfoException("Password and confirm password does not equals");
         }
+        if (registerUserRequest.getPassword().length() < 6) {
+            throw new InvalidUserInfoException("Password cannot be the same as confirm password");
+        }
 
         User user = modelMapper.map(registerUserRequest, User.class);
         user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));

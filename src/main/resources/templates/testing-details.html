@@ -30,6 +30,9 @@
 </div>
 
 <div class="footer">
+    <footer>
+        <span style="color: #4CAF50;">©️ ПравоТворчества 2024</span>
+    </footer>
     <a href="/report-issue"><b>Обратная связь</b></a>
 </div>
 
@@ -235,97 +238,27 @@
         });
 
         // Подсвечиваем ответы в зависимости от правильности
-        let correctCount = 0;
         options.forEach(option => {
             const questionBlock = document.querySelector(`#question-${option.question_id}`);
             if (questionBlock) {
                 const answerOption = questionBlock.querySelector(`input[value="${option.option_id}"]`);
 
-                // Если это вариант, который выбрал пользователь
-                if (userAnswers[option.question_id] === option.option_id) {
-                    if (option.correct) {
-                        answerOption.parentElement.style.backgroundColor = "#D4EDDA"; // Правильный ответ
-                        correctCount++; // Увеличиваем счетчик правильных ответов
-                    } else {
-                        answerOption.parentElement.style.backgroundColor = "#F8D7DA"; // Неправильный ответ
-                    }
+                // Проверяем, является ли ответ правильным
+                if (option.correct) {
+                    answerOption.parentElement.style.backgroundColor = "#D4EDDA"; // Подсветить правильный вариант
                 } else {
-                    // Подсвечиваем правильный вариант, если пользователь его не выбрал
-                    if (option.correct) {
-                        const correctOption = questionBlock.querySelector(`input[value="${option.option_id}"]`);
-                        correctOption.parentElement.style.backgroundColor = "#D4EDDA";
+                    answerOption.parentElement.style.backgroundColor = "#F8D7DA"; // Подсветить неверный вариант
+                }
+
+                // Если это вариант, который выбрал пользователь, подсвечиваем его
+                if (userAnswers[option.question_id] === option.option_id) {
+                    if (!option.correct) {
+                        answerOption.parentElement.style.backgroundColor = "#F8D7DA"; // Подсветить неверный вариант
                     }
                 }
             }
         });
-
-        // Рассчитываем процент правильных ответов
-        const totalQuestions = options.length;
-        const accuracy = (correctCount / totalQuestions) * 100;
-
-        // Отображаем окно с результатом
-        showResultWindow(accuracy);
     }
-
-    function showResultWindow(accuracy) {
-        // Создаем затемнение фона
-        const overlay = document.createElement('div');
-        overlay.id = 'overlay';
-        overlay.className = 'overlay';
-
-        // Создаем окно результата
-        const resultWindow = document.createElement('div');
-        resultWindow.className = 'result-window';
-
-        const message = document.createElement('p');
-        message.className = 'result-message';
-
-        // Устанавливаем текст сообщения в зависимости от результата
-        if (accuracy >= 80) {
-            message.textContent = `Поздравляем! Вы набрали ${accuracy.toFixed(1)}%.`;
-        } else {
-            message.textContent = `К сожалению, вы набрали только ${accuracy.toFixed(1)}%. Возможно, этого будет недостаточно для получения сертификата.`;
-        }
-
-        // Создаем контейнер для кнопок
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'button-container';
-
-        // Создаем кнопки
-        const retryButton = document.createElement('button');
-        retryButton.textContent = 'Попробовать снова';
-        retryButton.className = 'result-button';
-        retryButton.addEventListener('click', () => {
-            window.location.reload(); // Перезагрузить страницу для повторного прохождения теста
-        });
-
-        const courseButton = document.createElement('button');
-        courseButton.textContent = 'К курсу';
-        courseButton.className = 'result-button';
-        courseButton.addEventListener('click', () => {
-            window.location.href = `/courses/${getCourseIdFromUrl().courseId}`; // Переход на страницу курса
-        });
-
-        // Добавляем кнопки в контейнер
-        buttonContainer.appendChild(retryButton);
-        buttonContainer.appendChild(courseButton);
-
-        // Собираем модальное окно
-        resultWindow.appendChild(message);
-        resultWindow.appendChild(buttonContainer);
-
-        // Добавляем обработчик для закрытия окна при клике вне его
-        overlay.addEventListener('click', function(event) {
-            if (event.target === overlay) {
-                overlay.remove(); // Удаляем модальное окно
-            }
-        });
-
-        overlay.appendChild(resultWindow);
-        document.body.appendChild(overlay);
-    }
-
-
 
 
     fetchUserId();
