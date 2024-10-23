@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                                         "js/**",
                                         "/home",
                                         "/signup",
-                                "/agreement"
+                                        "/agreement"
                                 ).permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .anyRequest().authenticated())

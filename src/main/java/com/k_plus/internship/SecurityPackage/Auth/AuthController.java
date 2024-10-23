@@ -46,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
-            @RequestBody UserRegisterDto userRegisterDto) {
+            @Valid @RequestBody UserRegisterDto userRegisterDto) {
         if (userService.existsByEmail(userRegisterDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this login already exists");
         }

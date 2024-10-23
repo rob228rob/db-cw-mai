@@ -199,7 +199,8 @@
                 } else {
                     return response.json().then(data => {
                         document.getElementById('error-message').style.display = 'block';
-                        document.getElementById('error-text').textContent = data.error || 'Почта уже существует или слабый пароль';
+                        document.getElementById('error-text').style.color = 'red';
+                        document.getElementById('error-text').textContent = data.message || 'Почта уже существует или слабый пароль';
                     });
                 }
             })

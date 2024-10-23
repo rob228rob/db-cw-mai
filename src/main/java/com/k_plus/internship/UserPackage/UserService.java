@@ -37,11 +37,18 @@ public class UserService {
     }
 
     public UserResponseDto saveUser(UserRegisterDto registerUserRequest) {
+        //TODO: validation need to be in the dto class! :(
         if (!registerUserRequest.getPassword().equals(registerUserRequest.getConfirmPassword())) {
-            throw new InvalidUserInfoException("Password and confirm password does not equals");
+            throw new InvalidUserInfoException("Пароль и подтверждённый пароль не совпадают");
         }
-        if (registerUserRequest.getPassword().length() < 6) {
-            throw new InvalidUserInfoException("Password cannot be the same as confirm password");
+        if (registerUserRequest.getPassword().length() < 8) {
+            throw new InvalidUserInfoException("Пароль должен содержать минимум 8 символов");
+        }
+        if (registerUserRequest.getEmail().length() < 4 || !registerUserRequest.getEmail().contains("@")) {
+            throw new InvalidUserInfoException("Email должен быть настоящим");
+        }
+        if (registerUserRequest.getFirstName().length() < 3 || registerUserRequest.getLastName().length() < 2) {
+            throw new InvalidUserInfoException("Введите настоящие имя и фамилию");
         }
 
         User user = modelMapper.map(registerUserRequest, User.class);
