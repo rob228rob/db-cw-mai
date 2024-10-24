@@ -107,7 +107,9 @@
         <p>${course.description}</p>
         <button id="enroll-btn">Записаться на курс</button>
         <span class="certificate-link" id="certificateLink">Условия получения сертификата</span>
-    `;
+        <!-- Добавленная дата актуальности -->
+        <p class="course-date">Информация в статьях актуальна на: 21.10.2024</p>
+        `;
         courseContainer.appendChild(courseDetails);
 
         document.getElementById('certificateLink').addEventListener('click', () => {

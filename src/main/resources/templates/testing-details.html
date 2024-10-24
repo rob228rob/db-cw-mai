@@ -67,7 +67,7 @@
     async function loadQuestions(questionIds) {
         const testingContainer = document.getElementById('testing-container');
         testingContainer.innerHTML += '<h3>Вопросы:</h3>';
-
+        questionIds.sort((a,b) => a.id < b.id)
         for (const questionId of questionIds) {
             try {
                 const response = await fetch(`/api/v1/questions/get/${questionId}`);
