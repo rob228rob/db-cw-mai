@@ -1,0 +1,35 @@
+package com.mai.db_cw_rbl.UserPackage;
+
+import java.time.LocalDateTime;
+import java.util.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+
+    private UUID id;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private String password;
+
+    private boolean enabled;
+
+    private boolean tokenExpired;
+
+    private LocalDateTime creationTime;
+
+    private LocalDateTime modifiedTime;
+}

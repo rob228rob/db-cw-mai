@@ -3,312 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль</title>
+    <title>правовая поддержка</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            background-color: #333;
-            width: 100%;
-            height: auto; /* Фиксированная высота шапки */
-            padding: 20px;
-            font-size: 28px;
-            color: #4CAF50;
-            font-family: 'Montserrat Alternates', sans-serif;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            box-sizing: border-box;
-        }
-        .header .links {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap; /* Кнопки будут оборачиваться, если не поместятся в одну строку */
-            justify-content: center; /* Центрируем ссылки */
-            margin-top: 10px;
-        }
-        .header .links a.logout {
-            background-color: darkgreen; /* Красный цвет для кнопки выхода */
-            color: white; /* Цвет текста */
-        }
-
-        .header .links a.logout:hover {
-            background-color: #007BFF; /* Темно-красный при наведении */
-            color: white; /* Цвет текста при наведении */
-        }
-        .header .links a {
-            text-decoration: none;
-            font-size: 16px;
-            color: white;
-            padding: 8px 15px;
-            border: 2px solid #4CAF50;
-            border-radius: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .header .links a:hover {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .content {
-            flex: auto;
-            padding-top: 120px;
-            padding-bottom: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .user-info {
-            background-color: white;
-            border: 4px solid #4CAF50;
-            border-radius: 10px;
-            padding: 20px;
-            width: 400px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .user-info h2 {
-            margin: 0;
-            font-size: 26px;
-            color: #333;
-        }
-        .user-info p {
-            margin: 10px 0;
-            font-size: 18px;
-            color: #555;
-        }
-        .course-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .course-card {
-            background-color: white;
-            border: 4px solid #4CAF50;
-            border-radius: 10px;
-            padding: 60px;
-            width: 200px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-            position: relative;
-            text-decoration: none;
-            color: inherit;
-        }
-        .course-card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .course-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        .course-card p {
-            font-size: 16px;
-            color: #555;
-        }
-        .header .links a.active {
-            border-color: white; /* Изменение обводки */
-            background-color: #4CAF50; /* Изменение фона */
-            color: white; /* Изменение цвета текста */
-        }
-        /* Стили для заголовка таблицы */
-        .table-title {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Общие стили для таблицы */
-        .course-table {
-            width: 80%; /* Ширина таблицы */
-            /* Центрирование таблицы */
-            border-collapse: collapse; /* Убираем пробелы между ячейками */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для таблицы */
-            border-radius: 10px; /* Закругление углов */
-            overflow: hidden; /* Убираем выступающие углы */
-            background-color: white; /* Фоновый цвет таблицы */
-            margin: 0 auto 30px;
-        }
-
-        /* Стили для заголовков таблицы */
-        .course-table th {
-            background-color: #4CAF50; /* Цвет фона заголовка */
-            color: white; /* Цвет текста заголовка */
-            padding: 12px; /* Отступы */
-            text-align: left; /* Выравнивание текста */
-        }
-
-        /* Стили для ячеек таблицы */
-        .course-table td {
-            padding: 12px; /* Отступы */
-            border-bottom: 1px solid #ddd; /* Разделительная линия между строками */
-        }
-
-        /* Стили для ссылок на курс */
-        .course-link {
-            color: #4CAF50; /* Цвет текста ссылки */
-            text-decoration: none; /* Убираем подчеркивание */
-            font-weight: bold; /* Жирный шрифт для ссылки */
-        }
-
-        /* Эффект при наведении на ссылки */
-        .course-link:hover {
-            text-decoration: underline; /* Подчеркивание при наведении */
-        }
-        .ranking-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            margin-top: 20px;
-            border: 4px solid #4CAF50;
-            border-radius: 10px;
-            background-color: #fff;
-            width: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .ranking-info {
-            text-align: left;
-        }
-
-        .ranking-info p {
-            font-size: 18px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .ranking-score {
-            font-size: 30px;
-            font-weight: bold;
-            color: #4CAF50;
-            margin: 5px 0;
-            animation: flipIn 1s ease; /* Анимация появления */
-        }
-
-        .ranking-progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background-color: #4CAF50;
-            width: 0; /* Будем менять это значение динамически */
-            transition: width 1s ease; /* Плавная анимация прогресса */
-        }
-
-        /* Анимация flip */
-        @keyframes flipIn {
-            from {
-                transform: rotateX(90deg);
-                opacity: 0;
-            }
-            to {
-                transform: rotateX(0);
-                opacity: 1;
-            }
-        }
-        /* Стили для последней строки таблицы */
-        .course-table tr:last-child td {
-            border-bottom: none; /* Убираем нижнюю границу у последней строки */
-        }
-        .star {
-            color: #d1d1d1; /* Серые звезды */
-        }
-
-        .star.filled {
-            color: #FFD700; /* Золотые звезды */
-            transition: color 0.3s;
-        }
-        .progress-fill.low {
-            background-color: orange; /* Цвет для прогресса < 30% */
-        }
-
-        .progress-fill.medium {
-            background-color: darkgoldenrod; /* Цвет для прогресса от 30% до 80% */
-        }
-
-        .progress-fill.high {
-            background-color: greenyellow; /* Цвет для прогресса от 65% до 80% */
-        }
-        .progress-fill.max {
-            background-color: green; /* Цвет для прогресса от 80% до 100% */
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 5px 0;
-            border: 1px solid #000
-        }
-
-        .progress-fill {
-            height: 10px;
-            background-color: #4CAF50; /* Зеленый цвет для заполненной части */
-            width: 0%; /* Начальное значение, будет обновляться динамически */
-            transition: width 0.5s; /* Плавный переход */
-        }
-
-        .progress-label {
-            margin-top: 5px;
-        }
-
-        .footer {
-            width: 100%;
-            background-color: #333;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-        .footer a {
-            text-decoration: none;
-            color: #4CAF50;
-            font-size: 16px;
-            padding: 8px 15px;
-            border: 2px solid #4CAF50;
-            border-radius: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .footer a:hover {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
 <div class="header">
-    <div class="title">
-        правоТворчества
-    </div>
+    <div class="title">правовая поддержка</div>
     <div class="links">
         <a href="/home">Главная</a>
         <a href="/profile">Профиль</a>
-        <a href="/courses">Курсы</a>
+        <a id="questions-link" href="/questions">Вопросы</a>
         <a href="/logout" class="logout">Выйти</a>
     </div>
 </div>
@@ -317,151 +22,61 @@
     <div class="user-info" id="user-info">
         <!-- Информация о пользователе будет загружена сюда -->
     </div>
-    <h2 class="table-title">Мои курсы</h2> <!-- Подпись для таблицы -->
-    <table class="course-table" id="course-table">
-        <thead>
-        <tr>
-            <th>Курс</th>
-            <th>Описание</th>
-            <th>Глобальный рейтинг</th>
-<!--            <th>Прогресс по курсу</th>-->
-            <th>Правильность тестов</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Табличные строки будут добавлены динамически -->
-        </tbody>
-    </table>
+
+    <!-- Контейнер для отображения списка вопросов или ответов -->
+    <div class="questions-container" id="questions-container"></div>
+
+    <!-- Кнопка для создания нового вопроса (только для пользователей) -->
+    <button class="new-question-button" id="new-question-button" style="display: none;" onclick="openModal()">Добавить новый вопрос</button>
+</div>
+
+<!-- Модальное окно для создания вопроса -->
+<div id="questionModal" class="modal">
+    <div class="modal-content">
+        <h3>Создать новый вопрос</h3>
+        <input type="text" id="questionTitle" placeholder="Заголовок">
+        <textarea id="questionText" placeholder="Текст вопроса"></textarea>
+        <button class="submit-button" onclick="submitQuestion()">Отправить</button>
+        <button class="close-button" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+
+<!-- Модальное окно для ответа на вопрос -->
+<div id="answerModal" class="modal">
+    <div class="modal-content">
+        <h3>Ответ на вопрос</h3>
+        <textarea id="answerText" placeholder="Введите ваш ответ..."></textarea>
+        <div class="modal-buttons">
+            <button class="submit-button" onclick="submitAnswer()">Отправить</button>
+            <button class="close-button" onclick="closeAnswerModal()">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Модальное окно для выбора юриста и оценки -->
+<div id="ratingModal" class="modal">
+    <div class="modal-content">
+        <h3>Оценить юриста</h3>
+        <p>Выберите юриста и поставьте оценку за ответ:</p>
+        <select id="lawyerSelect"></select>
+        <div class="rating-select">
+            <button onclick="submitRating(1)">1</button>
+            <button onclick="submitRating(2)">2</button>
+            <button onclick="submitRating(3)">3</button>
+            <button onclick="submitRating(4)">4</button>
+            <button onclick="submitRating(5)">5</button>
+        </div>
+        <button class="close-button" onclick="closeRatingModal()">Закрыть</button>
+    </div>
 </div>
 
 <div class="footer">
     <footer>
-        <span style="color: #4CAF50;">©️ ПравоТворчества 2024</span>
+        <span style="color: #4CAF50;">©️ правовая поддержка 2024</span>
     </footer>
     <a href="/report-issue"><b>Обратная связь</b></a>
 </div>
-
-<script>
-    async function loadUserInfo() {
-        try {
-            const response = await fetch('/api/v1/user/get/current');
-            if (response.ok) {
-                const user = await response.json();
-                userId = user.id; // Сохраняем ID пользователя
-                const userInfo = document.getElementById('user-info');
-                userInfo.innerHTML = `
-                    <h2>${user.first_name} ${user.last_name}</h2>
-                    <p>Email: ${user.email}</p>
-                `;
-            } else {
-                console.error('Ошибка при загрузке информации о пользователе:', response.status);
-            }
-        } catch (error) {
-            console.error('Ошибка при загрузке информации о пользователе:', error);
-        }
-    }
-
-    async function loadCourses() {
-        try {
-            const response = await fetch('/api/v1/courses/get-all/by-stud-id/' + userId);
-            if (response.ok) {
-                const courses = await response.json();
-                const courseTableBody = document.querySelector('#course-table tbody');
-                courseTableBody.innerHTML = '';  // Очищаем таблицу перед добавлением новых курсов
-                if (courses.length > 0) {
-                    for (const course of courses) {
-                        const row = document.createElement('tr');
-
-                        // Создаем ячейку с названием курса и ссылкой на него
-                        const courseNameCell = document.createElement('td');
-                        const courseLink = document.createElement('a');
-                        courseLink.href = `/courses/${course.id}`;
-                        courseLink.textContent = course.name;
-                        courseNameCell.appendChild(courseLink);
-
-                        // Создаем ячейку с описанием курса
-                        const courseDescriptionCell = document.createElement('td');
-                        courseDescriptionCell.textContent = course.description;
-
-                        // Создаем ячейки для рейтинга и прогресса
-                        const rankCell = document.createElement('td');
-                        const progressCell = document.createElement('td');
-                        rankCell.textContent = 'Загрузка рейтинга...'; // Временное сообщение
-                        progressCell.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>'; // Изначально пустой прогресс-бар
-
-                        // Добавляем ячейки в строку
-                        row.appendChild(courseNameCell);
-                        row.appendChild(courseDescriptionCell);
-                        row.appendChild(rankCell);
-                        row.appendChild(progressCell);
-
-                        // Добавляем строку в тело таблицы
-                        courseTableBody.appendChild(row);
-
-                        // Загружаем статистику для текущего курса и обновляем соответствующие ячейки
-                        await loadUserStats(course.id, rankCell, progressCell);
-                    }
-                } else {
-                    courseTableBody.innerHTML = '<tr><td colspan="4">У вас пока нет курсов.</td></tr>';
-                }
-            } else {
-                console.error('Ошибка при загрузке курсов:', response.status);
-            }
-        } catch (error) {
-            console.error('Ошибка при загрузке курсов:', error);
-        }
-    }
-
-    async function loadUserStats(courseId, rankCell, progressCell) {
-        try {
-            const response = await fetch(`/api/v1/stats/get?courseId=${courseId}&userId=${userId}`);
-            if (response.ok) {
-                const stats = await response.json();
-
-                // Обновляем ячейку рейтинга
-                rankCell.innerHTML = `
-                <strong>топ </strong> ${stats.rank || 'N/A'}
-            `;
-
-                let progressClass = '';
-                const percentage = stats.percentage_correct || 0;
-
-                if (percentage < 30) {
-                    progressClass = 'low';
-                } else if (percentage >= 30 && percentage < 65) {
-                    progressClass = 'medium';
-                } else if (percentage >= 65 && percentage < 80) {
-                    progressClass = 'high'
-                }
-                else {
-                    progressClass = 'max';
-                }
-
-                // Обновляем ячейку прогресса
-                progressCell.innerHTML = `
-                <div class="progress-bar">
-                    <div class="progress-fill ${progressClass}" style="width: ${percentage}%;"></div>
-                </div>
-                <div class="progress-label">
-                    <strong></strong> ${percentage.toFixed(1)}%
-                </div>
-            `;
-            } else {
-                console.error('Ошибка при загрузке статистики:', response.status);
-                rankCell.innerHTML = 'Ошибка при загрузке';
-                progressCell.innerHTML = 'Ошибка при загрузке';
-            }
-        } catch (error) {
-            console.error('Ошибка при загрузке статистики:', error);
-            rankCell.innerHTML = 'Ошибка при загрузке';
-            progressCell.innerHTML = 'Ошибка при загрузке';
-        }
-    }
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        loadUserInfo().then(() => loadCourses());
-    });
-</script>
+<script type="text/javascript" src="/js/profile.js"></script>
 </body>
 </html>

@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap"
+          rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f9f9f9;
             display: flex;
             justify-content: center;
@@ -19,9 +20,9 @@
 
         .container {
             background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
             text-align: center;
@@ -30,18 +31,18 @@
         h2 {
             font-family: 'Montserrat Alternates', sans-serif;
             color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 15px;
+            font-size: 20px;
             font-weight: 700;
         }
 
         .form-group {
-            margin-bottom: 15px;
-            text-align: left; /* Оставлено как есть, чтобы метки были слева */
+            margin-bottom: 10px;
+            text-align: left;
         }
 
         label {
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
             font-family: 'Roboto', sans-serif;
             font-weight: 500;
@@ -49,41 +50,34 @@
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
-            width: 100%; /* Установлено на 100% */
-            padding: 12px 15px;
-            margin-top: 8px;
-            border: 2px solid #4CAF50;
-            border-radius: 20px;
-            font-size: 16px;
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            border: 1.5px solid #4CAF50;
+            border-radius: 15px;
+            font-size: 14px;
             font-family: 'Roboto', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
-            position: relative;
-            display: flex; /* Оставлено для выравнивания кнопки */
             box-sizing: border-box;
         }
 
-        input:focus {
+        input:focus,
+        select:focus {
             border-color: #333;
         }
 
-        .password-container,
-        .confirm-password-container {
-            position: relative;
-            display: flex; /* Оставлено для выравнивания кнопки */
-            align-items: center; /* Центровка по вертикали */
-        }
-
         button[type="button"] {
-            width: 100%; /* Установлено на 100% */
-            padding: 12px 0;
-            margin-top: 20px;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 15px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 20px;
-            font-size: 18px;
+            border-radius: 15px;
+            font-size: 16px;
             font-family: 'Montserrat Alternates', sans-serif;
             font-weight: 700;
             cursor: pointer;
@@ -95,8 +89,8 @@
         }
 
         p {
-            margin-top: 15px;
-            font-size: 14px;
+            margin-top: 10px;
+            font-size: 13px;
             color: #333;
             font-family: 'Roboto', sans-serif;
         }
@@ -113,11 +107,72 @@
 
         .error-message {
             color: red;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: none;
         }
-        .error-message error-text {
-            color: red;
+
+        .user-type-group {
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .additional-fields {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .additional-fields .form-group {
+            margin-bottom: 10px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            select {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            button[type="button"] {
+                padding: 8px 0;
+                font-size: 14px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+
+            .error-message {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -125,7 +180,6 @@
 <div class="container">
     <h2>Регистрация</h2>
 
-    <!-- Сообщение об ошибке -->
     <div id="error-message" class="error-message">
         <p id="error-text"></p>
     </div>
@@ -152,11 +206,38 @@
             <input type="password" id="password2" minlength="8" name="password2" required>
         </div>
 
-        <!-- Чекбокс для подтверждения соглашения -->
+        <div class="user-type-group">
+            <label>Выберите тип пользователя:</label><br>
+            <label>
+                <input type="radio" name="user_type" value="lawyer" required> Юрист
+            </label>
+            <label>
+                <input type="radio" name="user_type" value="user" required> Обычный пользователь
+            </label>
+        </div>
+
+        <div id="additional-fields" class="additional-fields">
+            <div class="form-group">
+                <label for="license_number">Номер лицензии</label>
+                <input type="text" id="license_number" name="license_number" required>
+            </div>
+            <div class="form-group">
+                <label for="specialization">Специализация</label>
+                <select id="specialization" name="specialization" required>
+                    <option value="">Выберите специализацию</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="experience">Опыт работы (лет)</label>
+                <input type="number" id="experience" name="experience" min="0" required>
+            </div>
+        </div>
+
         <div class="form-group">
             <label>
                 <input type="checkbox" id="agreement" required>
-                Нажимая «Зарегистрироваться» вы подтверждаете согласие с <a href="/agreement">пользовательским соглашением</a>.
+                Нажимая «Зарегистрироваться» вы подтверждаете согласие с <a href="/agreement">пользовательским
+                соглашением</a>.
             </label>
         </div>
 
@@ -166,51 +247,127 @@
 </div>
 
 <script>
-    document.getElementById('submit-button').addEventListener('click', function(event) {
+    document.addEventListener('DOMContentLoaded', () => {
+        const userTypeRadios = document.querySelectorAll('input[name="user_type"]');
+        const additionalFields = document.getElementById('additional-fields');
+        const specializationSelect = document.getElementById('specialization');
+        const submitButton = document.getElementById('submit-button');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
         const agreementCheckbox = document.getElementById('agreement');
 
-        // Проверка наличия галочки соглашения
-        if (!agreementCheckbox.checked) {
-            document.getElementById('error-message').style.display = 'block';
-            document.getElementById('error-text').textContent = 'Чтобы зарегистрироваться, вам нужно согласиться с пользовательским соглашением';
-            return; // Прекращаем выполнение функции
-        }
+        const specializations = [
+            {value: "civil_law", text: "CIVIL LAW"},
+            {value: "criminal_law", text: "CRIMINAL LAW"},
+            {value: "corporate_law", text: "CORPORATE LAW"},
+            {value: "intellectual_property", text: "INTELLECTUAL PROPERTY"},
+            {value: "environmental_law", text: "ENVIRONMENTAL LAW"}
+        ];
 
-        // Собираем данные из формы
-        const formData = {
-            first_name : document.getElementById('name').value,
-            last_name : document.getElementById('surname').value,
-            email : document.getElementById('email').value,
-            password : document.getElementById('password').value,
-            confirm_password : document.getElementById('password2').value
-        };
-
-        // Отправляем данные на сервер
-        fetch('/auth/register', {
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/json',
-            },
-            body : JSON.stringify(formData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/profile'; // Перенаправление на профиль
-                } else {
-                    return response.json().then(data => {
-                        document.getElementById('error-message').style.display = 'block';
-                        document.getElementById('error-text').style.color = 'red';
-                        document.getElementById('error-text').textContent = data.message || 'Почта уже существует или слабый пароль';
-                    });
-                }
-            })
-            .catch(error => {
-                document.getElementById('error-message').style.display = 'block';
-                document.getElementById('error-text').style.color = 'red';
-                document.getElementById('error-text').textContent = error.body || 'Почта уже существует или слабый пароль';
+        // Populate specialization options
+        function populateSpecializations() {
+            specializationSelect.innerHTML = '<option value="">Выберите специализацию</option>';
+            specializations.forEach(spec => {
+                const option = document.createElement('option');
+                option.value = spec.value;
+                option.textContent = spec.text;
+                specializationSelect.appendChild(option);
             });
+        }
+        populateSpecializations();
+
+        // Show additional fields for lawyers
+        userTypeRadios.forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                if (event.target.value === 'lawyer') {
+                    additionalFields.style.display = 'block';
+                    additionalFields.classList.add('fade-in');
+                    document.getElementById('license_number').required = true;
+                    document.getElementById('specialization').required = true;
+                    document.getElementById('experience').required = true;
+                } else {
+                    additionalFields.style.display = 'none';
+                    document.getElementById('license_number').required = false;
+                    document.getElementById('specialization').required = false;
+                    document.getElementById('experience').required = false;
+                }
+            });
+        });
+
+        // Submit handler
+        submitButton.addEventListener('click', function (event) {
+            errorMessage.style.display = 'none';
+            errorText.textContent = '';
+
+            if (!agreementCheckbox.checked) {
+                errorMessage.style.display = 'block';
+                errorText.textContent = 'Чтобы зарегистрироваться, вам нужно согласиться с пользовательским соглашением';
+                return;
+            }
+
+            const userType = document.querySelector('input[name="user_type"]:checked')?.value;
+            if (!userType) {
+                errorMessage.style.display = 'block';
+                errorText.textContent = 'Пожалуйста, выберите тип пользователя';
+                return;
+            }
+
+            const role = userType === 'lawyer' ? 'ROLE_LAWYER' : 'ROLE_USER';
+
+            // Данные для UserRegistrationRequest
+            const userData = {
+                first_name: document.getElementById('name').value.trim(),
+                last_name: document.getElementById('surname').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+                confirm_password: document.getElementById('password2').value,
+                role: role
+            };
+
+            let formData;
+            let url;
+
+            if (userType === 'lawyer') {
+                formData = {
+                    user_data: userData,
+                    experience_years: parseInt(document.getElementById('experience').value.trim(), 10),
+                    licence: document.getElementById('license_number').value.trim(),
+                    specialization: document.getElementById('specialization').value.trim()
+                };
+                url = '/auth/register/lawyer';
+            } else {
+                formData = userData;
+                url = '/auth/register';
+            }
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/profile';
+                    } else if (response.status === 409) {
+                        throw new Error('Такая почта уже существует');
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Ошибка при регистрации');
+                        });
+                    }
+                })
+                .catch(error => {
+                    errorMessage.style.display = 'block';
+                    errorText.style.color = 'red';
+                    errorText.textContent = error.message;
+                });
+        });
     });
 </script>
+
 
 </body>
 </html>

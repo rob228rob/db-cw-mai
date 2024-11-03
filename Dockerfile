@@ -6,6 +6,7 @@ COPY pom.xml ./
 RUN mvn dependency:go-offline -B
 
 COPY ./src ./src
+
 RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:17-alpine
@@ -14,6 +15,6 @@ WORKDIR /opt/app
 
 COPY --from=builder /opt/app/target/*.jar /opt/app/app.jar
 
-EXPOSE 8080
+EXPOSE 8085
 
 ENTRYPOINT ["java", "-jar", "/opt/app/app.jar"]

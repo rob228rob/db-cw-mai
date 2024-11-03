@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вопросы пользователей</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #333;
+            width: 100%;
+            height: auto; /* Шапка теперь будет иметь автоматическую высоту, адаптируясь под контент */
+            padding: 20px; /* Немного уменьшил отступы, чтобы они выглядели лучше на мобильных */
+            font-size: 28px;
+            color: #4CAF50;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column; /* На мобильных шапка и ссылки будут вертикально расположены */
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .header .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; /* Кнопки будут оборачиваться, если не поместятся в одну строку */
+            justify-content: center; /* Центрируем ссылки */
+            margin-top: 10px;
+        }
+        .header .links a.login {
+            background-color: #4CAF50; /* Цвет фона */
+            color: white; /* Цвет текста */
+            font-size: 18px; /* Размер шрифта */
+            padding: 12px 20px; /* Отступы */
+            border-radius: 30px; /* Округленные края */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Плавный переход */
+            display: flex; /* Для выравнивания иконки и текста */
+            align-items: center; /* Центрирование по вертикали */
+        }
+        .header .links a.login:hover {
+            background-color: forestgreen; /* Более темный цвет при наведении */
+            transform: translateY(-2px); /* Эффект поднятия кнопки */
+        }
+        .header .links a.logout:hover {
+            background-color: darkgreen;
+            color: white;
+        }
+
+
+        .header .links a.logout {
+            background-color: darkgreen; /* Красный цвет для кнопки выхода */
+            color: white; /* Цвет текста */
+        }
+
+        .header .links a {
+            text-decoration: none;
+            font-size: 16px;
+            color: white;
+            padding: 8px 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header .links a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .content {
+            flex: auto;
+            padding-top: 80px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header, .footer {
+            background-color: #333;
+            color: #4CAF50;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .links a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .links a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .links a.logout {
+            background-color: darkgreen;
+            color: white;
+        }
+
+        .links a.logout:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 80px auto 20px; /* Учитываем фиксированную высоту шапки */
+        }
+
+        /* Стили карточек вопросов */
+        .question-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Удаляем фиксированную высоту, чтобы карточка могла расширяться */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .question-card h3 {
+            font-size: 20px;
+            color: #333;
+            margin: 0 0 8px;
+        }
+
+        .question-card p {
+            margin: 8px 0;
+            color: #666;
+            line-height: 1.4;
+            /* Обрезка текста до 3 строк */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .question-card .date {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .answer-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .answer-button:hover {
+            background-color: #45a049;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* Стили для модального окна ответа */
+        .modal {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .submit-button, .close-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+
+        .close-button {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .close-button:hover {
+            background-color: #c9302c;
+        }
+
+        /* Стили для ответов */
+        .answers-section {
+            margin-top: 15px;
+            padding-left: 20px;
+            border-left: 2px solid #4CAF50;
+        }
+
+        .answer {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .answer .lawyer-info {
+            font-size: 14px;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        .answer .creation-date {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="title">правовая поддержка</div>
+    <div class="links">
+        <a href="/home">Главная</a>
+        <a href="/profile">Профиль</a>
+        <a id="questions-link" href="/questions">Вопросы</a>
+        <a href="/logout" class="logout">Выйти</a>
+    </div>
+</div>
+
+<div class="content">
+    <div id="question-container">
+        <!-- Карточки вопросов будут загружены сюда -->
+    </div>
+</div>
+
+<div class="footer">
+    <footer>
+        <span style="color: #4CAF50;">©️ правовая поддержка 2024</span>
+    </footer>
+    <a href="/report-issue"><b>Обратная связь</b></a>
+</div>
+
+<!-- Модальное окно для ответа -->
+<div id="answerModal" class="modal">
+    <div class="modal-content">
+        <h3>Ответ на вопрос</h3>
+        <textarea id="answerText" placeholder="Введите ваш ответ..."></textarea>
+        <div class="modal-buttons">
+            <button class="submit-button" onclick="submitAnswer()">Отправить</button>
+            <button class="close-button" onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQuestionId = null;
+    let lawyerId = null;
+
+    // Функция для извлечения параметров из URL
+    function getQueryParams() {
+        const params = {};
+        window.location.search.substring(1).split("&").forEach(pair => {
+            const [key, value] = pair.split("=");
+            if (key) {
+                params[decodeURIComponent(key)] = decodeURIComponent(value || '');
+            }
+        });
+        return params;
+    }
+
+    async function loadQuestions() {
+        const params = getQueryParams();
+        lawyerId = params['lawyer_id'];
+
+        let apiUrl = '/api/questions/get-all';
+        if (lawyerId) {
+            apiUrl = `/api/questions/get-all?lawyer_id=${lawyerId}`;
+        }
+
+        try {
+            const response = await fetch(apiUrl);
+            if (response.ok) {
+                const questions = await response.json();
+                renderQuestions(questions);
+            } else {
+                console.error('Ошибка при загрузке вопросов:', response.status);
+                document.getElementById('question-container').innerHTML = '<p class="empty-message">Не удалось загрузить вопросы.</p>';
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке вопросов:', error);
+            document.getElementById('question-container').innerHTML = '<p class="empty-message">Произошла ошибка при загрузке вопросов.</p>';
+        }
+    }
+
+    function renderQuestions(questions) {
+        const questionContainer = document.getElementById('question-container');
+        questionContainer.innerHTML = ''; // Очищаем контейнер перед рендерингом
+        if (questions.length > 0) {
+            questions.forEach(question => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <h3>${sanitizeHTML(question.title)}</h3>
+                    <p>${sanitizeHTML(question.text)}</p>
+                    <p class="date"><strong>Дата создания:</strong> ${sanitizeHTML(question.creation_date)}</p>
+                `;
+
+                // Кнопка "Ответить" появляется только для вопросов без ответа
+                if (!question.answered) {
+                    const answerButton = document.createElement('button');
+                    answerButton.textContent = 'Ответить';
+                    answerButton.className = 'answer-button';
+                    answerButton.addEventListener('click', () => openAnswerModal(question.id));
+                    questionCard.appendChild(answerButton);
+                }
+
+                // Добавляем секцию для ответов
+                const answersSection = document.createElement('div');
+                answersSection.className = 'answers-section';
+                answersSection.id = `answers-${question.id}`;
+                questionCard.appendChild(answersSection);
+
+                questionContainer.appendChild(questionCard);
+
+                // Загружаем ответы для этого вопроса
+                loadAnswers(question.id);
+            });
+        } else {
+            questionContainer.innerHTML = '<p class="empty-message">Вопросы не найдены.</p>';
+        }
+    }
+
+    async function loadAnswers(questionId) {
+        try {
+            const response = await fetch(`/api/answers/get-all/${questionId}`);
+            if (response.ok) {
+                const answers = await response.json();
+                renderAnswers(questionId, answers);
+            } else {
+                console.error(`Ошибка при загрузке ответов для вопроса ${questionId}:`, response.status);
+            }
+        } catch (error) {
+            console.error(`Ошибка при загрузке ответов для вопроса ${questionId}:`, error);
+        }
+    }
+
+    function renderAnswers(questionId, answers) {
+        const answersSection = document.getElementById(`answers-${questionId}`);
+        answersSection.innerHTML = ''; // Очищаем секцию перед рендерингом
+
+        if (answers.length > 0) {
+            answers.forEach(answer => {
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer';
+                answerDiv.innerHTML = `
+                    <div class="lawyer-info">Юрист: ${sanitizeHTML(
+                        answer.lawyer_data.first_name + ' ' + answer.lawyer_data.last_name)}</div>
+                    <div class="answer-text">${sanitizeHTML(answer.answer)}</div>
+                    <div class="creation-date">Дата создания: ${sanitizeHTML(answer.creation_date)}</div>
+                `;
+                answersSection.appendChild(answerDiv);
+            });
+        } else {
+            answersSection.innerHTML = '<p class="empty-message">Нет ответов на этот вопрос.</p>';
+        }
+    }
+
+    function openAnswerModal(questionId) {
+        currentQuestionId = questionId;
+        document.getElementById("answerModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("answerModal").style.display = "none";
+        document.getElementById("answerText").value = ""; // Очистка поля ввода ответа
+    }
+
+    async function submitAnswer() {
+        const answerText = document.getElementById("answerText").value;
+        if (!answerText.trim()) {
+            alert("Ответ не может быть пустым.");
+            return;
+        }
+
+        if (!lawyerId) {
+            alert("Отсутствует lawyer_id. Пожалуйста, убедитесь, что вы вошли как юрист.");
+            return;
+        }
+
+        const requestBody = {
+            lawyer_id: lawyerId,
+            question_id: currentQuestionId,
+            answer_text: answerText
+        };
+
+        try {
+            const response = await fetch(`/api/answers/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                closeModal();
+                await loadAnswers(currentQuestionId); // Обновить список ответов после отправки ответа
+            } else {
+                alert("Ошибка при отправке ответа.");
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке ответа:', error);
+            alert("Ошибка при отправке ответа.");
+        }
+    }
+
+    // Функция для экранирования HTML, чтобы предотвратить XSS
+    function sanitizeHTML(str) {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuestions();
+    });
+</script>
+</body>
+</html>
