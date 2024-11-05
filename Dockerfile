@@ -7,6 +7,8 @@ RUN mvn dependency:go-offline -B
 
 COPY ./src ./src
 
+RUN mvn test
+
 RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:17-alpine

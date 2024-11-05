@@ -8,11 +8,11 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.k_plus</groupId>
-    <artifactId>internship</artifactId>
+    <groupId>com.mai</groupId>
+    <artifactId>db_cw_rbl</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>K_plus_internship</name>
-    <description>K_plus_internship</description>
+    <name>LawyerHelper</name>
+    <description>LawyerHelper</description>
     <url/>
     <licenses>
         <license/>
