@@ -97,11 +97,13 @@ public class AnswerDaoImpl implements AnswerDao {
         String sql = """
                 SELECT la.*, u.first_name, u.last_name FROM lawyer_answers la 
                 LEFT JOIN lawyers l ON la.lawyer_id = l.id 
-                LEFT JOIN users u ON l.user_id = u.id WHERE la.question_id = :questionId""";
+                LEFT JOIN users u ON l.user_id = u.id 
+                WHERE la.question_id = :questionId""";
         SqlParameterSource params = new MapSqlParameterSource("questionId", questionId);
 
         return namedJdbcTemplate.query(sql, params, (rs, rowNum) -> {
             AnswerResponse answerResponse = new AnswerResponse();
+            answerResponse.setId(UUID.fromString(rs.getString("id")));
             answerResponse.setAnswer(rs.getString("answer_text"));
             answerResponse.setLawyerId(rs.getString("lawyer_id"));
             answerResponse.setCreatedAt(rs.getTimestamp("answered_at").toLocalDateTime());

@@ -1,0 +1,300 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+/* Стили для подсветки подтверждённого ответа */
+.correct-answer {
+    background-color: #d4edda; /* Светло-зелёный фон */
+    border-left: 5px solid #28a745; /* Зелёная полоса слева */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    position: relative; /* Для позиционирования метки */
+}
+
+/* Стили для метки "Данный ответ помог" */
+.confirmed-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #28a745; /* Зелёный фон */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.header {
+    background-color: #333;
+    width: 100%;
+    height: auto; /* Шапка теперь будет иметь автоматическую высоту, адаптируясь под контент */
+    padding: 20px; /* Немного уменьшил отступы, чтобы они выглядели лучше на мобильных */
+    font-size: 28px;
+    color: #4CAF50;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column; /* На мобильных шапка и ссылки будут вертикально расположены */
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.header .links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Кнопки будут оборачиваться, если не поместятся в одну строку */
+    justify-content: center; /* Центрируем ссылки */
+    margin-top: 10px;
+}
+.header .links a.login {
+    background-color: #4CAF50; /* Цвет фона */
+    color: white; /* Цвет текста */
+    font-size: 18px; /* Размер шрифта */
+    padding: 12px 20px; /* Отступы */
+    border-radius: 30px; /* Округленные края */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Плавный переход */
+    display: flex; /* Для выравнивания иконки и текста */
+    align-items: center; /* Центрирование по вертикали */
+}
+.header .links a.login:hover {
+    background-color: forestgreen; /* Более темный цвет при наведении */
+    transform: translateY(-2px); /* Эффект поднятия кнопки */
+}
+.header .links a.logout:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+
+.header .links a.logout {
+    background-color: darkgreen; /* Красный цвет для кнопки выхода */
+    color: white; /* Цвет текста */
+}
+
+.header .links a {
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    padding: 8px 15px;
+    border: 2px solid #4CAF50;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header .links a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+.content {
+    flex: auto;
+    padding-top: 80px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header, .footer {
+    background-color: #333;
+    color: #4CAF50;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.links a {
+    color: #4CAF50;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border: 2px solid #4CAF50;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.links a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.links a.logout {
+    background-color: darkgreen;
+    color: white;
+}
+
+.links a.logout:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.content {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 80px auto 20px; /* Учитываем фиксированную высоту шапки */
+}
+
+/* Стили карточек вопросов */
+.question-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* Удаляем фиксированную высоту, чтобы карточка могла расширяться */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.question-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 8px;
+}
+
+.question-card p {
+    margin: 8px 0;
+    color: #666;
+    line-height: 1.4;
+    /* Обрезка текста до 3 строк */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.question-card .date {
+    font-size: 14px;
+    color: #999;
+}
+
+.answer-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    transition: background-color 0.3s;
+}
+
+.answer-button:hover {
+    background-color: #45a049;
+}
+
+.empty-message {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+}
+
+/* Стили для модального окна ответа */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.submit-button, .close-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.close-button {
+    background-color: #d9534f;
+    color: white;
+}
+
+.close-button:hover {
+    background-color: #c9302c;
+}
+
+/* Стили для ответов */
+.answers-section {
+    margin-top: 15px;
+    padding-left: 20px;
+    border-left: 2px solid #4CAF50;
+}
+
+.answer {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.answer .lawyer-info {
+    font-size: 14px;
+    color: #4CAF50;
+    margin-bottom: 5px;
+}
+
+.answer .creation-date {
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+}

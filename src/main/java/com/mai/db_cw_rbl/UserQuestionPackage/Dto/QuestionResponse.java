@@ -23,7 +23,7 @@ public class QuestionResponse {
     private String text;
 
     @JsonProperty("creation_date")
-    private LocalDate creationDate;
+    private LocalDate createdAt;
 
     @JsonProperty("answered")
     private boolean answered;

@@ -23,7 +23,7 @@ public class QuestionDaoImpl implements QuestionDao {
         Question question = new Question();
         question.setId(UUID.fromString(rs.getString("id")));
         question.setUserId(UUID.fromString(rs.getString("user_id")));
-       //question.setLawyerId(UUID.fromString(rs.getString("lawyer_id")));
+        question.setAnswered(rs.getBoolean("answered"));
         question.setQuestionText(rs.getString("question_text"));
         question.setQuestionTitle(rs.getString("question_title"));
         question.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -97,5 +97,17 @@ public class QuestionDaoImpl implements QuestionDao {
             SELECT * FROM user_questions ORDER BY created_at DESC""";
 
         return namedParameterJdbcTemplate.query(sql, questionRowMapper);
+    }
+
+    @Override
+    public void updateAnswered(boolean answered, UUID id) {
+        String sql = "UPDATE user_questions SET answered = :answered WHERE id = :id";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("answered", answered)
+                .addValue("id", id);
+
+        int rowAffected = namedParameterJdbcTemplate.update(sql, params);
+
     }
 }

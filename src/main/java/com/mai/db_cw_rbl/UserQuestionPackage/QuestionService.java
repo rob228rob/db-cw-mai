@@ -42,7 +42,7 @@ public class QuestionService {
         return questions.stream()
                 .map(question -> {
                     QuestionResponse response = modelMapper.map(question, QuestionResponse.class);
-                    response.setCreationDate(question.getCreatedAt().toLocalDate());
+                    response.setCreatedAt(question.getCreatedAt().toLocalDate());
                     return response;
                 })
                 .toList();
@@ -51,15 +51,15 @@ public class QuestionService {
     public List<QuestionResponse> findAllQuestions() {
         return questionDao.findAllQuestions()
                 .stream()
-                .map(question -> {
-                    QuestionResponse response = modelMapper.map(question, QuestionResponse.class);
-                    response.setAnswered(false);
-                    return response;
-                })
+                .map(question -> modelMapper.map(question, QuestionResponse.class))
                 .toList();
     }
 
     public void deleteQuestionById(UUID questionId, UUID userId) {
         questionDao.deleteQuestion(questionId, userId);
+    }
+
+    public void updateAnswered(boolean answered, UUID questionId) {
+        questionDao.updateAnswered(answered, questionId);
     }
 }

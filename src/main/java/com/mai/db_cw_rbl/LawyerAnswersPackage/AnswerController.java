@@ -14,7 +14,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/answers")
-@PreAuthorize("hasAnyRole('ADMIN', 'LAWYER')")
 public class AnswerController {
 
     private final AnswerService answerService;

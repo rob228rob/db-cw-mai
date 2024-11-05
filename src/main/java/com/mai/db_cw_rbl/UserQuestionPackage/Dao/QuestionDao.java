@@ -22,4 +22,6 @@ public interface QuestionDao {
     boolean updateQuestion(Question question);
 
     List<Question> findAllQuestions();
+
+    void updateAnswered(boolean answered, UUID id);
 }

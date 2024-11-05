@@ -22,6 +22,8 @@ public class Question {
 
     private String questionText;
 
+    private boolean answered;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

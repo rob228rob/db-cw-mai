@@ -1,6 +1,7 @@
 package com.mai.db_cw_rbl.LawyerAnswersPackage;
 
 import com.fasterxml.uuid.Generators;
+import com.mai.db_cw_rbl.ConfirmedAnswersPackage.ConfirmedAnswerService;
 import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.CustomExceptions.EntityNotFoundException;
 import com.mai.db_cw_rbl.LawyerAnswersPackage.Dao.AnswerDao;
 import com.mai.db_cw_rbl.LawyerAnswersPackage.Dto.AnswerCreationRequest;
@@ -21,6 +22,7 @@ public class AnswerService {
     private final AnswerDao answerDao;
 
     private final ModelMapper modelMapper;
+    private final ConfirmedAnswerService confirmedAnswerService;
 
     public AnswerResponse findAnswerById(UUID id) {
         var answer = answerDao.findById(id)
@@ -46,7 +48,11 @@ public class AnswerService {
     public List<AnswerResponse> findAllAnswersByLawyerId(UUID id) {
         var allByLawyerId = answerDao.findAllByLawyerId(id)
                 .stream()
-                .map(ans -> modelMapper.map(ans, AnswerResponse.class))
+                .map(ans -> {
+                    AnswerResponse response = modelMapper.map(ans, AnswerResponse.class);
+                    response.setId(ans.getId());
+                    return response;
+                })
                 .toList();
 
         return allByLawyerId;
@@ -62,6 +68,11 @@ public class AnswerService {
     }
 
     public List<AnswerResponse> findAllAnswersByQuestionIdWithLawyerData(UUID uuid) {
-        return answerDao.findAllByQuestionIdWithUserData(uuid);
+        return answerDao.findAllByQuestionIdWithUserData(uuid).stream()
+                .peek(ans -> {
+                    boolean confirmation = confirmedAnswerService.checkConfirmationByAnswerId(ans.getId());
+                    ans.setConfirmed(confirmation);
+                })
+                .toList();
     }
 }

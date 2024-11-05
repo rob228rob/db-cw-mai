@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,8 +13,14 @@ import java.time.LocalDateTime;
 @Builder
 public class AnswerResponse {
 
+    @JsonProperty("id")
+    private UUID id;
+
     @JsonProperty("answer")
     private String answer;
+
+    @JsonProperty("confirmed")
+    private boolean confirmed;
 
     @JsonProperty("lawyer_id")
     private String lawyerId;

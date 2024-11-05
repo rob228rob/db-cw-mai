@@ -63,46 +63,138 @@ async function loadQuestions(userId) {
         if (response.ok) {
             const questions = await response.json();
             questionsContainer.innerHTML = `
-                    <h3 class="table-title">Список ваших вопросов</h3>
-                    <table class="question-table">
-                        <tr>
-                            <th>Тема</th>
-                            <th>Вопрос</th>
-                            <th>Действия</th>
+                <h3 class="table-title">Список ваших вопросов</h3>
+                <table class="question-table">
+                    <tr>
+                        <th>Тема</th>
+                        <th>Вопрос</th>
+                        <th>Действия</th>
+                    </tr>
+                    ${questions.map(question => `
+                        <tr id="question-${question.id}">
+                            <td>${sanitizeHTML(question.title)}</td>
+                            <td>${sanitizeHTML(question.text)}</td>
+                            <td>
+                                <button class="button view-answers-button" onclick="toggleAnswers('${question.id}')">Просмотреть ответы</button>
+                            </td>
                         </tr>
-                        ${questions.map(question => `
-                            <tr id="question-${question.id}">
-                                <td>${sanitizeHTML(question.title)}</td>
-                                <td>${sanitizeHTML(question.text)}</td>
-                                <td>
-                                    <button class="button delete-button" onclick="deleteQuestion('${question.id}')">Удалить</button>
-                                    ${question.answered ? `<button class="button answer-button" onclick="openRatingModal('${question.id}')">Получил нужный ответ</button>` : ''}
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </table>
-                `;
+                        <tr>
+                            <td colspan="3">
+                                <div id="answers-${question.id}" class="answers-section" style="display: none;"></div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
         }
     } catch (error) {
         console.error('Ошибка при загрузке вопросов:', error);
     }
 }
 
-async function deleteQuestion(questionId) {
-    if (!confirm("Вы уверены, что хотите удалить этот вопрос?")) return;
+async function toggleAnswers(questionId) {
+    const answersSection = document.getElementById(`answers-${questionId}`);
+    if (!answersSection) return;
 
-    try {
-        const response = await fetch(`/api/questions/delete/${questionId}`, {method: 'DELETE'});
-        if (response.ok) {
-            document.getElementById(`question-${questionId}`).remove();
-            alert("Вопрос успешно удален!");
-        } else {
-            alert("Ошибка при удалении вопроса.");
+    if (answersSection.style.display === "none" || answersSection.style.display === "") {
+        try {
+            const response = await fetch(`/api/answers/get-all/${questionId}`);
+            if (response.ok) {
+                const answers = await response.json();
+                renderAnswers(questionId, answers);
+                answersSection.style.display = "block";
+            } else {
+                answersSection.innerHTML = '<p class="empty-message">Не удалось загрузить ответы.</p>';
+                answersSection.style.display = "block";
+            }
+        } catch (error) {
+            answersSection.innerHTML = '<p class="empty-message">Произошла ошибка при загрузке ответов.</p>';
+            answersSection.style.display = "block";
         }
-    } catch (error) {
-        console.error('Ошибка при удалении вопроса:', error);
+    } else {
+        answersSection.style.display = "none";
     }
 }
+
+function renderAnswers(questionId, answers) {
+    const answersSection = document.getElementById(`answers-${questionId}`);
+    answersSection.innerHTML = ''; // Очищаем секцию перед рендерингом
+
+    if (answers.length > 0) {
+        // Проверяем, есть ли хотя бы один подтверждённый ответ
+        const hasConfirmed = answers.some(answer => answer.confirmed === true);
+
+        answers.forEach(answer => {
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer';
+            answerDiv.setAttribute('data-answer-id', answer.id); // Добавляем уникальный идентификатор
+
+            // Если этот ответ подтверждён, добавляем класс для подсветки
+            if (hasConfirmed && answer.confirmed) {
+                answerDiv.classList.add('correct-answer');
+            }
+
+            // Формируем HTML для ответа
+            answerDiv.innerHTML = `
+                <div class="lawyer-info">Юрист: ${sanitizeHTML(answer.lawyer_data.first_name)} ${sanitizeHTML(answer.lawyer_data.last_name)}</div>
+                <div class="answer-text">${sanitizeHTML(answer.answer)}</div>
+                <div class="creation-date">Дата создания: ${sanitizeHTML(answer.creation_date)}</div>
+            `;
+
+            // Если этот ответ подтверждён, добавляем метку "Верный ответ"
+            if (answer.confirmed) {
+                const confirmedLabel = document.createElement('span');
+                confirmedLabel.className = 'confirmed-label';
+                confirmedLabel.textContent = 'Подтвержденный ответ';
+                answerDiv.appendChild(confirmedLabel);
+            }
+
+            // Если нет подтверждённого ответа, добавляем кнопку подтверждения
+            if (!hasConfirmed) {
+                const confirmButton = document.createElement('button');
+                confirmButton.className = 'button confirm-answer-button';
+                confirmButton.textContent = 'Этот ответ помог';
+                confirmButton.onclick = () => confirmAnswer(questionId, userId, answer.lawyer_id, answer.id);
+                answerDiv.appendChild(confirmButton);
+            }
+
+            answersSection.appendChild(answerDiv);
+        });
+    } else {
+        answersSection.innerHTML = '<p class="empty-message">Нет ответов на этот вопрос.</p>';
+    }
+}
+
+
+// Обновлённая функция для подтверждения ответа
+async function confirmAnswer(questionId, userId, lawyerId, answerId) {
+    const requestBody = {
+        question_id: questionId,
+        answer_id: answerId
+    };
+
+    try {
+        const response = await fetch(`/api/confirmed-answers/confirm`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (response.ok) {
+            alert("Ответ успешно подтвержден как полезный!");
+
+            // Перезагружаем список ответов для данного вопроса
+            await toggleAnswers(questionId); // Эта функция уже загружает и рендерит ответы
+        } else {
+            const errorData = await response.json();
+            alert("Ошибка при подтверждении ответа: " + (errorData.message || "Неизвестная ошибка."));
+        }
+    } catch (error) {
+        console.error('Ошибка при подтверждении ответа:', error);
+        alert("Ошибка при подтверждении ответа.");
+    }
+}
+
 
 async function fetchLawyersAndAnswers(questionId) {
     try {
@@ -223,7 +315,7 @@ async function submitQuestion() {
         if (response.ok) {
             alert("Вопрос успешно создан!");
             closeModal();
-            loadQuestions(userId); // Обновить список вопросов
+            await loadQuestions(userId); // Обновить список вопросов
         } else {
             const errorData = await response.json();
             alert("Ошибка при создании вопроса: " + (errorData.message || "Неизвестная ошибка."));
@@ -278,7 +370,7 @@ async function submitAnswer() {
             alert("Ответ успешно отправлен!");
             closeAnswerModal();
             // Обновляем ответы для данного вопроса
-            loadAnswersForQuestion(currentQuestionId);
+            await loadAnswersForQuestion(currentQuestionId);
         } else {
             const errorData = await response.json();
             alert("Ошибка при отправке ответа: " + (errorData.message || "Неизвестная ошибка."));
@@ -301,30 +393,6 @@ async function loadAnswersForQuestion(questionId) {
         }
     } catch (error) {
         console.error(`Ошибка при загрузке ответов для вопроса ${questionId}:`, error);
-    }
-}
-
-// Функция для удаления вопроса
-async function deleteQuestion(questionId) {
-    if (!confirm("Вы уверены, что хотите удалить этот вопрос?")) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/questions/delete?question_id=${questionId}&user_id=${userId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            alert("Вопрос успешно удален!");
-            await loadQuestions(userId); // Обновить список вопросов
-        } else {
-            const errorData = await response.json();
-            alert("Ошибка при удалении вопроса: " + (errorData.message || "Неизвестная ошибка."));
-        }
-    } catch (error) {
-        console.error('Ошибка при удалении вопроса:', error);
-        alert("Ошибка при удалении вопроса.");
     }
 }
 
@@ -357,27 +425,6 @@ async function toggleAnswers(questionId) {
         }
     } else {
         answersSection.style.display = "none";
-    }
-}
-
-function renderAnswers(questionId, answers) {
-    const answersSection = document.getElementById(`answers-${questionId}`);
-    answersSection.innerHTML = ''; // Очищаем секцию перед рендерингом
-
-    if (answers.length > 0) {
-        answers.forEach(answer => {
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'answer';
-            answerDiv.innerHTML = `
-                    <div class="lawyer-info">Юрист : ${sanitizeHTML(
-                answer.lawyer_data.first_name + ' ' + answer.lawyer_data.last_name)}</div>
-                    <div class="answer-text">${sanitizeHTML(answer.answer)}</div>
-                    <div class="creation-date">Дата создания: ${sanitizeHTML(answer.creation_date)}</div>
-                `;
-            answersSection.appendChild(answerDiv);
-        });
-    } else {
-        answersSection.innerHTML = '<p class="empty-message">Нет ответов на этот вопрос.</p>';
     }
 }
 
