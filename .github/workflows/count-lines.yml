@@ -10,13 +10,17 @@ jobs:
   cloc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install cloc
-        run: sudo apt-get install cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
+
       - name: Run cloc
         run: cloc . --json > cloc-report.json
-      - name: Upload cloc report
-        uses: actions/upload-artifact@v2
+
+      - name: Upload Cloc Report
+        uses: actions/upload-artifact@v3
         with:
           name: cloc-report
           path: cloc-report.json
