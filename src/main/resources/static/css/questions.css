@@ -7,6 +7,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 /* Стили для подсветки подтверждённого ответа */
 .correct-answer {
     background-color: #d4edda; /* Светло-зелёный фон */
@@ -53,6 +54,8 @@ body {
     justify-content: center; /* Центрируем ссылки */
     margin-top: 10px;
 }
+
+/* Удаляем лишние стили, если они дублируются */
 .header .links a.login {
     background-color: #4CAF50; /* Цвет фона */
     color: white; /* Цвет текста */
@@ -64,15 +67,16 @@ body {
     display: flex; /* Для выравнивания иконки и текста */
     align-items: center; /* Центрирование по вертикали */
 }
+
 .header .links a.login:hover {
     background-color: forestgreen; /* Более темный цвет при наведении */
     transform: translateY(-2px); /* Эффект поднятия кнопки */
 }
+
 .header .links a.logout:hover {
     background-color: darkgreen;
     color: white;
 }
-
 
 .header .links a.logout {
     background-color: darkgreen; /* Красный цвет для кнопки выхода */
@@ -93,6 +97,7 @@ body {
     background-color: #4CAF50;
     color: white;
 }
+
 .content {
     flex: auto;
     padding-top: 80px; /* Увеличиваем отступ сверху, чтобы учесть высоту шапки (40px) и дополнительные отступы */
@@ -144,6 +149,19 @@ body {
     max-width: 1000px;
     margin: 80px auto 20px; /* Учитываем фиксированную высоту шапки */
 }
+.delete-question-button {
+    background-color: #e74c3c; /* Красный цвет для кнопки удаления */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-question-button:hover {
+    background-color: #c0392b; /* Более темный красный цвет при наведении */
+}
 
 /* Стили карточек вопросов */
 .question-card {
@@ -158,7 +176,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
+    /* overflow: hidden; */ /* Убираем, если необходимо */
 }
 
 .question-card h3 {
@@ -172,11 +190,11 @@ body {
     color: #666;
     line-height: 1.4;
     /* Обрезка текста до 3 строк */
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical; */
 }
 
 .question-card .date {
@@ -297,4 +315,17 @@ body {
     font-size: 12px;
     color: #999;
     text-align: right;
+}
+
+/* Стили для метки "Данный ответ помог" */
+.confirmed-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: purple; /* Зелёный фон */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
 }

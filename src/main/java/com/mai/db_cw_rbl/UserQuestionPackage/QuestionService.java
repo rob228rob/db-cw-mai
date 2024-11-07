@@ -1,6 +1,8 @@
 package com.mai.db_cw_rbl.UserQuestionPackage;
 
 import com.fasterxml.uuid.Generators;
+import com.mai.db_cw_rbl.LawyerAnswersPackage.AnswerService;
+import com.mai.db_cw_rbl.UserPackage.UserService;
 import com.mai.db_cw_rbl.UserQuestionPackage.Dao.QuestionDao;
 import com.mai.db_cw_rbl.UserQuestionPackage.Dto.QuestionCreationRequest;
 import com.mai.db_cw_rbl.UserQuestionPackage.Dto.QuestionResponse;
@@ -8,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +23,10 @@ public class QuestionService {
     private final QuestionDao questionDao;
 
     private final ModelMapper modelMapper;
+
+    private final UserService userService;
+
+    private final AnswerService answerService;
 
     public QuestionResponse findQuestionById(UUID uuid) {
         var question = questionDao.findByQuestionId(uuid);
@@ -55,8 +62,12 @@ public class QuestionService {
                 .toList();
     }
 
-    public void deleteQuestionById(UUID questionId, UUID userId) {
-        questionDao.deleteQuestion(questionId, userId);
+    @Transactional
+    public void deleteQuestionById(UUID questionId, String email) {
+        var userId = userService.findUserByEmail(email).getId();
+
+        boolean deletedQuestion = questionDao.deleteQuestion(questionId, userId);
+        boolean deletedAnswers = answerService.deleteAllByQuestionId(questionId);
     }
 
     public void updateAnswered(boolean answered, UUID questionId) {

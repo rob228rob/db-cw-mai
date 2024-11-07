@@ -1,4 +1,4 @@
-package com.mai.db_cw_rbl.UserPackage;
+package com.mai.db_cw_rbl.UserPackage.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

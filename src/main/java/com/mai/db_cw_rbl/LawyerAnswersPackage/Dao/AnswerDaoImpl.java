@@ -105,7 +105,7 @@ public class AnswerDaoImpl implements AnswerDao {
             AnswerResponse answerResponse = new AnswerResponse();
             answerResponse.setId(UUID.fromString(rs.getString("id")));
             answerResponse.setAnswer(rs.getString("answer_text"));
-            answerResponse.setLawyerId(rs.getString("lawyer_id"));
+            answerResponse.setLawyerId(UUID.fromString(rs.getString("lawyer_id")));
             answerResponse.setCreatedAt(rs.getTimestamp("answered_at").toLocalDateTime());
 
             AnswerResponse.LawyerData lawyerName = new AnswerResponse.LawyerData(
@@ -116,6 +116,18 @@ public class AnswerDaoImpl implements AnswerDao {
 
             return answerResponse;
         });
+    }
+
+    @Override
+    public boolean deleteByQuestionId(UUID questionId) {
+        String sql = "DELETE FROM lawyer_answers WHERE question_id = :questionId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("questionId", questionId);
+
+        int rowAffected = namedJdbcTemplate.update(sql, params);
+
+        return rowAffected > 0;
     }
 }
 

@@ -4,11 +4,11 @@ import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.CustomExceptions.Us
 import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.ErrorResponseDto;
 import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.LoginUserDto;
 import com.mai.db_cw_rbl.InfrastructurePackage.UserDetails.CustomUserDetailsService;
-import com.mai.db_cw_rbl.LawyerPackage.Dtos.LawyerCreationRequest;
-import com.mai.db_cw_rbl.LawyerPackage.Dtos.LawyerResponse;
+import com.mai.db_cw_rbl.LawyerPackage.Dto.LawyerCreationRequest;
+import com.mai.db_cw_rbl.LawyerPackage.Dto.LawyerResponse;
 import com.mai.db_cw_rbl.LawyerPackage.LawyerService;
-import com.mai.db_cw_rbl.UserPackage.UserRegistrationRequest;
-import com.mai.db_cw_rbl.UserPackage.UserResponse;
+import com.mai.db_cw_rbl.UserPackage.Dto.UserRegistrationRequest;
+import com.mai.db_cw_rbl.UserPackage.Dto.UserResponse;
 import com.mai.db_cw_rbl.UserPackage.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

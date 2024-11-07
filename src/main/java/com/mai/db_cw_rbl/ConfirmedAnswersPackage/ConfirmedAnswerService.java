@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ConfirmedAnswerService {
 
     private final ConfirmedAnsDao confirmedAnsDao;
-    private final QuestionService questionService;
+
     private final ModelMapper modelMapper;
 
     public Optional<ConfirmedAnswer> getConfirmedAnswerByQuestionId(UUID questionId) {
@@ -41,9 +41,7 @@ public class ConfirmedAnswerService {
                 .answerId(confirmedAnswerRequest.answerId())
                 .questionId(questionId)
                 .build();
-
         confirmedAnsDao.save(ans);
-        questionService.updateAnswered(true, questionId);
 
         return modelMapper.map(ans, ConfirmedAnswerResponse.class);
     }

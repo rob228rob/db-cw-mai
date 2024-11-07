@@ -3,8 +3,11 @@ package com.mai.db_cw_rbl.ConfirmedAnswersPackage.Dao;
 import com.mai.db_cw_rbl.ConfirmedAnswersPackage.ConfirmedAnswer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -39,23 +42,32 @@ public class ConfirmedAnsDaoImpl implements ConfirmedAnsDao {
     }
 
     /**
-     * Сохраняет новый подтверждённый ответ в базу данных.
+     * Сохраняет новый подтверждённый ответ в базу данных и выставляет флаг вопроса answered = true;
      *
      * @param confirmedAnswer Объект ConfirmedAnswer для сохранения.
      * @return true, если сохранение прошло успешно, иначе false.
      */
     @Override
+    @Transactional
     public boolean save(ConfirmedAnswer confirmedAnswer) {
         String sql = "INSERT INTO confirmed_answers (id, answer_id, question_id) " +
                 "VALUES (:id, :answerId, :questionId)";
-
         Map<String, Object> params = new HashMap<>();
         params.put("answerId", confirmedAnswer.getAnswerId());
         params.put("id", confirmedAnswer.getId());
         params.put("questionId", confirmedAnswer.getQuestionId());
 
+        String sqlQuestions = """
+                UPDATE user_questions 
+                SET answered = true 
+                WHERE id = :questionId""";
+        SqlParameterSource paramsQuestions = new MapSqlParameterSource()
+                .addValue("questionId", confirmedAnswer.getQuestionId());
+
+        int updatedQuestions = namedParameterJdbcTemplate.update(sqlQuestions, paramsQuestions);
         int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
-        return rowsAffected > 0;
+
+        return rowsAffected > 0  && updatedQuestions > 0;
     }
 
     /**

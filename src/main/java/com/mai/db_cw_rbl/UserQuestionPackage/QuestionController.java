@@ -45,12 +45,12 @@ public class QuestionController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @DeleteMapping("/delete")
-    public ResponseEntity<QuestionResponse> deleteQuestion(
-            @RequestParam("question_id") UUID questionId,
-            @RequestParam("user_id") UUID userId
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteQuestion(
+            @PathVariable UUID id,
+            Principal principal
     ) {
-        questionService.deleteQuestionById(questionId, userId);
+        questionService.deleteQuestionById(id, principal.getName());
 
         return ResponseEntity.noContent().build();
     }

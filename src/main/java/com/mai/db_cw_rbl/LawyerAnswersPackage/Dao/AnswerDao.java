@@ -23,4 +23,6 @@ public interface AnswerDao {
     List<Answer> findAllByQuestionId(UUID uuid);
 
     List<AnswerResponse> findAllByQuestionIdWithUserData(UUID questionId);
+
+    boolean deleteByQuestionId(UUID questionId);
 }

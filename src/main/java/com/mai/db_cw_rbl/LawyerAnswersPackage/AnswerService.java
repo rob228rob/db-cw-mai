@@ -6,6 +6,9 @@ import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.CustomExceptions.En
 import com.mai.db_cw_rbl.LawyerAnswersPackage.Dao.AnswerDao;
 import com.mai.db_cw_rbl.LawyerAnswersPackage.Dto.AnswerCreationRequest;
 import com.mai.db_cw_rbl.LawyerAnswersPackage.Dto.AnswerResponse;
+import com.mai.db_cw_rbl.RatingPackage.Dto.AnswerRating;
+import com.mai.db_cw_rbl.RatingPackage.Dto.LawyerRatingResponse;
+import com.mai.db_cw_rbl.RatingPackage.LawyerRatingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,7 +25,9 @@ public class AnswerService {
     private final AnswerDao answerDao;
 
     private final ModelMapper modelMapper;
+
     private final ConfirmedAnswerService confirmedAnswerService;
+    private final LawyerRatingService lawyerRatingService;
 
     public AnswerResponse findAnswerById(UUID id) {
         var answer = answerDao.findById(id)
@@ -45,34 +50,48 @@ public class AnswerService {
         return modelMapper.map(ans, AnswerResponse.class);
     }
 
-    public List<AnswerResponse> findAllAnswersByLawyerId(UUID id) {
-        var allByLawyerId = answerDao.findAllByLawyerId(id)
-                .stream()
-                .map(ans -> {
-                    AnswerResponse response = modelMapper.map(ans, AnswerResponse.class);
-                    response.setId(ans.getId());
-                    return response;
-                })
-                .toList();
+    private AnswerResponse mapAnswerToAnswerResponse(Answer ans) {
+        AnswerResponse response = modelMapper.map(ans, AnswerResponse.class);
+        response.setId(ans.getId());
+        var ratingResp = lawyerRatingService.calculateAverageRating(ans.getLawyerId());
+        var ratingComment = lawyerRatingService.findCommentByQuestionId(ans.getQuestionId());
+        response.setRated(true);
+        response.setLawyerRating(ratingResp.rating());
+        response.setRatingComment(ratingComment);
+        return response;
+    }
 
-        return allByLawyerId;
+    public List<AnswerResponse> findAllAnswersByLawyerId(UUID id) {
+
+        return answerDao.findAllByLawyerId(id)
+                .stream()
+                .map(this::mapAnswerToAnswerResponse)
+                .toList();
     }
 
     public List<AnswerResponse> findAllAnswersByQuestionId(UUID uuid) {
-        var allByLawyerId = answerDao.findAllByQuestionId(uuid)
+
+        return answerDao.findAllByQuestionId(uuid)
                 .stream()
                 .map(ans -> modelMapper.map(ans, AnswerResponse.class))
                 .toList();
-
-        return allByLawyerId;
     }
 
-    public List<AnswerResponse> findAllAnswersByQuestionIdWithLawyerData(UUID uuid) {
-        return answerDao.findAllByQuestionIdWithUserData(uuid).stream()
+    public List<AnswerResponse> findAllAnswersByQuestionIdWithLawyerData(UUID questionId) {
+        return answerDao.findAllByQuestionIdWithUserData(questionId).stream()
                 .peek(ans -> {
+                    var ratingResp = lawyerRatingService.calculateAverageRating(ans.getLawyerId());
+                    ans.setRated(ratingResp.rating() > 1.0);
+                    ans.setLawyerRating(ratingResp.rating());
                     boolean confirmation = confirmedAnswerService.checkConfirmationByAnswerId(ans.getId());
                     ans.setConfirmed(confirmation);
+                    var ratingComment = lawyerRatingService.findCommentByQuestionId(questionId);
+                    ans.setRatingComment(ratingComment);
                 })
                 .toList();
+    }
+
+    public boolean deleteAllByQuestionId(UUID questionId) {
+        return answerDao.deleteByQuestionId(questionId);
     }
 }

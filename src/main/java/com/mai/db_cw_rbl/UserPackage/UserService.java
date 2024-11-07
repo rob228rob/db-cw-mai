@@ -8,6 +8,9 @@ import com.mai.db_cw_rbl.RolePackage.Role;
 import com.mai.db_cw_rbl.RolePackage.Dao.RoleDao;
 
 import com.mai.db_cw_rbl.UserPackage.Dao.UserDao;
+import com.mai.db_cw_rbl.UserPackage.Dto.UpdateUserDto;
+import com.mai.db_cw_rbl.UserPackage.Dto.UserRegistrationRequest;
+import com.mai.db_cw_rbl.UserPackage.Dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;

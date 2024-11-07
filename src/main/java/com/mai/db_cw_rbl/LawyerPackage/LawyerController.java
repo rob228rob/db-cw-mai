@@ -1,7 +1,7 @@
 package com.mai.db_cw_rbl.LawyerPackage;
 
-import com.mai.db_cw_rbl.LawyerPackage.Dtos.LawyerCreationRequest;
-import com.mai.db_cw_rbl.LawyerPackage.Dtos.LawyerResponse;
+import com.mai.db_cw_rbl.LawyerPackage.Dto.LawyerCreationRequest;
+import com.mai.db_cw_rbl.LawyerPackage.Dto.LawyerResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

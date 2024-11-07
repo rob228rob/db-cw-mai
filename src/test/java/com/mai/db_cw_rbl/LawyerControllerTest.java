@@ -6,8 +6,8 @@
 //import com.mai.db_cw_rbl.LawyerPackage.Lawyer;
 //import com.mai.db_cw_rbl.LawyerPackage.LawyerController;
 //import com.mai.db_cw_rbl.LawyerPackage.LawyerService;
-//import com.mai.db_cw_rbl.UserPackage.UserRegistrationRequest;
-//import com.mai.db_cw_rbl.UserPackage.UserResponse;
+//import com.mai.db_cw_rbl.UserPackage.Dto.UserRegistrationRequest;
+//import com.mai.db_cw_rbl.UserPackage.Dto.UserResponse;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.ArgumentMatchers;

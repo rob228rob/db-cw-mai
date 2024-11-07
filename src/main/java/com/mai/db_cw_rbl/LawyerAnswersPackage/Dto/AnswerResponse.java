@@ -22,8 +22,17 @@ public class AnswerResponse {
     @JsonProperty("confirmed")
     private boolean confirmed;
 
+    @JsonProperty("rated")
+    private boolean rated;
+
+    @JsonProperty("lawyer_rating")
+    private double lawyerRating;
+
+    @JsonProperty("rating_comment")
+    private String ratingComment;
+
     @JsonProperty("lawyer_id")
-    private String lawyerId;
+    private UUID lawyerId;
 
     @JsonProperty("creation_date")
     private LocalDateTime createdAt;

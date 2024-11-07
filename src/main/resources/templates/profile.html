@@ -52,24 +52,28 @@
         </div>
     </div>
 </div>
-
-
-<!-- Модальное окно для выбора юриста и оценки -->
+<!-- Модальное окно для оценки юриста -->
 <div id="ratingModal" class="modal">
     <div class="modal-content">
         <h3>Оценить юриста</h3>
-        <p>Выберите юриста и поставьте оценку за ответ:</p>
-        <select id="lawyerSelect"></select>
         <div class="rating-select">
-            <button onclick="submitRating(1)">1</button>
-            <button onclick="submitRating(2)">2</button>
-            <button onclick="submitRating(3)">3</button>
-            <button onclick="submitRating(4)">4</button>
-            <button onclick="submitRating(5)">5</button>
+            <label for="ratingValue">Оценка (от 1 до 5):</label>
+            <select id="ratingValue">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
         </div>
-        <button class="close-button" onclick="closeRatingModal()">Закрыть</button>
+        <textarea id="ratingComment" placeholder="Ваш комментарий (до 256 символов)" maxlength="256"></textarea>
+        <div class="modal-buttons">
+            <button class="submit-button" id="submit-rating">Отправить</button>
+            <button class="close-button" id="close-rating-modal">Закрыть</button>
+        </div>
     </div>
 </div>
+
 
 <div class="footer">
     <footer>

@@ -1,8 +1,7 @@
-package com.mai.db_cw_rbl.LawyerPackage.Dtos;
+package com.mai.db_cw_rbl.LawyerPackage.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.EnumNaming;
-import com.mai.db_cw_rbl.UserPackage.UserRegistrationRequest;
+import com.mai.db_cw_rbl.UserPackage.Dto.UserRegistrationRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Setter
