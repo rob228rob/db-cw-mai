@@ -1,8 +1,8 @@
 package com.mai.db_cw_rbl;
 
-import com.mai.db_cw_rbl.ConfirmedAnswersPackage.ConfirmedAnswer;
-import com.mai.db_cw_rbl.ConfirmedAnswersPackage.Dao.ConfirmedAnsDao;
-import com.mai.db_cw_rbl.ConfirmedAnswersPackage.Dao.ConfirmedAnsDaoImpl;
+import com.mai.db_cw_rbl.confirmed_answers.ConfirmedAnswer;
+import com.mai.db_cw_rbl.confirmed_answers.dao.ConfirmedAnsDao;
+import com.mai.db_cw_rbl.confirmed_answers.dao.ConfirmedAnsDaoImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.predicate;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @JdbcTest

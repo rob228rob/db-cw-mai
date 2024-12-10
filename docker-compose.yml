@@ -6,25 +6,35 @@ services:
     depends_on:
       - main_db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://main_db:5432/main_db
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://main_db:5432/main_db
+      SPRING_DATASOURCE_USERNAME: ${MAIN_DB_USERNAME:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${MAIN_DB_PASSWD:-postgres}
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-rob228rob@gmail.com}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-dummy}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT: 10000
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT: 10000
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT: 10000
     networks:
       - my_network
+    volumes:
+      - app_backups:/opt/backups/
 
   main_db:
-    image: postgres
+    image: postgres:latest
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=main_db
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: main_db
+      POSTGRES_USER: ${MAIN_DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${MAIN_DB_PASSWD:-postgres}
     ports:
       - "5432:5432"
     networks:
       - my_network
     volumes:
-     - pg_data:/var/lib/postgresql/data
-
+      - pg_data:/var/lib/postgresql/data
 
 networks:
   my_network:
@@ -32,3 +42,4 @@ networks:
 
 volumes:
   pg_data:
+  app_backups:

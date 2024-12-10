@@ -1,16 +1,14 @@
 package com.mai.db_cw_rbl;
 
-import com.mai.db_cw_rbl.InfrastructurePackage.CommonPackage.CustomExceptions.EntityNotFoundException;
-import com.mai.db_cw_rbl.RatingPackage.Dao.LawyerRatingDao;
-import com.mai.db_cw_rbl.RatingPackage.Dto.LawyerRatingResponse;
-import com.mai.db_cw_rbl.RatingPackage.LawyerRatingService;
+import com.mai.db_cw_rbl.rating.dao.LawyerRatingDao;
+import com.mai.db_cw_rbl.rating.dto.LawyerRatingResponse;
+import com.mai.db_cw_rbl.rating.LawyerRatingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 

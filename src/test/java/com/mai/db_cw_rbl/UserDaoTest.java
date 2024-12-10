@@ -6,18 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.mai.db_cw_rbl.ConfirmedAnswersPackage.Dao.ConfirmedAnsDaoImpl;
-import com.mai.db_cw_rbl.UserPackage.Dao.UserDao;
-import com.mai.db_cw_rbl.UserPackage.Dao.UserDaoImpl;
-import com.mai.db_cw_rbl.UserPackage.User;
+import com.mai.db_cw_rbl.user.dao.UserDao;
+import com.mai.db_cw_rbl.user.dao.UserDaoImpl;
+import com.mai.db_cw_rbl.user.User;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 @JdbcTest
 @Import(UserDaoImpl.class)

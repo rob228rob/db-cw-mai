@@ -1,0 +1,63 @@
+application:
+  version: 1.0
+  name: "CW DB BatoyanRL"
+  description: ""
+
+  admin-data:
+    email: ${ADMIN_ACCOUNT_EMAIL:admin2@gmail.com}
+    password: ${ADMIN_ACCOUNT_PSSWD:qweqweqwe}
+
+
+spring:
+  application:
+    name: lawyer-helper
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+    show-sql: false
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/lawyer_helper
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PW:user}
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+
+server:
+  port: 8085
+
+logging:
+  level:
+    org:
+      springframework:
+        orm.jpa.JpaTransactionManager: DEBUG
+      hibernate:
+        tool.hbm2ddl: DEBUG
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE

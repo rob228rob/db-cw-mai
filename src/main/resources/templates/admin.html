@@ -13,8 +13,8 @@
         <header>
             <nav>
                 <ul>
-                    <button><a href="/home">ПравоТворчества</a></button>
-                    <li><a href="#" data-target="#courses" class="menu active">Courses</a></li>
+                    <button><a href="/home"></a></button>
+                    <li><a href="#" data-target="#dba" class="menu active">DBA_features</a></li>
                     <li><a href="#" data-target="#users" class="menu">Users</a></li>
                     <li><a href="#" data-target="#settings" class="menu">Settings</a></li>
                     <li><a href="/logout" class="logout">Выйти</a></li>
@@ -24,10 +24,16 @@
 
         <!-- Main Content Section -->
         <main>
-            <section id="courses">
-                <h1>Courses</h1>
-                <p>This is the courses section.</p>
-                <div class="courses_list"></div>
+            <section id="dba">
+                <h1>DBA_features</h1>
+                <p>This is the DBA features section.</p>
+
+                <div class="container">
+                    <h1>Управление БД</h1>
+                    <button id="backupButton">Создать копию</button><br>
+                    <button id="restoreButton">Восстановить копию</button>
+                    <div id="message"></div>
+                </div>
             </section>
             
             <section id="users" class="hidden">
